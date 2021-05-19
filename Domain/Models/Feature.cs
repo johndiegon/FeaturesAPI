@@ -1,6 +1,4 @@
-﻿using FeaturesAPI.Domain.Models.Enum;
-
-namespace FeaturesAPI.Domain.Models
+﻿namespace FeaturesAPI.Domain.Models
 {
     public class Feature
     {
@@ -9,7 +7,6 @@ namespace FeaturesAPI.Domain.Models
         public string Description { get; set; }
         public string Url { get; set; }
         public string Price { get; set; }
-        public AccessType AccessType { get; set; }
     }
 
 }

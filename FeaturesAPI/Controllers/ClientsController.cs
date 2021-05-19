@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using FeaturesAPI.Services;
+﻿using AutoMapper;
+using Domain.Commands.Client.Post;
 using Domain.Commands.PostClient;
-using Domain.Commands.Clients;
+using Domain.Models;
+using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace FeaturesAPI.Controllers
 {
@@ -10,81 +14,46 @@ namespace FeaturesAPI.Controllers
     [Route("[controller]")]
     public class ClientsController : ControllerBase
     {
-        private readonly ClientService _clientService;
+        private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public ClientsController(ClientService clientService)
+        public ClientsController(IMapper mapper, IMediator mediator)
         {
-            _clientService = clientService;
+            _mapper = mapper;
+            _mediator = mediator;
         }
 
-        
-        //[HttpGet]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //public ActionResult<List<Client>> Get() =>
-        //    _clientService.Get();
-
-        //[HttpGet("{id:length(24)}", Name = "Getclient")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-
-        //public ActionResult<Client> Get(string id)
-        //{
-        //    var client = _clientService.Get(id);
-
-        //    if (client == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return client;
-        //}
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        /// <summary>
+        ///     Action to create a new "client" in the database.
+        /// </summary>
+        /// <param name="client">Model to create a new order</param>
+        /// <returns>Returns the created client</returns>
+        /// <response code="200">Returned if the client was created</response>
+        /// <response code="400">Returned if the model couldn't be parsed or saved</response>
+        /// <response code="422">Returned when the validation failed</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async ActionResult<PostClientCommandResponse> Create(PostClientCommand client)
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpPost]
+        public async Task<ActionResult<PostClientCommandResponse>> Create(PostClientCommand client)
         {
+            try
+            {
+                var response = await _mediator.Send(client);
 
-            return await MediatorService
-            //_clientService.Create(client);
-
-            //return CreatedAtRoute("Getclient", new { id = client.Id.ToString() }, client);
+                if (response.Data.Status == Status.Sucessed)
+                {
+                    return await Task.FromResult(response);
+                }
+                else
+                {
+                    return UnprocessableEntity(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-
-        //[HttpPut("{id:length(24)}")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //public IActionResult Update(string id, Client clientIn)
-        //{
-        //    var client = _clientService.Get(id);
-
-        //    if (client == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _clientService.Update(id, clientIn);
-
-        //    return NoContent();
-        //}
-
-        //[HttpDelete("{id:length(24)}")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //public IActionResult Delete(string id)
-        //{
-        //    var client = _clientService.Get(id);
-
-        //    if (client == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _clientService.Remove(client.Id);
-
-        //    return NoContent();
-        //}
-
     }
 }

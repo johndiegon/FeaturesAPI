@@ -15,7 +15,6 @@
     <ProjectReference Include="..\CrossCutting.Configurations\CrossCutting.Configurations.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Infrastructure.Data\Infrastructure.Data.csproj" />
-    <ProjectReference Include="..\Infrastructure.Publishers\Infrastructure.Publishers.csproj" />
   </ItemGroup>
 
 </Project>

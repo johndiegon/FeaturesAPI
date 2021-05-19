@@ -1,6 +1,6 @@
 ﻿using FeaturesAPI.Infrastructure.Data.Interface;
 
-namespace FeaturesAPI.Infrastructure.Data.Entities
+namespace FeaturesAPI.Infrastructure.Models
 {
     public class DatabaseSettings : IDatabaseSettings
     {
