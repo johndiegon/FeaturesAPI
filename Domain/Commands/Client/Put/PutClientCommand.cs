@@ -13,6 +13,7 @@ namespace Domain.Commands.Client.Put
         public override bool IsValid()
         {
             ValidationResult = new PutClientCommandValidator().Validate(this);
+            ValidationResult.Errors.AddRange(Client.ValidationResult.Errors);
             return ValidationResult.IsValid;
         }
     }

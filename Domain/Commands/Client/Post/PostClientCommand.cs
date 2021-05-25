@@ -12,6 +12,7 @@ namespace Domain.Commands.Client.Post
         public override bool IsValid()
         {
             ValidationResult = new PostClientCommandValidator().Validate(this);
+            ValidationResult.Errors.AddRange(Client.ValidationResult.Errors);
             return ValidationResult.IsValid;
         }
     }

@@ -1,19 +1,13 @@
-using FeaturesAPI.Interface;
-using FeaturesAPI.Models;
+using FeaturesAPI.Infrastructure.Data.Interface;
+using FeaturesAPI.Infrastructure.Models;
 using FeaturesAPI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FeaturesAPI
 {
@@ -38,7 +32,7 @@ namespace FeaturesAPI
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
-            services.AddSingleton<ClientService>();
+            services.AddSingleton<ClientRepository>();
              services.AddControllersWithViews();
 
             services.AddSwaggerGen(c =>
