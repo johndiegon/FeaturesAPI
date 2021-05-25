@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Domain.Commands.Client.Post;
-using Domain.Commands.PostClient;
 using Domain.Models;
 using FeaturesAPI.Infrastructure.Data.Entities;
 using Infrasctuture.Service.Interfaces;
@@ -10,7 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Domain.Commands.Clients
+namespace Domain.Commands.Client.Post
 {
     public class PostClientCommandHandler : IRequestHandler<PostClientCommand, PostClientCommandResponse>
     {

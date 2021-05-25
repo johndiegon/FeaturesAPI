@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Domain.Commands.Client.Post;
 using FeaturesAPI.Domain.Models;
 using FeaturesAPI.Infrastructure.Data.Entities;
+using FeaturesAPI.Infrastructure.Models;
 
 namespace Domain.Profiles
 {
@@ -10,13 +10,16 @@ namespace Domain.Profiles
         public ClientProfile()
         {
 
-           
+
             #region >> Mapping Command
+
+            CreateMap<AddressData, AddressEntity>();
             CreateMap<People, ClientEntity>();
-           
+
             #endregion
 
             #region >> Mapping Response
+            CreateMap<AddressEntity, AddressData>();
             CreateMap<ClientEntity, People>();
             #endregion
         }

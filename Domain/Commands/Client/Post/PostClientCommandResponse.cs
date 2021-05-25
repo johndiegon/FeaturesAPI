@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
 using FeaturesAPI.Domain.Models;
 
-namespace Domain.Commands.PostClient
+namespace Domain.Commands.Client.Post
 {
     public class PostClientCommandResponse : CommandResponse
     {

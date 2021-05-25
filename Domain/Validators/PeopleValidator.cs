@@ -1,6 +1,8 @@
 ﻿using FeaturesAPI.Domain.Models;
 using FluentValidation;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Domain.Validators
 {
@@ -17,14 +19,10 @@ namespace Domain.Validators
                     .WithMessage("{PropertyName} cannot be null");
 
             RuleFor(x => x.Phone)
-                    .NotNull()
-                    .WithMessage("{PropertyName} cannot be null");
+                    .Must(BeAValidPhone)
+                    .WithMessage("{PropertyName} it is not a valid phone");
 
             RuleFor(x => x.User)
-                    .NotNull()
-                    .WithMessage("{PropertyName} cannot be null");
-
-            RuleFor(x => x.DocNumber)
                     .NotNull()
                     .WithMessage("{PropertyName} cannot be null");
 
@@ -33,8 +31,8 @@ namespace Domain.Validators
                     .WithMessage("{PropertyName} cannot be null");
 
             RuleFor(x => x.Email)
-                    .NotNull()
-                    .WithMessage("{PropertyName} cannot be null");
+                    .Must(BeAValidEmail)
+                    .WithMessage("{PropertyName}  it is not a valid email");
 
             RuleFor(x => x.Address)
                     .NotNull()
@@ -48,18 +46,22 @@ namespace Domain.Validators
 
         private bool BeADocumentValid(string DocNumber)
         {
-            DocNumber = DocNumber.Trim();
-            DocNumber = DocNumber.Replace(".", "").Replace("-", "").Replace("/", "");
-            
-            switch ( DocNumber.Length)
+            if(DocNumber != null)
             {
-                case 11:
-                    return IsCPF(DocNumber);
-                case 14:
-                    return IsCnpj(DocNumber);
-                default:
-                    return false;
+                DocNumber = DocNumber.Trim();
+                DocNumber = DocNumber.Replace(".", "").Replace("-", "").Replace("/", "");
+
+                switch (DocNumber.Length)
+                {
+                    case 11:
+                        return IsCPF(DocNumber);
+                    case 14:
+                        return IsCnpj(DocNumber);
+                    default:
+                        return false;
+                }
             }
+            return false;
         }
 
         public bool IsCPF(string cpf)
@@ -133,6 +135,34 @@ namespace Domain.Validators
                 resto = 11 - resto;
             digito = digito + resto.ToString();
             return cnpj.EndsWith(digito);
+        }
+
+        public bool BeAValidEmail(string email)
+        {
+            bool bvalid = false;
+
+            if(email != null)
+            {
+                Regex regex = new Regex(@"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$");
+
+                if (regex.IsMatch(email))
+                {
+                    // email válido
+                    bvalid = true;
+                }
+            }
+
+            return bvalid;
+        }
+
+        public bool BeAValidPhone(IEnumerable<string> phones)
+        {
+            bool bvalid = true;
+            Regex regex = new Regex(@"^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$");
+
+            phones.ToList().ForEach(phone => { if (!regex.IsMatch(phone)) { bvalid = false; } });
+
+            return bvalid;
         }
     }
 }

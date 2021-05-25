@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Domain.Commands.Client.Post;
-using Domain.Commands.PostClient;
 using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;

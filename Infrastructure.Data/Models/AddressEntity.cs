@@ -1,6 +1,6 @@
 ﻿namespace FeaturesAPI.Infrastructure.Models
 { 
-    public class AddressData
+    public class AddressEntity
     {
         public string Address { get; set; }
         public string District { get; set; }

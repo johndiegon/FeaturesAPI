@@ -19,6 +19,8 @@ namespace FeaturesAPI.Domain.Models
         public override bool IsValid()
         {
             ValidationResult = new PeopleValidator().Validate(this);
+            this.Address.ValidationResult = new AddressValidator().Validate(this.Address);
+            ValidationResult.Errors.AddRange(Address.ValidationResult.Errors);
             return ValidationResult.IsValid;
         }
     }  

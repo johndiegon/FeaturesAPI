@@ -1,5 +1,4 @@
-﻿using Domain.Commands.PostClient;
-using Domain.Validators;
+﻿using Domain.Validators;
 using Domain.Validators.Client;
 using FeaturesAPI.Domain.Models;
 using MediatR;

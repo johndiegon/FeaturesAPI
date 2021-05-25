@@ -1,6 +1,11 @@
+using FluentValidation.AspNetCore;
 using FeaturesAPI.Infrastructure.Data.Interface;
 using FeaturesAPI.Infrastructure.Models;
 using FeaturesAPI.Services;
+using Infrasctuture.Service.Interfaces;
+using Infrasctuture.Service.ServicesHandlers;
+using Infrastructure.Data.Interfaces;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +13,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
+using Domain.Commands.Client.Post;
+using Domain.Commands.Client.Delete;
+using Domain.Commands.Client.Put;
+using Domain.Models;
+using AutoMapper;
+using Domain.Profiles;
 
 namespace FeaturesAPI
 {
@@ -25,7 +37,7 @@ namespace FeaturesAPI
         {
 
             services.AddControllers();
-            // requires using Microsoft.Extensions.Options
+
             services.Configure<DatabaseSettings>(
                 Configuration.GetSection(nameof(DatabaseSettings)));
 
@@ -34,6 +46,28 @@ namespace FeaturesAPI
 
             services.AddSingleton<ClientRepository>();
              services.AddControllersWithViews();
+
+            
+            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
+            
+            // HttpClient
+            services.AddHttpClient<IViaCepService, ViaCepService>();
+            services.AddHttpClient();
+
+            //AutoMapper
+
+            services.AddTransient<IRequestHandler<PostClientCommand, PostClientCommandResponse>, PostClientCommandHandler>();
+            services.AddTransient<IRequestHandler<DeleteClientCommand, CommandResponse>, DeleteClientCommandHandler>();
+            services.AddTransient<IRequestHandler<PutClientCommand, PutClientCommandResponse>, PutClientCommandHandler>();
+            //services.AddTransient<IRequestHandler<GetClientQuery, GetClientQueryResponse>, GetClientQueryHandler>();
+
+            services.AddScoped(typeof(IViaCepService), typeof(ViaCepService));
+            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IEndPoints, EndPoints>();
+
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(ClientProfile)));
+
+            services.AddMvc().AddFluentValidation();
 
             services.AddSwaggerGen(c =>
             {
