@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Domain.Validators
 {
-    public class UserValidator : AbstractValidator<PostUserCommand>
+    public class UserValidator : AbstractValidator<UserModel>
     {
         public UserValidator()
         {

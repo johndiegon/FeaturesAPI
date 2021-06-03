@@ -10,7 +10,6 @@ namespace Domain.Profiles
         public ClientProfile()
         {
 
-
             #region >> Mapping Command
 
             CreateMap<AddressData, AddressEntity>();

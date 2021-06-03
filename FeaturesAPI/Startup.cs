@@ -18,26 +18,26 @@ using Domain.Commands.Client.Post;
 using Domain.Commands.Client.Delete;
 using Domain.Commands.Client.Put;
 using Domain.Models;
-using AutoMapper;
 using Domain.Profiles;
-using CrossCutting.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Domain;
+using Domain.Commands.User.Post;
+using Infrastructure.Data.Repositorys;
+using Domain.Commands.Authenticate;
 
 namespace FeaturesAPI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, ISettings settings)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            _settings = settings;
         }
 
         public IConfiguration Configuration { get; }
-        public ISettings _settings { get; }
-
+   
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -60,13 +60,14 @@ namespace FeaturesAPI
             services.AddSingleton<IEndPoints>(sp =>
                 sp.GetRequiredService<IOptions<EndPoints>>().Value);
 
-            // Settings do EndPoint
-            services.Configure<Settings>(
-                Configuration.GetSection(nameof(Settings)));
+            //// Settings do Settings
+            //services.Configure<Settings>(
+            //    Configuration.GetSection(nameof(Settings)));
 
-            services.AddSingleton<ISettings>(sp =>
-                sp.GetRequiredService<IOptions<Settings>>().Value);
+            //services.AddSingleton<ISettings>(sp =>
+            //    sp.GetRequiredService<IOptions<Settings>>().Value);
 
+            // AddMediatR
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
             
             // HttpClient
@@ -78,14 +79,19 @@ namespace FeaturesAPI
             services.AddTransient<IRequestHandler<PostClientCommand, PostClientCommandResponse>, PostClientCommandHandler>();
             services.AddTransient<IRequestHandler<DeleteClientCommand, CommandResponse>, DeleteClientCommandHandler>();
             services.AddTransient<IRequestHandler<PutClientCommand, PutClientCommandResponse>, PutClientCommandHandler>();
+            services.AddTransient<IRequestHandler<PostUserCommand, PostUserCommandResponse>, PostUserCommandHandler>();
+            services.AddTransient<IRequestHandler<AuthenticateCommand, AuthenticateCommandResponse>, AuthenticateCommandHandler>();
+
             //services.AddTransient<IRequestHandler<GetClientQuery, GetClientQueryResponse>, GetClientQueryHandler>();
 
             services.AddScoped(typeof(IViaCepService), typeof(ViaCepService));
             services.AddScoped<IClientRepository, ClientRepository>();
-        
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(ClientProfile)));
+            services.AddScoped<IUserRepository, UserRepository>();
 
-            var key = Encoding.ASCII.GetBytes(_settings.TokenSecret);
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(ClientProfile)));
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(UserProfile)));
+
+            var key = Encoding.ASCII.GetBytes(Settings.TokenSecret);
 
             //Autenticação 
             services.AddAuthentication(x =>

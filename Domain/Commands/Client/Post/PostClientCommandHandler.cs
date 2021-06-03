@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.Commands.User.Post;
 using Domain.Models;
 using FeaturesAPI.Domain.Models;
 using FeaturesAPI.Infrastructure.Data.Entities;
@@ -43,10 +44,11 @@ namespace Domain.Commands.Client.Post
                 } else
                 {
                     var clientSearch = _clientRepository.GetByDoc(request.Client.DocNumber);
-                    var resultUser = await _mediator.Send(request.Client.User);
+                    var userCommand = new PostUserCommand { User = request.Client.User };
+                    var resultUser = await _mediator.Send(userCommand);
 
                     if ( clientSearch != null ||
-                         resultUser != null
+                         resultUser == null
                        )
                     {
                         response = GetResponseErro("Customer registration already exists.");

@@ -5,6 +5,6 @@ namespace Domain.Commands.Authenticate
 {
     public class AuthenticateCommandResponse : CommandResponse
     {
-        public User User { get; set; }
+        public UserModel User { get; set; }
     }
 }

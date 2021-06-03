@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
-using Domain.Commands.User.Post;
+using Domain.Commands.Authenticate;
 using Domain.Models;
-using FeaturesAPI.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -26,7 +23,7 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<ActionResult<PostUserCommandResponse>> Authenticate([FromBody] PostUserCommand model)
+        public async Task<ActionResult<AuthenticateCommandResponse>> Authenticate([FromBody] AuthenticateCommand model)
         {
             try
             {

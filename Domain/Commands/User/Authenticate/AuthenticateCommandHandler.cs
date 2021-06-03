@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CrossCutting.Security;
 using Domain.Models;
 using FeaturesAPI.Domain.Models;
 using Infrastructure.Data.Interfaces;
@@ -18,12 +17,10 @@ namespace Domain.Commands.Authenticate
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        private readonly ISettings _settings;
-
-        public AuthenticateCommandHandler(IUserRepository  userRepository, ISettings settings, IMapper mapper)
+     
+        public AuthenticateCommandHandler(IUserRepository  userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
-            _settings = settings;
             _mapper = mapper;
         }
 
@@ -32,7 +29,7 @@ namespace Domain.Commands.Authenticate
             try
             {
                 // Recupera o usuário
-                var user = _mapper.Map<User>(_userRepository.Get(request.User.Login));
+                var user = _mapper.Map<UserModel>(_userRepository.GetByLogin(request.User.Login));
 
                 //Verifica se o usuário existe
                 if (user == null)
@@ -43,14 +40,14 @@ namespace Domain.Commands.Authenticate
                     return GetResponseErro("Senha inválida.");
 
                 //// Gera o Token
-                var token = GenerateToken(user, _settings.TokenSecret);
+                var token = GenerateToken(user);
 
                 // Oculta a senha
                 user.Password = "";
                 user.Token = token;
 
                 // Retorna os dados
-                return await Task.FromResult(new AuthenticateCommandResponse { User = user });
+                return await Task.FromResult(new AuthenticateCommandResponse { User = user, Data = new Data { Status = Status.Sucessed } });
 
             } catch (Exception ex)
             {
@@ -59,16 +56,16 @@ namespace Domain.Commands.Authenticate
             }
         }
 
-        public static string GenerateToken(User user, string tokenSecret)
+        public static string GenerateToken(UserModel user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(tokenSecret);
+            var key = Encoding.ASCII.GetBytes(Settings.TokenSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Login.ToString()),
-                    new Claim(ClaimTypes.Role, user.Role.ToString())
+                    new Claim(ClaimTypes.Role, "Teste") //user.Role.ToString()
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

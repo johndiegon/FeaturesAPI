@@ -1,7 +1,7 @@
-﻿namespace CrossCutting.Security
-{
-    public interface ISettings
-    {
-        string TokenSecret { get; set; }
-    }
-}
+﻿//namespace CrossCutting.Security
+//{
+//    public interface ISettings
+//    {
+//        string TokenSecret { get; set; }
+//    }
+//}
