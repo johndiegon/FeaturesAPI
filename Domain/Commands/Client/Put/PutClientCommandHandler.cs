@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Models;
 using FeaturesAPI.Infrastructure.Data.Entities;
+using Infrasctuture.Service.Contracts;
 using Infrasctuture.Service.Interfaces;
 using Infrastructure.Data.Interfaces;
 using MediatR;
@@ -48,16 +49,18 @@ namespace Domain.Commands.Client.Put
                          client.Address.City == null
                         )
                     {
-                        var endereco = _viaCepService.GetEndereco(client.Address.ZipCode);
-                        if (!endereco.Result.erro)
+                        AdressResponse endereco = _viaCepService.GetEndereco(client.Address.ZipCode.Replace("-", "")).Result;
+                        if (endereco != null)
                         {
-                            client.Address.Address = endereco.Result.Logradouro;
-                            client.Address.District = endereco.Result.Bairro;
-                            client.Address.City = endereco.Result.Uf;
+                            client.Address.Address = endereco.Logradouro;
+                            client.Address.District = endereco.Bairro;
+                            client.Address.City = endereco.Localidade;
+                            client.Address.Uf = endereco.Uf;
+                            client.Address.Country = "Brasil";
                         }
                         else
                         {
-                            throw new Exception($"An error occurred while fetching the address: {endereco.Result.erro}");
+                            throw new Exception($"An error occurred while fetching the address");
                         }
                     }
 

@@ -6,6 +6,5 @@
         void Delete(string id);
         TEntity Get(string id);
         TEntity Update(TEntity entity);
-
     }
 }

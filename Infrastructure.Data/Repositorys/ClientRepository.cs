@@ -25,6 +25,9 @@ namespace FeaturesAPI.Services
         public ClientEntity Get(string id) =>
             _clients.Find<ClientEntity>(client => client.Id == id).FirstOrDefault();
 
+        public ClientEntity GetByDoc(string doc) =>
+          _clients.Find<ClientEntity>(client => client.DocNumber == doc).FirstOrDefault();
+
         public ClientEntity Create(ClientEntity client)
         {
             _clients.InsertOne(client);

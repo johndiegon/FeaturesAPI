@@ -20,17 +20,23 @@ using Domain.Commands.Client.Put;
 using Domain.Models;
 using AutoMapper;
 using Domain.Profiles;
+using CrossCutting.Security;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace FeaturesAPI
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, ISettings settings)
         {
             Configuration = configuration;
+            _settings = settings;
         }
 
         public IConfiguration Configuration { get; }
+        public ISettings _settings { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -47,7 +53,20 @@ namespace FeaturesAPI
             services.AddSingleton<ClientRepository>();
              services.AddControllersWithViews();
 
-            
+            // Settings do EndPoint
+            services.Configure<EndPoints>(
+                Configuration.GetSection(nameof(EndPoints)));
+
+            services.AddSingleton<IEndPoints>(sp =>
+                sp.GetRequiredService<IOptions<EndPoints>>().Value);
+
+            // Settings do EndPoint
+            services.Configure<Settings>(
+                Configuration.GetSection(nameof(Settings)));
+
+            services.AddSingleton<ISettings>(sp =>
+                sp.GetRequiredService<IOptions<Settings>>().Value);
+
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
             
             // HttpClient
@@ -63,9 +82,28 @@ namespace FeaturesAPI
 
             services.AddScoped(typeof(IViaCepService), typeof(ViaCepService));
             services.AddScoped<IClientRepository, ClientRepository>();
-            services.AddScoped<IEndPoints, EndPoints>();
-
+        
             services.AddAutoMapper(Assembly.GetAssembly(typeof(ClientProfile)));
+
+            var key = Encoding.ASCII.GetBytes(_settings.TokenSecret);
+
+            //Autenticação 
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             services.AddMvc().AddFluentValidation();
 
@@ -87,6 +125,7 @@ namespace FeaturesAPI
 
             app.UseRouting();
 
+            app.UseAuthorization();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

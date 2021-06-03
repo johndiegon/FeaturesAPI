@@ -8,9 +8,11 @@
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="FluentValidation" Version="10.1.0" />
     <PackageReference Include="MediatR" Version="9.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CrossCutting.Configurations\CrossCutting.Configurations.csproj" />
     <ProjectReference Include="..\Infrasctuture.Service\Infrasctuture.Service.csproj" />
     <ProjectReference Include="..\Infrastructure.Data\Infrastructure.Data.csproj" />
   </ItemGroup>

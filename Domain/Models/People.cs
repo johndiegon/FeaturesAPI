@@ -14,13 +14,14 @@ namespace FeaturesAPI.Domain.Models
         public string Email { get; set; }
         public AddressData Address { get; set; }
         public IEnumerable<string> Phone { get; set; }
-        public User User { get; set; }
+        public PostUserCommand User { get; set; }
         public EntityStatus Status  { get; set; }
         public override bool IsValid()
         {
             ValidationResult = new PeopleValidator().Validate(this);
             this.Address.ValidationResult = new AddressValidator().Validate(this.Address);
             ValidationResult.Errors.AddRange(Address.ValidationResult.Errors);
+            ValidationResult.Errors.AddRange(User.ValidationResult.Errors);
             return ValidationResult.IsValid;
         }
     }  

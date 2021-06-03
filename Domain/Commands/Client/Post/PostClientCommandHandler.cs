@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Models;
+using FeaturesAPI.Domain.Models;
 using FeaturesAPI.Infrastructure.Data.Entities;
+using Infrasctuture.Service.Contracts;
 using Infrasctuture.Service.Interfaces;
 using Infrastructure.Data.Interfaces;
 using MediatR;
@@ -38,42 +40,57 @@ namespace Domain.Commands.Client.Post
                 {
                     response = GetResponseErro("The request is invalid.");
                     response.Notification = request.Notifications();
-                }
-                else
+                } else
                 {
-                    var client = _mapper.Map<ClientEntity>(request.Client);
+                    var clientSearch = _clientRepository.GetByDoc(request.Client.DocNumber);
+                    var resultUser = await _mediator.Send(request.Client.User);
 
-                    if ( client.Address.Address== null ||
-                         client.Address.District == null ||
-                         client.Address.City== null
-                        )
+                    if ( clientSearch != null ||
+                         resultUser != null
+                       )
                     {
-                        var endereco = _viaCepService.GetEndereco(client.Address.ZipCode);
-                        if (!endereco.Result.erro)
+                        response = GetResponseErro("Customer registration already exists.");
+                        response.Notification = request.Notifications();
+                    }
+                    else
+                    {
+                        var client = _mapper.Map<ClientEntity>(request.Client);
+                        var user = _mapper.Map<UserEntity>(request.Client.User);
+
+                        if (client.Address.Address == null ||
+                             client.Address.District == null ||
+                             client.Address.City == null
+                            )
                         {
-                            client.Address.Address = endereco.Result.Logradouro;
-                            client.Address.District = endereco.Result.Bairro;
-                            client.Address.City = endereco.Result.Uf;
+                            AdressResponse endereco = _viaCepService.GetEndereco(client.Address.ZipCode.Replace("-", "")).Result;
+                            if (endereco != null)
+                            {
+                                client.Address.Address = endereco.Logradouro;
+                                client.Address.District = endereco.Bairro;
+                                client.Address.City = endereco.Localidade;
+                                client.Address.Uf = endereco.Uf;
+                                client.Address.Country = "Brasil";
+                            }
+                            else
+                            {
+                                throw new Exception($"An error occurred while fetching the address");
+                            }
                         }
-                        else 
+
+                        var result = _clientRepository.Create(client);
+                        result.IdUser = user.Id;
+
+                        response = new PostClientCommandResponse
                         {
-                            throw new Exception($"An error occurred while fetching the address: {endereco.Result.erro}");
-                        }
+                            Client = _mapper.Map<People>(result),
+                            Data = new Data
+                            {
+                                Message = "Client successfully registered.",
+                                Status = Status.Sucessed
+                            }
+                        };
                     }
 
-                    var result = _clientRepository.Create(client);
-
-                    request.Client.Id = result.Id;
-
-                    response = new PostClientCommandResponse
-                    {
-                        Client = request.Client,
-                        Data = new Data
-                        {
-                            Message = "Client successfully registered.",
-                            Status = Status.Sucessed
-                        }
-                    };
                 }
 
                 return await Task.FromResult(response);

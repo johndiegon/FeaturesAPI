@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace FeaturesAPI.Domain.Models
 {
     public class Sale
