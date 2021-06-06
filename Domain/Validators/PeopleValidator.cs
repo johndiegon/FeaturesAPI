@@ -155,12 +155,14 @@ namespace Domain.Validators
             return bvalid;
         }
 
-        public bool BeAValidPhone(IEnumerable<string> phones)
+        public bool BeAValidPhone(string phone)
         {
             bool bvalid = true;
             Regex regex = new Regex(@"^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$");
 
-            phones.ToList().ForEach(phone => { if (!regex.IsMatch(phone)) { bvalid = false; } });
+            if (!regex.IsMatch(phone)) { bvalid = false; }
+
+            //phones.ToList().ForEach(phone => { if (!regex.IsMatch(phone)) { bvalid = false; } });
 
             return bvalid;
         }

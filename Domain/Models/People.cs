@@ -13,7 +13,7 @@ namespace FeaturesAPI.Domain.Models
         public DocType DocType { get; set; }
         public string Email { get; set; }
         public AddressData Address { get; set; }
-        public IEnumerable<string> Phone { get; set; }
+        public string Phone { get; set; }
         public UserModel User { get; set; }
         public EntityStatus Status  { get; set; }
         public override bool IsValid()
