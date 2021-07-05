@@ -1,6 +1,10 @@
-﻿namespace Domain.Queries.Client
+﻿using Domain.Models;
+using FeaturesAPI.Domain.Models;
+
+namespace Domain.Queries.Client
 {
-    class GetClientQueryResponse
+    public class GetClientQueryResponse : CommandResponse
     {
+        public People Client { get; set; }
     }
 }

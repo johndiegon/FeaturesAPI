@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Validators;
+using Domain.Validators.Client;
+using MediatR;
 
 namespace Domain.Queries.Client
 {
-    class GetClientByIdQuery
+    public class GetClientQuery : Validate, IRequest<GetClientQueryResponse>
     {
+        public string IdClient { get; set; }
+        public override bool IsValid()
+        {
+            ValidationResult = new GetClientQueryValidator().Validate(this);
+            return ValidationResult.IsValid;
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace Domain.Models
 
         public override bool IsValid()
         {
-            ValidationResult = new PostContactListValidator().Validate(this);
+            ValidationResult = new ContactListValidator().Validate(this);
             return ValidationResult.IsValid;
         }
     }
