@@ -26,6 +26,9 @@ using Domain;
 using Domain.Commands.User.Post;
 using Infrastructure.Data.Repositorys;
 using Domain.Commands.Authenticate;
+using Infrasctuture.Service.Settings;
+using Infrasctuture.Service.Interfaces.settings;
+using Domain.Commands.File.Post;
 
 namespace FeaturesAPI
 {
@@ -60,12 +63,20 @@ namespace FeaturesAPI
             services.AddSingleton<IEndPoints>(sp =>
                 sp.GetRequiredService<IOptions<EndPoints>>().Value);
 
-            //// Settings do Settings
-            //services.Configure<Settings>(
-            //    Configuration.GetSection(nameof(Settings)));
+            // Settings do OrderTopic
+            services.Configure<OrderTopic>(
+                Configuration.GetSection(nameof(OrderTopic)));
 
-            //services.AddSingleton<ISettings>(sp =>
-            //    sp.GetRequiredService<IOptions<Settings>>().Value);
+            services.AddSingleton<ITopicSettings>(sp =>
+                sp.GetRequiredService<IOptions<OrderTopic>>().Value);
+
+            // Settings do OrderBlob
+            services.Configure<OrderBlob>(
+                Configuration.GetSection(nameof(OrderBlob)));
+
+            services.AddSingleton<IBlobSettings>(sp =>
+                sp.GetRequiredService<IOptions<OrderBlob>>().Value);
+                    
 
             // AddMediatR
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
@@ -74,6 +85,8 @@ namespace FeaturesAPI
             services.AddHttpClient<IViaCepService, ViaCepService>();
             services.AddHttpClient();
 
+
+
             //AutoMapper
 
             services.AddTransient<IRequestHandler<PostClientCommand, PostClientCommandResponse>, PostClientCommandHandler>();
@@ -81,12 +94,16 @@ namespace FeaturesAPI
             services.AddTransient<IRequestHandler<PutClientCommand, PutClientCommandResponse>, PutClientCommandHandler>();
             services.AddTransient<IRequestHandler<PostUserCommand, PostUserCommandResponse>, PostUserCommandHandler>();
             services.AddTransient<IRequestHandler<AuthenticateCommand, AuthenticateCommandResponse>, AuthenticateCommandHandler>();
+            services.AddTransient<IRequestHandler<PostFileCommand, PostFileCommandResponse>, PostFileCommandHandler>();
 
             //services.AddTransient<IRequestHandler<GetClientQuery, GetClientQueryResponse>, GetClientQueryHandler>();
 
             services.AddScoped(typeof(IViaCepService), typeof(ViaCepService));
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IBlobStorage, OrderBlobStorage>();
+            services.AddScoped<IOrderTopic, OrderListTopic>();
+
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(ClientProfile)));
             services.AddAutoMapper(Assembly.GetAssembly(typeof(UserProfile)));
