@@ -122,5 +122,8 @@ namespace FeaturesAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        public async Task<ActionResult<CommandResponse>> GetClients()
+        { }
     }
 }
