@@ -7,7 +7,9 @@
         string ClientsCollectionName { get; set; }
         string ContactListCollectionName { get; set; }
         string CategorysCollectionName { get; set; }
+        string ContactCollecionName { get; set; }
         string ConnectionString { get; set; }
+        string TypeListCollectionName { get; set; }
         string DatabaseName { get; set; }
     }
   

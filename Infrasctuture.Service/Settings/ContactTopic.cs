@@ -2,7 +2,7 @@
 
 namespace Infrasctuture.Service.Settings
 {
-    public class OrderTopic : ITopicSettings
+    public class ContactTopic : ITopicSettings
     {
         public string ConnectionString { get; set; }
         public string TopicName { get; set; }

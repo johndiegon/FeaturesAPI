@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using Domain.Models;
+using Domain.Models.Enums;
 using Infrasctuture.Service.Contracts;
 using Infrasctuture.Service.Interfaces;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,15 +17,15 @@ namespace Domain.Commands.File.Post
         private readonly IClientRepository _clientRepository;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
-        private readonly IOrderTopic _orderTopic;
+        private readonly ITopicServiceBuss _topicService;
 
         public PostFileCommandHandler(IBlobStorage blobStorage,
-                                      IOrderTopic orderTopic,
+                                      ITopicServiceBuss topicService,
                                       IClientRepository clientRepository
                                       )
         {
             _blobStorage = blobStorage;
-            _orderTopic = orderTopic;
+            _topicService = topicService;
             _clientRepository = clientRepository;
         }
         public async Task<PostFileCommandResponse> Handle(PostFileCommand request, CancellationToken cancellationToken)
@@ -50,13 +48,13 @@ namespace Domain.Commands.File.Post
 
                     var storageFile = await _blobStorage.UploadFile(request.File);
 
-                    var orderList = new OrderList
+                    var importedFile = new ImportedFile
                     {
                         IdClient = request.IdClient,
                         PathFile = storageFile
                     };
 
-                    await _orderTopic.SendMessage(orderList);
+                    await _topicService.SendMessage(importedFile, request.FileType.ToString());
 
                     response.Data = new Data 
                     {

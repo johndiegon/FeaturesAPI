@@ -27,6 +27,9 @@ namespace FeaturesAPI.Services
 
         public ClientEntity GetByDoc(string doc) =>
           _clients.Find<ClientEntity>(client => client.DocNumber == doc).FirstOrDefault();
+        
+        public IEnumerable<ClientEntity> GetByUser(string idUser) =>
+            _clients.Find<ClientEntity>(client => client.IdUser == idUser).ToEnumerable();
 
         public ClientEntity Create(ClientEntity client)
         {

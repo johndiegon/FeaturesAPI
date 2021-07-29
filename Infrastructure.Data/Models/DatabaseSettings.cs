@@ -11,5 +11,6 @@ namespace FeaturesAPI.Infrastructure.Models
         public string CategorysCollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
+        public string ContactCollecionName { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using FeaturesAPI.Infrastructure.Models;
+using Infrastructure.Data.Entities;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace FeaturesAPI.Infrastructure.Data.Entities
         public string DocNumber { get; set; }
         public string DocType { get; set; }
         public string Email { get; set; }
+        public TypeListEntity TypeList {get;set;}
         public AddressEntity Address { get; set; }
         public string IdUser { get; set; }
         public StatusEntity Status { get; set; }

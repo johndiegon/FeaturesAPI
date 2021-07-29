@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace Infrasctuture.Service.ServicesHandlers
 {
-    public class OrderListTopic : IOrderTopic
+    public class ServiceTopic : ITopicServiceBuss
     {
         ITopicSettings _topicSettings;
-        public OrderListTopic(ITopicSettings topicSettings) 
+        public ServiceTopic(ITopicSettings topicSettings) 
         {
             _topicSettings = topicSettings;
         }
 
-        public async Task<OrderList> SendMessage(OrderList orderList)
+        public async Task<ImportedFile> SendMessage(ImportedFile orderList, string filType)
         {
             var client = new ServiceBusClient(_topicSettings.ConnectionString);
-            var sender = client.CreateSender(_topicSettings.TopicName);
+            var sender = client.CreateSender(filType);
 
             // create a batch 
             using ServiceBusMessageBatch messageBatch = await sender.CreateMessageBatchAsync();

@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
 using FluentValidation;
 
-namespace Domain.Validators
+namespace Domain.Validators.Contact
 {
     public class ContactListValidator : AbstractValidator<ContactList>
     {
@@ -23,7 +23,7 @@ namespace Domain.Validators
                 .NotNull()
                 .WithMessage("{PropertyName} cannot be null.");
 
-            RuleFor(x => x.TipoContato)
+            RuleFor(x => x.TypeList)
                .NotNull()
                .WithMessage("{PropertyName} cannot be null.");
 

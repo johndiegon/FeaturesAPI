@@ -5,6 +5,6 @@ namespace Infrastructure.Data.Interfaces
 {
     public interface IContactListRepository : IRepository<ContactListEntity>
     {
-        List<ContactListEntity> GetByClientId(string id);
+        IEnumerable<ContactListEntity> GetByClientId(string id);
     }
 }

@@ -4,19 +4,18 @@ using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Domain.Commands.List.Post
+namespace Domain.Commands.List.Put
 {
-    public class PostContactListCommandHandler : IRequestHandler<PostContactListCommand, PostContactListCommandResponse>
+    public class PutContactListCommandHandler : IRequestHandler<PutContactListCommand, PutContactListCommandResponse>
     {
         private readonly IContactListRepository _contactListRepository;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
-       
-        public PostContactListCommandHandler(IContactListRepository contactListRepository
+
+        public PutContactListCommandHandler(IContactListRepository contactListRepository
                                      , IMapper mapper
                                      , IMediator mediator
                                      )
@@ -26,11 +25,11 @@ namespace Domain.Commands.List.Post
             _mediator = mediator;
         }
 
-        public async Task<PostContactListCommandResponse> Handle(PostContactListCommand request, CancellationToken cancellationToken)
+        public async Task<PutContactListCommandResponse> Handle(PutContactListCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var response = new PostContactListCommandResponse();
+                var response = new PutContactListCommandResponse();
                 if (!request.IsValid())
                 {
                     response = GetResponseErro("The request is invalid.");
@@ -38,9 +37,9 @@ namespace Domain.Commands.List.Post
                 }
                 else
                 {
-                    var contactListSearch = _contactListRepository.GetByClientId(request.ContactList.IdClient).Where(List => List.TypeList.Name == request.ContactList.TypeList.Name);
-
-                    if (contactListSearch.Count() > 0)
+                    var contactListSearch = _contactListRepository.Get(request.ContactList.Id);
+                    
+                    if (contactListSearch == null)
                     {
                         response = GetResponseErro("The request is invalid.");
                         response.Notification = request.Notifications();
@@ -48,11 +47,11 @@ namespace Domain.Commands.List.Post
                     else
                     {
                         var contactList = _mapper.Map<ContactListEntity>(request.ContactList);
-                        var result = _contactListRepository.Create(contactList);
+                        var result = _contactListRepository.Update(contactList);
 
-                        response = new PostContactListCommandResponse
+                        response = new PutContactListCommandResponse
                         {
-                            IdContactList = result.Id,
+                            ContactList = request.ContactList,
                             Data = new Data
                             {
                                 Message = "ContactList successfully registered.",
@@ -70,9 +69,9 @@ namespace Domain.Commands.List.Post
             }
         }
 
-        private PostContactListCommandResponse GetResponseErro(string Message)
+        private PutContactListCommandResponse GetResponseErro(string Message)
         {
-            return new PostContactListCommandResponse
+            return new PutContactListCommandResponse
             {
                 Data = new Data
                 {

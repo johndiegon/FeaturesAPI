@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using Infrasctuture.Service.Contracts;
+using System.Threading.Tasks;
 
 namespace Infrasctuture.Service.Interfaces
 {
-    public interface ITopicServiceBuss<TEntity> where TEntity : class, new()
+    public interface ITopicServiceBuss
     {
-        Task<TEntity> SendMessage(TEntity entity);
+        Task<ImportedFile> SendMessage(ImportedFile entity, string filType);
     }
 }

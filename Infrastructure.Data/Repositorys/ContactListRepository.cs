@@ -2,11 +2,8 @@
 using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MongoDB.Driver;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Repositorys
 {
@@ -22,7 +19,7 @@ namespace Infrastructure.Data.Repositorys
             _contacts = database.GetCollection<ContactListEntity>(settings.ContactListCollectionName);
         }
 
-        public List<ContactListEntity> Get() =>
+        public IEnumerable<ContactListEntity> Get() =>
             _contacts.Find(contactList => true).ToList();
 
         public ContactListEntity Get(string id) =>
@@ -43,7 +40,7 @@ namespace Infrastructure.Data.Repositorys
         public void Delete(string id) =>
             _contacts.DeleteOne(contactList => contactList.Id == id);
 
-        public List<ContactListEntity> GetByClientId(string idClient) =>
+        public IEnumerable<ContactListEntity> GetByClientId(string idClient) =>
           _contacts.Find<ContactListEntity>(contactList => contactList.IdClient == idClient).ToList();
 
     }

@@ -12,6 +12,7 @@ namespace Infrastructure.Data.Entities
         public string Id { get; set; }
         public string IdClient { get; set; }
         public string Name { get; set; }
+        public TypeListEntity TypeList { get; set; }
         public DateTime CreationDate { get; set; }
         public List<MessageEntity> ListSendMessage { get; set; }
         public List<ContactEntity> ListContact { get; set; }
@@ -21,10 +22,5 @@ namespace Infrastructure.Data.Entities
         public string TextMessage { get; set; }
         public DateTime DateTime { get; set; }
     }
-    public class ContactEntity
-    {
-        public string Name { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-    }
+   
 }

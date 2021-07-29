@@ -1,4 +1,6 @@
-﻿using Domain.Validators;
+﻿using Domain.Models.Enums;
+using Domain.Validators;
+using Domain.Validators.Contact;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,9 +13,9 @@ namespace Domain.Models
         public string IdClient { get; set; }
         public string Name { get; set; }
         public DateTime CreationDate { get; set; }
-        public TipoContato TipoContato { get; set; }
-        public List<Message> ListSendMessage { get; set; }
-        public List<Contact> ListContact { get; set; }
+        public TypeList TypeList { get; set; }
+        public IEnumerable<Message> ListSendMessage { get; set; }
+        public IEnumerable<Contact> ListContact { get; set; }
 
         public override bool IsValid()
         {
@@ -21,21 +23,4 @@ namespace Domain.Models
             return ValidationResult.IsValid;
         }
     }
-    public enum TipoContato
-    {
-        Phone, 
-        Email
-    }
-    public class Message
-    {
-        public string TextMessage { get; set; }
-        public DateTime DateTime { get; set; }
-    }
-    public class Contact
-    {
-        public string Name { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-    }
-
 }

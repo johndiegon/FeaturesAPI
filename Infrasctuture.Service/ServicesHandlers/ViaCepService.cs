@@ -2,8 +2,6 @@
 using Infrasctuture.Service.Interfaces;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Polly;
-using Polly.Contrib.WaitAndRetry;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;

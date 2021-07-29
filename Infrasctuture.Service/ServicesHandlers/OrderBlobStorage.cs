@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs;
+using Infrasctuture.Service.Contracts;
 using Infrasctuture.Service.Interfaces;
 using Infrasctuture.Service.Interfaces.settings;
 using Microsoft.AspNetCore.Http;

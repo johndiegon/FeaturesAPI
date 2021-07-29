@@ -2,7 +2,7 @@
 
 namespace Infrasctuture.Service.Contracts
 {
-    public class OrderList
+    public class ImportedFile
     {
         public string IdClient { get; set; }
         public string PathFile { get; set; }

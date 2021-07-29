@@ -64,11 +64,11 @@ namespace FeaturesAPI
                 sp.GetRequiredService<IOptions<EndPoints>>().Value);
 
             // Settings do OrderTopic
-            services.Configure<OrderTopic>(
-                Configuration.GetSection(nameof(OrderTopic)));
+            services.Configure<TopicSettings>(
+                Configuration.GetSection(nameof(TopicSettings)));
 
             services.AddSingleton<ITopicSettings>(sp =>
-                sp.GetRequiredService<IOptions<OrderTopic>>().Value);
+                sp.GetRequiredService<IOptions<TopicSettings>>().Value);
 
             // Settings do OrderBlob
             services.Configure<OrderBlob>(
@@ -102,7 +102,7 @@ namespace FeaturesAPI
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IBlobStorage, OrderBlobStorage>();
-            services.AddScoped<IOrderTopic, OrderListTopic>();
+            services.AddScoped<ITopicSettings, ServiceTopic>();
 
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(ClientProfile)));

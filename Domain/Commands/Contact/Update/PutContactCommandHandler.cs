@@ -4,33 +4,31 @@ using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Domain.Commands.List.Post
+namespace Domain.Commands.Contact.Update
 {
-    public class PostContactListCommandHandler : IRequestHandler<PostContactListCommand, PostContactListCommandResponse>
+    public class PutContactCommandHandler : IRequestHandler<PutContactCommand, PutContactCommandResponse>
     {
-        private readonly IContactListRepository _contactListRepository;
+        private readonly IContactRepository _contactRepository;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
-       
-        public PostContactListCommandHandler(IContactListRepository contactListRepository
+        public PutContactCommandHandler(IContactRepository contactRepository
                                      , IMapper mapper
                                      , IMediator mediator
                                      )
         {
-            _contactListRepository = contactListRepository;
+            _contactRepository = contactRepository;
             _mapper = mapper;
             _mediator = mediator;
         }
 
-        public async Task<PostContactListCommandResponse> Handle(PostContactListCommand request, CancellationToken cancellationToken)
+        public async Task<PutContactCommandResponse> Handle(PutContactCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var response = new PostContactListCommandResponse();
+                var response = new PutContactCommandResponse();
                 if (!request.IsValid())
                 {
                     response = GetResponseErro("The request is invalid.");
@@ -38,28 +36,30 @@ namespace Domain.Commands.List.Post
                 }
                 else
                 {
-                    var contactListSearch = _contactListRepository.GetByClientId(request.ContactList.IdClient).Where(List => List.TypeList.Name == request.ContactList.TypeList.Name);
+                    var contactSearch = _contactRepository.Get(request.Contact.Id);
 
-                    if (contactListSearch.Count() > 0)
+                    if (contactSearch == null)
                     {
-                        response = GetResponseErro("The request is invalid.");
+                        response = GetResponseErro("Contact registration doesnt exist.");
                         response.Notification = request.Notifications();
                     }
                     else
                     {
-                        var contactList = _mapper.Map<ContactListEntity>(request.ContactList);
-                        var result = _contactListRepository.Create(contactList);
+                        var contact = _mapper.Map<ContactEntity>(request.Contact);
 
-                        response = new PostContactListCommandResponse
+                        var result = _contactRepository.Update(contact);
+
+                        response = new PutContactCommandResponse
                         {
-                            IdContactList = result.Id,
+                            Contact = _mapper.Map<Models.Contact>(result),
                             Data = new Data
                             {
-                                Message = "ContactList successfully registered.",
+                                Message = "Client successfully updated.",
                                 Status = Status.Sucessed
                             }
                         };
                     }
+
                 }
 
                 return await Task.FromResult(response);
@@ -70,9 +70,9 @@ namespace Domain.Commands.List.Post
             }
         }
 
-        private PostContactListCommandResponse GetResponseErro(string Message)
+        private PutContactCommandResponse GetResponseErro(string Message)
         {
-            return new PostContactListCommandResponse
+            return new PutContactCommandResponse
             {
                 Data = new Data
                 {

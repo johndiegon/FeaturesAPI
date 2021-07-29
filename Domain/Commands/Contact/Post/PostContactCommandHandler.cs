@@ -8,29 +8,28 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Domain.Commands.List.Post
+namespace Domain.Commands.Contact.Post
 {
-    public class PostContactListCommandHandler : IRequestHandler<PostContactListCommand, PostContactListCommandResponse>
+    public class PostContactCommandHandler : IRequestHandler<PostContactCommand, PostContactCommandResponse>
     {
-        private readonly IContactListRepository _contactListRepository;
+        private readonly IContactRepository _contactRepository;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
-       
-        public PostContactListCommandHandler(IContactListRepository contactListRepository
+        
+        public PostContactCommandHandler(IContactRepository contactRepository
                                      , IMapper mapper
                                      , IMediator mediator
                                      )
         {
-            _contactListRepository = contactListRepository;
+            _contactRepository = contactRepository;
             _mapper = mapper;
             _mediator = mediator;
         }
-
-        public async Task<PostContactListCommandResponse> Handle(PostContactListCommand request, CancellationToken cancellationToken)
+        public async Task<PostContactCommandResponse> Handle(PostContactCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var response = new PostContactListCommandResponse();
+                var response = new PostContactCommandResponse();
                 if (!request.IsValid())
                 {
                     response = GetResponseErro("The request is invalid.");
@@ -38,30 +37,29 @@ namespace Domain.Commands.List.Post
                 }
                 else
                 {
-                    var contactListSearch = _contactListRepository.GetByClientId(request.ContactList.IdClient).Where(List => List.TypeList.Name == request.ContactList.TypeList.Name);
+                    var contactSearch = _mapper.Map<ContactEntity>(_contactRepository.GetByPhone(request.Contact.Phone).Where(contact => contact.IdClient == request.Contact.IdClient));
+                    var contact = _mapper.Map<ContactEntity>(request.Contact);
 
-                    if (contactListSearch.Count() > 0)
+                    if (contactSearch != null )
                     {
-                        response = GetResponseErro("The request is invalid.");
-                        response.Notification = request.Notifications();
+                        contact.Id = contactSearch.Id;
+                        var result = _contactRepository.Update(contact);
                     }
                     else
                     {
-                        var contactList = _mapper.Map<ContactListEntity>(request.ContactList);
-                        var result = _contactListRepository.Create(contactList);
-
-                        response = new PostContactListCommandResponse
+                        var result = _contactRepository.Create(contact);
+                        
+                        response = new PostContactCommandResponse
                         {
-                            IdContactList = result.Id,
+                            Contact = _mapper.Map<Models.Contact>(result),
                             Data = new Data
                             {
-                                Message = "ContactList successfully registered.",
+                                Message = "Client successfully registered.",
                                 Status = Status.Sucessed
                             }
                         };
                     }
                 }
-
                 return await Task.FromResult(response);
             }
             catch (Exception ex)
@@ -70,9 +68,9 @@ namespace Domain.Commands.List.Post
             }
         }
 
-        private PostContactListCommandResponse GetResponseErro(string Message)
+        private PostContactCommandResponse GetResponseErro(string Message)
         {
-            return new PostContactListCommandResponse
+            return new PostContactCommandResponse
             {
                 Data = new Data
                 {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Infrasctuture.Service.Contracts;
+using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 namespace Infrasctuture.Service.Interfaces
