@@ -16,10 +16,10 @@ namespace Infrasctuture.Service.ServicesHandlers
             _topicSettings = topicSettings;
         }
 
-        public async Task<ImportedFile> SendMessage(ImportedFile orderList)
+        public async Task<ImportedFile> SendMessage(ImportedFile orderList, string topic)
         {
             var client = new ServiceBusClient(_topicSettings.ConnectionString);
-            var sender = client.CreateSender("ContactTopic");
+            var sender = client.CreateSender(topic);
 
             // create a batch 
             using ServiceBusMessageBatch messageBatch = await sender.CreateMessageBatchAsync();

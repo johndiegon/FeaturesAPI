@@ -44,7 +44,7 @@ namespace API.Controllers
                 {
                     File = file,
                     IdClient = idClient,
-                    TipoArquivo = typFile
+                    FileType = typFile
                 };
 
                 var response = await _mediator.Send(inputFile);
