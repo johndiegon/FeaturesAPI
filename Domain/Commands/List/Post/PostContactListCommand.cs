@@ -3,7 +3,7 @@ using Domain.Models;
 using Domain.Validators;
 using MediatR;
 
-namespace Domain.Commands.List
+namespace Domain.Commands.List.Post
 {
     public class PostContactListCommand : Validate , IRequest<PostContactListCommandResponse>
     {

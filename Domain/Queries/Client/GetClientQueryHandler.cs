@@ -34,7 +34,7 @@ namespace Domain.Queries.Client
                 }
                 else
                 {
-                    var client = _clientRepository.GetByDoc(request.IdClient);
+                    var client = _clientRepository.Get(request.IdClient);
 
                     response = new GetClientQueryResponse
                     {

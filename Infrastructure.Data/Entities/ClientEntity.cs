@@ -24,4 +24,5 @@ namespace FeaturesAPI.Infrastructure.Data.Entities
         public IEnumerable<string> IdFeatures { get; set; }
         public IEnumerable<string> IdPurchases { get; set; }
     }
+
 }

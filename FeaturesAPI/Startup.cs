@@ -29,6 +29,14 @@ using Domain.Commands.Authenticate;
 using Infrasctuture.Service.Settings;
 using Infrasctuture.Service.Interfaces.settings;
 using Domain.Commands.File.Post;
+using Domain.Queries.Client;
+using Domain.Commands.Contact.Post;
+using Domain.Commands.Contact.Update;
+using Domain.Commands.List;
+using Domain.Commands.List.Put;
+using Domain.Commands.List.Post;
+using Domain.Commands.User.Put;
+using Domain.Commands.TypeList.Post;
 
 namespace FeaturesAPI
 {
@@ -89,20 +97,50 @@ namespace FeaturesAPI
 
             //AutoMapper
 
+            #region >> Commands
+            #region >> Client
             services.AddTransient<IRequestHandler<PostClientCommand, PostClientCommandResponse>, PostClientCommandHandler>();
             services.AddTransient<IRequestHandler<DeleteClientCommand, CommandResponse>, DeleteClientCommandHandler>();
             services.AddTransient<IRequestHandler<PutClientCommand, PutClientCommandResponse>, PutClientCommandHandler>();
+            #endregion
+            #region >> User
             services.AddTransient<IRequestHandler<PostUserCommand, PostUserCommandResponse>, PostUserCommandHandler>();
+            services.AddTransient<IRequestHandler<PutUserCommand, CommandResponse>, PutUserCommandHandler>();
             services.AddTransient<IRequestHandler<AuthenticateCommand, AuthenticateCommandResponse>, AuthenticateCommandHandler>();
+            #endregion
+            #region >> File
             services.AddTransient<IRequestHandler<PostFileCommand, PostFileCommandResponse>, PostFileCommandHandler>();
+            #endregion
+            #region >> Contact
+            services.AddTransient<IRequestHandler<PostContactCommand, PostContactCommandResponse>, PostContactCommandHandler>();
+            services.AddTransient<IRequestHandler<PutContactCommand, PutContactCommandResponse>, PutContactCommandHandler>();
+            #endregion
+            #region >> List
+            services.AddTransient<IRequestHandler<PostContactListCommand, PostContactListCommandResponse>, PostContactListCommandHandler>();
+            services.AddTransient<IRequestHandler<PutContactListCommand, PutContactListCommandResponse>, PutContactListCommandHandler>();
+            #endregion
+            #region >> List
+            services.AddTransient<IRequestHandler<PostTypeListCommand, PostTypeListCommandResponse>, PostTypeListCommandHandler>();
+            #endregion
+            #endregion
 
-            //services.AddTransient<IRequestHandler<GetClientQuery, GetClientQueryResponse>, GetClientQueryHandler>();
+            #region >> Query
+            #region >> Client
+            services.AddTransient<IRequestHandler<GetClientQuery, GetClientQueryResponse>, GetClientQueryHandler>();
+            #endregion
+            #endregion
+
+
 
             services.AddScoped(typeof(IViaCepService), typeof(ViaCepService));
             services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IContactListRepository, ContactListRepository>();
+            services.AddScoped<IContactRepository, ContactRepository>();
+            services.AddScoped<ITypeListRepository, TypeListRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+
             services.AddScoped<IBlobStorage, OrderBlobStorage>();
-            services.AddScoped<ITopicSettings, ServiceTopic>();
+            services.AddScoped<ITopicServiceBuss, ServiceTopic>();
 
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(ClientProfile)));

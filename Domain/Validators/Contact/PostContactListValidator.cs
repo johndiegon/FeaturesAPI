@@ -1,4 +1,4 @@
-﻿using Domain.Commands.List;
+﻿using Domain.Commands.List.Post;
 using Domain.Models;
 using FluentValidation;
 

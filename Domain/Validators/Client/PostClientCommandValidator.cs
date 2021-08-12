@@ -10,11 +10,11 @@ namespace Domain.Validators.Client
         {
             RuleFor(x => x.Client)
                   .NotNull()
-                  .WithMessage("{PropertyName} cannot be null");
+                  .WithMessage("The people cannot be null");
 
             RuleFor(x => x.Client)
                  .Must(BeAValidPeople)
-                 .WithMessage("{PropertyName} cannot be null");
+                 .WithMessage("The people is not valid.");
         }
 
         private bool BeAValidPeople(People client)

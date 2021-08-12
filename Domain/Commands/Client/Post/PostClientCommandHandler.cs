@@ -41,7 +41,8 @@ namespace Domain.Commands.Client.Post
                 {
                     response = GetResponseErro("The request is invalid.");
                     response.Notification = request.Notifications();
-                } else
+                }
+                else
                 {
                     var clientSearch = _clientRepository.GetByDoc(request.Client.DocNumber);
                     var userCommand = new PostUserCommand { User = request.Client.User };

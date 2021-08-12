@@ -138,29 +138,24 @@ namespace Domain.Validators
         }
 
         public bool BeAValidEmail(string email)
-        {
-            bool bvalid = false;
+        {         
+            if (string.IsNullOrEmpty(email))
+                return false;
 
-            if(email != null)
-            {
-                Regex regex = new Regex(@"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$");
+            var regex = new Regex(@"^(?("")("".+?""@)|(([0-9a-zA-Z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-zA-Z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,6}))$");
 
-                if (regex.IsMatch(email))
-                {
-                    // email válido
-                    bvalid = true;
-                }
-            }
-
-            return bvalid;
+            if (regex.IsMatch(email))
+                return true;
+            else
+                return false;
         }
 
         public bool BeAValidPhone(string phone)
         {
             bool bvalid = true;
-            Regex regex = new Regex(@"^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$");
+            //Regex regex = new Regex(@"^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$");
 
-            if (!regex.IsMatch(phone)) { bvalid = false; }
+            //if (!regex.IsMatch(phone)) { bvalid = false; }
 
             //phones.ToList().ForEach(phone => { if (!regex.IsMatch(phone)) { bvalid = false; } });
 

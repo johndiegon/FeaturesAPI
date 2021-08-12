@@ -3,6 +3,7 @@ using Domain.Commands.Client.Delete;
 using Domain.Commands.Client.Post;
 using Domain.Commands.Client.Put;
 using Domain.Models;
+using Domain.Queries.Client;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -123,7 +124,42 @@ namespace FeaturesAPI.Controllers
             }
         }
 
-        public async Task<ActionResult<CommandResponse>> GetClients()
-        { }
+        /// <summary>
+        ///     Action to get a "client" in the database.
+        /// </summary>
+        /// <param name="query">Model to get a client</param>
+        /// <returns>Returns a client.</returns>
+        /// <response code="200">Returned a client.</response>
+        /// <response code="400">Returned if the model couldn't be parsed or saved</response>
+        /// <response code="422">Returned when the validation failed</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpGet]
+        public async Task<ActionResult<GetClientQueryResponse>> GetClients(string id)
+        {
+            try
+            {
+                var query = new GetClientQuery
+                {
+                    IdClient = id
+
+                };
+                var response = await _mediator.Send(query);
+
+                if (response.Data.Status == Status.Sucessed)
+                {
+                    return await Task.FromResult(response);
+                }
+                else
+                {
+                    return UnprocessableEntity(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
