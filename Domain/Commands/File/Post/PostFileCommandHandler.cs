@@ -54,7 +54,7 @@ namespace Domain.Commands.File.Post
                         PathFile = storageFile
                     };
 
-                    await _topicService.SendMessage(importedFile, request.FileType.ToString());
+                    await _topicService.SendMessage(importedFile, "contacttopic" );
 
                     response.Data = new Data 
                     {
