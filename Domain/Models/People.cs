@@ -14,6 +14,7 @@ namespace FeaturesAPI.Domain.Models
         public string Email { get; set; }
         public AddressData Address { get; set; }
         public string Phone { get; set; }
+        public string IdUser { get; set; }
         public UserModel User { get; set; }
         public EntityStatus Status  { get; set; }
         public override bool IsValid()

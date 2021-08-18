@@ -20,7 +20,7 @@ namespace FeaturesAPI.Infrastructure.Data.Entities
         public AddressEntity Address { get; set; }
         public string IdUser { get; set; }
         public StatusEntity Status { get; set; }
-        public IEnumerable<string> Phone { get; set; }
+        public string Phone { get; set; }
         public IEnumerable<string> IdFeatures { get; set; }
         public IEnumerable<string> IdPurchases { get; set; }
     }

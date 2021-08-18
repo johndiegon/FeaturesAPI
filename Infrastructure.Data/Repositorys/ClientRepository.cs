@@ -13,7 +13,8 @@ namespace FeaturesAPI.Services
 
         public ClientRepository(IDatabaseSettings settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
+            var settingsMongo = MongoClientSettings.FromConnectionString(settings.ConnectionString);
+            var client = new MongoClient(settingsMongo);
             var database = client.GetDatabase(settings.DatabaseName);
 
             _clients = database.GetCollection<ClientEntity>(settings.ClientsCollectionName);

@@ -13,8 +13,9 @@ namespace Infrastructure.Data.Repositorys
 
         public ContactListRepository(IDatabaseSettings settings)
         {
-            var contactList = new MongoClient(settings.ConnectionString);
-            var database = contactList.GetDatabase(settings.DatabaseName);
+            var settingsMongo = MongoClientSettings.FromConnectionString(settings.ConnectionString);
+            var client = new MongoClient(settingsMongo);
+            var database = client.GetDatabase(settings.DatabaseName);
 
             _contacts = database.GetCollection<ContactListEntity>(settings.ContactListCollectionName);
         }

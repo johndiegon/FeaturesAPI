@@ -61,8 +61,6 @@ namespace FeaturesAPI
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
-            services.AddSingleton<ClientRepository>();
-             services.AddControllersWithViews();
 
             // Settings do EndPoint
             services.Configure<EndPoints>(
@@ -133,11 +131,27 @@ namespace FeaturesAPI
 
 
             services.AddScoped(typeof(IViaCepService), typeof(ViaCepService));
+            
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IContactListRepository, ContactListRepository>();
             services.AddScoped<IContactRepository, ContactRepository>();
             services.AddScoped<ITypeListRepository, TypeListRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddSingleton<ClientRepository>();
+            services.AddControllersWithViews();
+
+            services.AddSingleton<ContactListRepository>();
+            services.AddControllersWithViews();
+
+            services.AddSingleton<ContactRepository>();
+            services.AddControllersWithViews();
+
+            services.AddSingleton<TypeListRepository>();
+            services.AddControllersWithViews();
+
+            services.AddSingleton<UserRepository>();
+            services.AddControllersWithViews();
 
             services.AddScoped<IBlobStorage, OrderBlobStorage>();
             services.AddScoped<ITopicServiceBuss, ServiceTopic>();

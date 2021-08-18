@@ -14,8 +14,9 @@ namespace Infrastructure.Data.Repositorys
 
         public UserRepository(IDatabaseSettings settings)
         {
-            var User = new MongoClient(settings.ConnectionString);
-            var database = User.GetDatabase(settings.DatabaseName);
+            var settingsMongo = MongoClientSettings.FromConnectionString(settings.ConnectionString);
+            var client = new MongoClient(settingsMongo);
+            var database = client.GetDatabase(settings.DatabaseName);
 
             _Users = database.GetCollection<UserEntity>(settings.UsersCollectionName);
         }

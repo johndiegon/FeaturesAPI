@@ -58,7 +58,7 @@ namespace Domain.Commands.Client.Post
                     else
                     {
                         var client = _mapper.Map<ClientEntity>(request.Client);
-                        var user = _mapper.Map<UserEntity>(request.Client.User);
+                        var user = _mapper.Map<UserEntity>(resultUser.UserModel);
 
                         if (client.Address.Address == null ||
                              client.Address.District == null ||
@@ -80,9 +80,9 @@ namespace Domain.Commands.Client.Post
                             }
                         }
 
+                        client.IdUser = user.Id;
                         var result = _clientRepository.Create(client);
-                        result.IdUser = user.Id;
-
+                        
                         response = new PostClientCommandResponse
                         {
                             Client = _mapper.Map<People>(result),

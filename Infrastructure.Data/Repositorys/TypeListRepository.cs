@@ -14,8 +14,9 @@ namespace Infrastructure.Data.Repositorys
 
         public TypeListRepository(IDatabaseSettings settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
+            var settingsMongo = MongoClientSettings.FromConnectionString(settings.ConnectionString);
+            var client = new MongoClient(settingsMongo);
+            var database = client.GetDatabase(settings.DatabaseName); ;
 
             _typeList = database.GetCollection<TypeListEntity>(settings.ClientsCollectionName);
         }
