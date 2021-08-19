@@ -184,7 +184,7 @@ namespace FeaturesAPI
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "FeaturesAPI", Version = "v1" });
+                c.SwaggerDoc("FeaturesAPI", new OpenApiInfo { Title = "FeaturesAPI", Version = "v1" });
             });
         }
 
