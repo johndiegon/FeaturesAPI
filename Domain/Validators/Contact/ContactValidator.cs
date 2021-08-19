@@ -1,11 +1,5 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Models = Domain.Models;
 
 namespace Domain.Validators.Contact
 {
@@ -14,25 +8,24 @@ namespace Domain.Validators.Contact
         public ContactValidator()
         {
             RuleFor(x => x.IdClient)
-             .Null()
+             .NotNull()
              .WithMessage("{PropertyName} cannot be null.");
 
             RuleFor(x => x.Name)
-             .Null()
+             .NotNull()
              .WithMessage("{PropertyName} cannot be null.");
 
             RuleFor(x => x.Phone)
-             .Null()
+             .NotNull()
              .WithMessage("{PropertyName} cannot be null.");
 
             RuleFor(x => x.Status)
-             .Null()
+             .NotNull()
              .WithMessage("{PropertyName} cannot be null.");
 
             RuleFor(x => x.Phone)
              .Must(BeAValidPhone)
              .WithMessage("{PropertyName} it is not a valid phone.");
-
 
             RuleFor(x => x.Email)
              .Must(BeAValidEmail)
