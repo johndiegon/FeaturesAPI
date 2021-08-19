@@ -17,7 +17,7 @@ namespace Infrastructure.Data.Repositorys
             var client = new MongoClient(settingsMongo);
             var database = client.GetDatabase(settings.DatabaseName);
 
-            _contact = database.GetCollection<ContactEntity>(settings.ClientsCollectionName);
+            _contact = database.GetCollection<ContactEntity>(settings.ContactCollecionName);
         }
         public ContactEntity Create(ContactEntity entity)
         {
