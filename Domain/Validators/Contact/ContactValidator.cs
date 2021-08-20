@@ -23,9 +23,9 @@ namespace Domain.Validators.Contact
              .NotNull()
              .WithMessage("{PropertyName} cannot be null.");
 
-            RuleFor(x => x.Phone)
-             .Must(BeAValidPhone)
-             .WithMessage("{PropertyName} it is not a valid phone.");
+            //RuleFor(x => x.Phone)
+            // .Must(BeAValidPhone)
+            // .WithMessage("{PropertyName} it is not a valid phone.");
 
             RuleFor(x => x.Email)
              .Must(BeAValidEmail)
@@ -55,14 +55,14 @@ namespace Domain.Validators.Contact
             return bvalid;
         }
 
-        public bool BeAValidPhone(string phone)
-        {
-            bool bvalid = true;
-            Regex regex = new Regex(@"^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$");
+        //public bool BeAValidPhone(string phone)
+        //{
+        //    bool bvalid = true;
+        //    Regex regex = new Regex(@"^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$");
 
-            if (!regex.IsMatch(phone)) { bvalid = false; }
+        //    if (!regex.IsMatch(phone)) { bvalid = false; }
 
-            return bvalid;
-        }
+        //    return bvalid;
+        //}
     }
 }
