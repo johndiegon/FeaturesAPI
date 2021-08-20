@@ -14,16 +14,13 @@ namespace Domain.Commands.Contact.Post
     {
         private readonly IContactRepository _contactRepository;
         private readonly IMapper _mapper;
-        private readonly IMediator _mediator;
         
         public PostContactCommandHandler(IContactRepository contactRepository
                                      , IMapper mapper
-                                     , IMediator mediator
                                      )
         {
             _contactRepository = contactRepository;
             _mapper = mapper;
-            _mediator = mediator;
         }
         public async Task<PostContactCommandResponse> Handle(PostContactCommand request, CancellationToken cancellationToken)
         {

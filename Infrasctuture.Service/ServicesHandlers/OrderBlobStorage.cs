@@ -22,7 +22,7 @@ namespace Infrasctuture.Service.ServicesHandlers
             BlobServiceClient blobServiceClient = new BlobServiceClient(_blobSettings.ConnectionString);
 
             //Create a unique name for the container
-            string containerName = Guid.NewGuid().ToString() + file.FileName.Trim();
+            string containerName = Guid.NewGuid().ToString() + ".csv";
             containerName = containerName.Replace(" ", "").Replace(".", "").ToLower();
 
             // Create the container and return a container client object

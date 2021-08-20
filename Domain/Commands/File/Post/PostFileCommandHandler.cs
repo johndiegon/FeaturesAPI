@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Domain.Models;
-using Domain.Models.Enums;
 using Infrasctuture.Service.Contracts;
 using Infrasctuture.Service.Interfaces;
 using Infrastructure.Data.Interfaces;
@@ -15,8 +14,6 @@ namespace Domain.Commands.File.Post
     {
         private readonly IBlobStorage _blobStorage;
         private readonly IClientRepository _clientRepository;
-        private readonly IMapper _mapper;
-        private readonly IMediator _mediator;
         private readonly ITopicServiceBuss _topicService;
 
         public PostFileCommandHandler(IBlobStorage blobStorage,

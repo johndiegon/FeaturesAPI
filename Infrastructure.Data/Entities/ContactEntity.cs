@@ -2,9 +2,6 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Entities
 {
@@ -17,6 +14,7 @@ namespace Infrastructure.Data.Entities
         public string Phone { get; set; }
         public string Email { get; set; }
         public string IdClient { get; set; }
+        public DateTime DateInclude { get; set; }
         public ContactStatusEntity Status { get; set; }
         public IEnumerable<OrderEntity> Orders { get; set; }
 
@@ -31,6 +29,5 @@ namespace Infrastructure.Data.Entities
     {
         Active, 
         Inactive
-
     }
 }
