@@ -1,11 +1,5 @@
 ﻿using Domain.Commands.Contact.Post;
 using FluentValidation;
-using Models = Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Validators.Contact
 {
@@ -13,15 +7,12 @@ namespace Domain.Validators.Contact
     {
         public PostContactValidator()
         {
-            RuleFor(x => x.Contact)
+            RuleFor(x => x.Contacts)
               .NotNull()
               .WithMessage("{PropertyName} cannot be null.");
 
-            RuleFor(x => x.Contact.Id)
-              .Null()
-              .WithMessage("{PropertyName} can be null.");
-
-            RuleFor(x => x.Contact)
+            
+            RuleForEach(x => x.Contacts)
                    .Must(BeAValidContact)
                    .WithMessage("{PropertyName} it is not valid contact.");
         }

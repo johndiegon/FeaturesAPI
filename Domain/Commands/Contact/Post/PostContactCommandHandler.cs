@@ -4,6 +4,7 @@ using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,30 +31,33 @@ namespace Domain.Commands.Contact.Post
                 if (!request.IsValid())
                 {
                     response = GetResponseErro("The request is invalid.");
-                    response.Notification = request.Contact.Notifications();
+                    response.Notification = request.Notifications();
                 }
                 else
                 {
                     ContactEntity contactSearch = null;
                     ContactEntity result = null;
 
-                    var contactList = _contactRepository.GetByPhone(request.Contact.Phone);
+                    var contactsToInsert = new List<ContactEntity>();
 
-                    if(contactList.Count() > 0 )
+                    foreach(var c in request.Contacts)
                     {
-                        contactSearch = contactList.Where(contact => contact.IdClient == request.Contact.IdClient).FirstOrDefault();
-                    }
-                    var contact = _mapper.Map<ContactEntity>(request.Contact);
+                        var oldContact= _contactRepository.GetByPhone(c.Phone).Where(contact => contact.IdClient == c.IdClient).FirstOrDefault();
 
-                    if (contactSearch != null )
-                    {
-                        contact.Id = contactSearch.Id;
-                        result = _contactRepository.Update(contact);
+                        if (oldContact == null)
+                            contactsToInsert.Add(_mapper.Map<ContactEntity>(c));
+                        else
+                        {
+                            foreach (var o in c.Orders)
+                            {
+                                oldContact.Orders.Append(_mapper.Map<OrderEntity>(c));
+                            }
+                            result = _contactRepository.Update(oldContact);
+                        }
+                       
                     }
-                    else
-                    {
-                        result = _contactRepository.Create(contact);
-                    }
+
+                    _contactRepository.CreateMany(contactsToInsert);
 
                     response = new PostContactCommandResponse
                     {

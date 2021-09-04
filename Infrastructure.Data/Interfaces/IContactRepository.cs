@@ -7,5 +7,6 @@ namespace Infrastructure.Data.Interfaces
     {
         IEnumerable<ContactEntity> GetByClient(string idClient);
         IEnumerable<ContactEntity> GetByPhone(string phone);
+        void CreateMany(IEnumerable<ContactEntity> contacts);
     }
 }

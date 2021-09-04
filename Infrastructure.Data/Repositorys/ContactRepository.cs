@@ -42,5 +42,10 @@ namespace Infrastructure.Data.Repositorys
             _contact.ReplaceOne(client => client.Id == entity.Id, entity);
             return entity;
         }
+
+        public void CreateMany(IEnumerable<ContactEntity> contacts)
+        {
+            _contact.InsertMany(contacts);
+        }
     }
 }
