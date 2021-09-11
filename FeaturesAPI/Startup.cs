@@ -1,42 +1,42 @@
-using FluentValidation.AspNetCore;
+using Domain;
+using Domain.Commands.Authenticate;
+using Domain.Commands.Client.Delete;
+using Domain.Commands.Client.Post;
+using Domain.Commands.Client.Put;
+using Domain.Commands.Contact.Post;
+using Domain.Commands.Contact.Put;
+using Domain.Commands.File.Post;
+using Domain.Commands.List.Post;
+using Domain.Commands.List.Put;
+using Domain.Commands.TypeList.Post;
+using Domain.Commands.User.Post;
+using Domain.Commands.User.Put;
+using Domain.Models;
+using Domain.Profiles;
+using Domain.Queries.Client;
+using Domain.Queries.ContactByClientId;
 using FeaturesAPI.Infrastructure.Data.Interface;
 using FeaturesAPI.Infrastructure.Models;
 using FeaturesAPI.Services;
+using FluentValidation.AspNetCore;
 using Infrasctuture.Service.Interfaces;
+using Infrasctuture.Service.Interfaces.settings;
 using Infrasctuture.Service.ServicesHandlers;
+using Infrasctuture.Service.Settings;
 using Infrastructure.Data.Interfaces;
+using Infrastructure.Data.Repositorys;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using Domain.Commands.Client.Post;
-using Domain.Commands.Client.Delete;
-using Domain.Commands.Client.Put;
-using Domain.Models;
-using Domain.Profiles;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Domain;
-using Domain.Commands.User.Post;
-using Infrastructure.Data.Repositorys;
-using Domain.Commands.Authenticate;
-using Infrasctuture.Service.Settings;
-using Infrasctuture.Service.Interfaces.settings;
-using Domain.Commands.File.Post;
-using Domain.Queries.Client;
-using Domain.Commands.Contact.Post;
-using Domain.Commands.Contact.Update;
-using Domain.Commands.List;
-using Domain.Commands.List.Put;
-using Domain.Commands.List.Post;
-using Domain.Commands.User.Put;
-using Domain.Commands.TypeList.Post;
 
 namespace FeaturesAPI
 {
@@ -111,7 +111,7 @@ namespace FeaturesAPI
             #endregion
             #region >> Contact
             services.AddTransient<IRequestHandler<PostContactCommand, PostContactCommandResponse>, PostContactCommandHandler>();
-            services.AddTransient<IRequestHandler<PutContactCommand, PutContactCommandResponse>, PutContactCommandHandler>();
+            services.AddTransient<IRequestHandler<PutContactCommand, CommandResponse>, PutContactCommandHandler>();
             #endregion
             #region >> List
             services.AddTransient<IRequestHandler<PostContactListCommand, PostContactListCommandResponse>, PostContactListCommandHandler>();
@@ -126,9 +126,12 @@ namespace FeaturesAPI
             #region >> Client
             services.AddTransient<IRequestHandler<GetClientQuery, GetClientQueryResponse>, GetClientQueryHandler>();
             #endregion
+
+            #region >> Contact
+            services.AddTransient<IRequestHandler<GetContactsQuery, GetContactsQueryResponse>, GetContactsQueryHandler>();
+
             #endregion
-
-
+            #endregion
 
             services.AddScoped(typeof(IViaCepService), typeof(ViaCepService));
             

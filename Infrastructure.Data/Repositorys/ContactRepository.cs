@@ -47,5 +47,13 @@ namespace Infrastructure.Data.Repositorys
         {
             _contact.InsertMany(contacts);
         }
+
+        public void UpdateMany(IEnumerable<ContactEntity> contacts)
+        {
+            foreach(var c in contacts)
+            {
+                _contact.ReplaceOne(contact => contact.Id == c.Id, c);
+            }
+        }
     }
 }

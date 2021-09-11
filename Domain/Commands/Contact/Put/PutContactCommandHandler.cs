@@ -8,25 +8,26 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Domain.Commands.Contact.Post
+namespace Domain.Commands.Contact.Put
 {
-    public class PostContactCommandHandler : IRequestHandler<PostContactCommand, PostContactCommandResponse>
+
+    public class PutContactCommandHandler : IRequestHandler<PutContactCommand, CommandResponse>
     {
         private readonly IContactRepository _contactRepository;
         private readonly IMapper _mapper;
-        
-        public PostContactCommandHandler(IContactRepository contactRepository
+
+        public PutContactCommandHandler(IContactRepository contactRepository
                                      , IMapper mapper
                                      )
         {
             _contactRepository = contactRepository;
             _mapper = mapper;
         }
-        public async Task<PostContactCommandResponse> Handle(PostContactCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(PutContactCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var response = new PostContactCommandResponse();
+                var response = new CommandResponse();
                 if (!request.IsValid())
                 {
                     response = GetResponseErro("The request is invalid.");
@@ -34,18 +35,16 @@ namespace Domain.Commands.Contact.Post
                 }
                 else
                 {
-                    ContactEntity result = null;
-
+                   
                     var contactsToInsert = _mapper.Map<IEnumerable<ContactEntity>>(request.Contacts);
 
-                    _contactRepository.CreateMany(contactsToInsert);
+                    _contactRepository.UpdateMany(contactsToInsert);
 
-                    response = new PostContactCommandResponse
+                    response = new CommandResponse
                     {
-                        Contact = _mapper.Map<Models.Contact>(result),
                         Data = new Data
                         {
-                            Message = "Client successfully registered.",
+                            Message = "Contacts successfully registered.",
                             Status = Status.Sucessed
                         }
                     };
@@ -58,9 +57,9 @@ namespace Domain.Commands.Contact.Post
             }
         }
 
-        private PostContactCommandResponse GetResponseErro(string Message)
+        private CommandResponse GetResponseErro(string Message)
         {
-            return new PostContactCommandResponse
+            return new CommandResponse
             {
                 Data = new Data
                 {

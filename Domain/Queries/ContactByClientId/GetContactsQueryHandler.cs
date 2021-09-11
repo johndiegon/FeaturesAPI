@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Domain.Models;
-using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
@@ -8,25 +7,26 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Domain.Commands.Contact.Post
+namespace Domain.Queries.ContactByClientId
 {
-    public class PostContactCommandHandler : IRequestHandler<PostContactCommand, PostContactCommandResponse>
+    public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, GetContactsQueryResponse>
     {
         private readonly IContactRepository _contactRepository;
         private readonly IMapper _mapper;
-        
-        public PostContactCommandHandler(IContactRepository contactRepository
+
+        public GetContactsQueryHandler(IContactRepository contactRepository
                                      , IMapper mapper
                                      )
         {
             _contactRepository = contactRepository;
             _mapper = mapper;
         }
-        public async Task<PostContactCommandResponse> Handle(PostContactCommand request, CancellationToken cancellationToken)
+
+        public async Task<GetContactsQueryResponse> Handle(GetContactsQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var response = new PostContactCommandResponse();
+                var response = new GetContactsQueryResponse();
                 if (!request.IsValid())
                 {
                     response = GetResponseErro("The request is invalid.");
@@ -34,22 +34,18 @@ namespace Domain.Commands.Contact.Post
                 }
                 else
                 {
-                    ContactEntity result = null;
+                    var contacts = _contactRepository.GetByClient(request.IdClient);
 
-                    var contactsToInsert = _mapper.Map<IEnumerable<ContactEntity>>(request.Contacts);
-
-                    _contactRepository.CreateMany(contactsToInsert);
-
-                    response = new PostContactCommandResponse
+                    response = new GetContactsQueryResponse
                     {
-                        Contact = _mapper.Map<Models.Contact>(result),
+                        Contacts = _mapper.Map<IEnumerable<Contact>>(contacts),
                         Data = new Data
                         {
-                            Message = "Client successfully registered.",
                             Status = Status.Sucessed
                         }
                     };
                 }
+
                 return await Task.FromResult(response);
             }
             catch (Exception ex)
@@ -58,9 +54,9 @@ namespace Domain.Commands.Contact.Post
             }
         }
 
-        private PostContactCommandResponse GetResponseErro(string Message)
+        private GetContactsQueryResponse GetResponseErro(string Message)
         {
-            return new PostContactCommandResponse
+            return new GetContactsQueryResponse
             {
                 Data = new Data
                 {

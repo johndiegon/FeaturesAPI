@@ -1,29 +1,22 @@
-﻿using Domain.Commands.Contact.Post;
+﻿using Domain.Commands.Contact.Put;
 using FluentValidation;
-using Models = Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Commands.Contact.Update;
 
 namespace Domain.Validators.Contact
 {
+
     public class PutContactValidator : AbstractValidator<PutContactCommand>
     {
         public PutContactValidator()
         {
-            RuleFor(x => x.Contact)
+            RuleFor(x => x.Contacts)
               .NotNull()
               .WithMessage("{PropertyName} cannot be null.");
 
+            RuleForEach(x => x.Contacts)
+            .Must(HaveAnId)
+            .WithMessage("{PropertyName} cannot be null.");
 
-            RuleFor(x => x.Contact.Id)
-              .NotNull()
-              .WithMessage("{PropertyName} can be null.");
-
-            RuleFor(x => x.Contact)
+            RuleForEach(x => x.Contacts)
                    .Must(BeAValidContact)
                    .WithMessage("{PropertyName} it is not valid contact.");
         }
@@ -31,6 +24,11 @@ namespace Domain.Validators.Contact
         private bool BeAValidContact(Models.Contact contact)
         {
             return contact.IsValid();
+        }
+
+        private bool HaveAnId(Models.Contact contact)
+        {
+            return !string.IsNullOrEmpty(contact.Id);
         }
     }
 }

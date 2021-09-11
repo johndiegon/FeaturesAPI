@@ -11,7 +11,6 @@ namespace Domain.Validators.Contact
               .NotNull()
               .WithMessage("{PropertyName} cannot be null.");
 
-            
             RuleForEach(x => x.Contacts)
                    .Must(BeAValidContact)
                    .WithMessage("{PropertyName} it is not valid contact.");
@@ -21,5 +20,7 @@ namespace Domain.Validators.Contact
         {
             return contact.IsValid();
         }
+
+      
     }
 }

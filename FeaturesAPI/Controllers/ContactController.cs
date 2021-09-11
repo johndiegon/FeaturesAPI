@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Commands.Contact.Post;
-using Domain.Commands.Contact.Update;
+using Domain.Commands.Contact.Put;
 using Domain.Models;
+using Domain.Queries.ContactByClientId;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,7 +35,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPut]
-        public async Task<ActionResult<PutContactCommandResponse>> Update(PutContactCommand command)
+        public async Task<ActionResult<CommandResponse>> Update(PutContactCommand command)
         {
             try
             {
@@ -72,6 +73,41 @@ namespace API.Controllers
         {
             try
             {
+                var response = await _mediator.Send(command);
+
+                if (response.Data.Status == Status.Sucessed)
+                {
+                    return await Task.FromResult(response);
+                }
+                else
+                {
+                    return UnprocessableEntity(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        ///     Action to update a contact.
+        /// </summary>
+        /// <param name="command">contact with data </param>
+        /// <returns>Returns a list of contacts.</returns>
+        /// <response code="200">Returned result of search</response>
+        /// <response code="400">Returned if the model request is invalid</response>
+        /// <response code="422">Returned when the validation failed</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpGet("{idClient}")]
+        public async Task<ActionResult<GetContactsQueryResponse>> Get(string idClient)
+        {
+            try
+            {
+                var command = new GetContactsQuery();
+                command.IdClient = idClient;
                 var response = await _mediator.Send(command);
 
                 if (response.Data.Status == Status.Sucessed)
