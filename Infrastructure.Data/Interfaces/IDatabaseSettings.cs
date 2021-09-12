@@ -10,6 +10,7 @@
         string ContactCollecionName { get; set; }
         string ConnectionString { get; set; }
         string TypeListCollectionName { get; set; }
+        string ResumeListCollectionName { get; set; }
         string DatabaseName { get; set; }
     }
   

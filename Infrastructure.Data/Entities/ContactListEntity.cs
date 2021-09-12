@@ -14,6 +14,7 @@ namespace Infrastructure.Data.Entities
         public string Name { get; set; }
         public TypeListEntity TypeList { get; set; }
         public DateTime CreationDate { get; set; }
+        public int Count { get; set; }
         public List<MessageEntity> ListSendMessage { get; set; }
         public List<ContactEntity> ListContact { get; set; }
     }

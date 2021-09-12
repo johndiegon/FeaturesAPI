@@ -6,7 +6,9 @@ using Domain.Commands.Client.Put;
 using Domain.Commands.Contact.Post;
 using Domain.Commands.Contact.Put;
 using Domain.Commands.File.Post;
+using Domain.Commands.List.GetResume;
 using Domain.Commands.List.Post;
+using Domain.Commands.List.PostResume;
 using Domain.Commands.List.Put;
 using Domain.Commands.TypeList.Post;
 using Domain.Commands.User.Post;
@@ -116,9 +118,10 @@ namespace FeaturesAPI
             #region >> List
             services.AddTransient<IRequestHandler<PostContactListCommand, PostContactListCommandResponse>, PostContactListCommandHandler>();
             services.AddTransient<IRequestHandler<PutContactListCommand, PutContactListCommandResponse>, PutContactListCommandHandler>();
-            #endregion
-            #region >> List
             services.AddTransient<IRequestHandler<PostTypeListCommand, PostTypeListCommandResponse>, PostTypeListCommandHandler>();
+            services.AddTransient<IRequestHandler<PostResumeListCommand, CommandResponse>, PostResumeListCommandHandler>();
+            services.AddTransient<IRequestHandler<GetResumeListCommand, GetResumeListCommandResponse>, GetResumeListCommandHandler>();
+
             #endregion
             #endregion
 
@@ -140,6 +143,7 @@ namespace FeaturesAPI
             services.AddScoped<IContactRepository, ContactRepository>();
             services.AddScoped<ITypeListRepository, TypeListRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IResumeContactListRepository, ResumeContactListRepository>();
 
             services.AddSingleton<ClientRepository>();
             services.AddControllersWithViews();
@@ -156,12 +160,16 @@ namespace FeaturesAPI
             services.AddSingleton<UserRepository>();
             services.AddControllersWithViews();
 
+            services.AddSingleton<ResumeContactListRepository>();
+            services.AddControllersWithViews();
+
             services.AddScoped<IBlobStorage, OrderBlobStorage>();
             services.AddScoped<ITopicServiceBuss, ServiceTopic>();
 
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(ClientProfile)));
             services.AddAutoMapper(Assembly.GetAssembly(typeof(UserProfile)));
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(ResumeContactListProfile)));
 
             var key = Encoding.ASCII.GetBytes(Settings.TokenSecret);
 

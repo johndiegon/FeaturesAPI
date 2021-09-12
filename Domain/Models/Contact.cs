@@ -15,7 +15,13 @@ namespace Domain.Models
         public string IdClient { get; set; }
         public ContactStatus Status { get; set; }
         public IEnumerable<Order> Orders {get;set;}
-
+        public int DaysLastSale { get; set; }
+        public DateTime DateLastSale { get; set; }
+        public int OrdersInLastMonth { get; set; }
+        public int OrdersInLastYear { get; set; }
+        public int OrdersInLast6Month { get; set; }
+        public int OrdersTotal { get; set; }
+        public decimal AveragePrice { get; set; }
         public override bool IsValid()
         {
             ValidationResult = new ContactValidator().Validate(this);

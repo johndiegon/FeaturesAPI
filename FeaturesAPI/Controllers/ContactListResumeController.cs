@@ -1,66 +1,31 @@
 ﻿using AutoMapper;
-using Domain.Commands.Contact.Post;
-using Domain.Commands.Contact.Put;
+using Domain.Commands.List.GetResume;
+using Domain.Commands.List.PostResume;
 using Domain.Models;
-using Domain.Queries.ContactByClientId;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
-namespace API.Controllers
+namespace FeaturesWPP.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ContactController : ControllerBase
+    public class ContactListResumeController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
-        public ContactController(IMapper mapper, IMediator mediator)
+        public ContactListResumeController(IMapper mapper, IMediator mediator)
         {
             _mapper = mapper;
             _mediator = mediator;
         }
-
+    
         /// <summary>
         ///     Action to update a contact.
         /// </summary>
-        /// <param name="command">file with data </param>
-        /// <returns>Returns if contact was updated.</returns>
-        /// <response code="200">Returned if the contact was inputed</response>
-        /// <response code="400">Returned if the model couldn't be parsed or saved</response>
-        /// <response code="422">Returned when the validation failed</response>
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpPut]
-        public async Task<ActionResult<CommandResponse>> Update(PutContactCommand command)
-        {
-            try
-            {
-                var response = await _mediator.Send(command);
-
-                if (response.Data.Status == Status.Sucessed)
-                {
-                    return await Task.FromResult(response);
-                }
-                else
-                {
-                    return UnprocessableEntity(response);
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-
-        /// <summary>
-        ///     Action to update a contact.
-        /// </summary>
-        /// <param name="command">contact with data </param>
+        /// <param name="contactListResume">contact with data </param>
         /// <returns>Returns if contact was updated.</returns>
         /// <response code="200">Returned if the contact was inputed</response>
         /// <response code="400">Returned if the model couldn't be parsed or saved</response>
@@ -69,11 +34,11 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
-        public async Task<ActionResult<PostContactCommandResponse>> Create(PostContactCommand command)
+        public async Task<ActionResult<CommandResponse>> CreateContactList(PostResumeListCommand contactListResume)
         {
             try
             {
-                var response = await _mediator.Send(command);
+                var response = await _mediator.Send(contactListResume);
 
                 if (response.Data.Status == Status.Sucessed)
                 {
@@ -89,6 +54,7 @@ namespace API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
 
         /// <summary>
         ///     Action to update a contact.
@@ -102,11 +68,11 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpGet("{idClient}")]
-        public async Task<ActionResult<GetContactsQueryResponse>> Get(string idClient)
+        public async Task<ActionResult<GetResumeListCommandResponse>> Get(string idClient)
         {
             try
             {
-                var command = new GetContactsQuery();
+                var command = new GetResumeListCommand();
                 command.IdClient = idClient;
                 var response = await _mediator.Send(command);
 

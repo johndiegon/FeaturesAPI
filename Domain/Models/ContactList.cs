@@ -1,5 +1,4 @@
-﻿using Domain.Models.Enums;
-using Domain.Validators;
+﻿using Domain.Validators;
 using Domain.Validators.Contact;
 using System;
 using System.Collections.Generic;
@@ -14,6 +13,7 @@ namespace Domain.Models
         public string Name { get; set; }
         public DateTime CreationDate { get; set; }
         public TypeList TypeList { get; set; }
+        public int Count { get; set; }
         public IEnumerable<Message> ListSendMessage { get; set; }
         public IEnumerable<Contact> ListContact { get; set; }
 

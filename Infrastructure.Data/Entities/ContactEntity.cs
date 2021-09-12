@@ -15,6 +15,13 @@ namespace Infrastructure.Data.Entities
         public string Email { get; set; }
         public string IdClient { get; set; }
         public DateTime DateInclude { get; set; }
+        public int DaysLastSale { get; set; }
+        public DateTime DateLastSale { get; set; }
+        public int OrdersInLastMonth { get; set; }
+        public int OrdersInLastYear { get; set; }
+        public int OrdersInLast6Month { get; set; }
+        public int OrdersTotal { get; set; }
+        public decimal AveragePrice { get; set; }
         public ContactStatusEntity Status { get; set; }
         public IEnumerable<OrderEntity> Orders { get; set; }
 
