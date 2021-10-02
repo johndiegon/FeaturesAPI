@@ -7,7 +7,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["FeaturesAPI/FeaturesWPP.API.csproj", "FeaturesAPI/"]
+COPY ["FeaturesAPI/FeaturesAPI.csproj", "FeaturesAPI/"]
 RUN dotnet restore "FeaturesAPI/FeaturesAPI.csproj"
 COPY . .
 WORKDIR "/src/FeaturesAPI"
