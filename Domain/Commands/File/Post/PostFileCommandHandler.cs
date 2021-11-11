@@ -12,11 +12,11 @@ namespace Domain.Commands.File.Post
 {
     public class PostFileCommandHandler : IRequestHandler<PostFileCommand, PostFileCommandResponse>
     {
-        private readonly IBlobStorage _blobStorage;
+        private readonly IStorage _blobStorage;
         private readonly IClientRepository _clientRepository;
         private readonly ITopicServiceBuss _topicService;
 
-        public PostFileCommandHandler(IBlobStorage blobStorage,
+        public PostFileCommandHandler(IStorage blobStorage,
                                       ITopicServiceBuss topicService,
                                       IClientRepository clientRepository
                                       )

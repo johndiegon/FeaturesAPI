@@ -15,9 +15,6 @@ namespace Domain.Validators
                .NotNull()
                .WithMessage("{PropertyName} cannot be null");
 
-            RuleFor(x => x.Role)
-               .NotNull()
-               .WithMessage("{PropertyName} cannot be null");
         }
     }
 }

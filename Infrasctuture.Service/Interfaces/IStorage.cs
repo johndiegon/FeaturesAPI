@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Infrasctuture.Service.Interfaces
 {
-    public interface IBlobStorage
+    public interface IStorage
     {
         Task<string> UploadFile(IFormFile file);
     }

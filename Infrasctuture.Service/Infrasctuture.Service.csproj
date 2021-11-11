@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.7.4.1" />
+    <PackageReference Include="AWSSDK.SQS" Version="3.7.1.37" />
     <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.2.1" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.9.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.8" />

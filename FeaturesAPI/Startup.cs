@@ -13,6 +13,7 @@ using Domain.Commands.List.Put;
 using Domain.Commands.TypeList.Post;
 using Domain.Commands.User.Post;
 using Domain.Commands.User.Put;
+using Domain.Queries.Address;
 using Domain.Models;
 using Domain.Profiles;
 using Domain.Queries.Client;
@@ -56,6 +57,19 @@ namespace FeaturesAPI
         {
 
             services.AddControllers();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .SetIsOriginAllowed(_ => true)
+                        .AllowCredentials();
+                    });
+            });
 
             services.Configure<DatabaseSettings>(
                 Configuration.GetSection(nameof(DatabaseSettings)));
@@ -102,6 +116,11 @@ namespace FeaturesAPI
             services.AddTransient<IRequestHandler<PostClientCommand, PostClientCommandResponse>, PostClientCommandHandler>();
             services.AddTransient<IRequestHandler<DeleteClientCommand, CommandResponse>, DeleteClientCommandHandler>();
             services.AddTransient<IRequestHandler<PutClientCommand, PutClientCommandResponse>, PutClientCommandHandler>();
+            #endregion
+
+            #region >> Address
+            services.AddTransient<IRequestHandler<GetAddressByZipCode, GetAddressResponse>, GetAddressHandler>();
+
             #endregion
             #region >> User
             services.AddTransient<IRequestHandler<PostUserCommand, PostUserCommandResponse>, PostUserCommandHandler>();
@@ -163,7 +182,7 @@ namespace FeaturesAPI
             services.AddSingleton<ResumeContactListRepository>();
             services.AddControllersWithViews();
 
-            services.AddScoped<IBlobStorage, OrderBlobStorage>();
+            services.AddScoped<IStorage, OrderStorage>();
             services.AddScoped<ITopicServiceBuss, ServiceTopic>();
 
 
@@ -208,6 +227,8 @@ namespace FeaturesAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FeaturesAPI v1"));
             }
+
+            app.UseCors("AllowAll");
 
             app.UseRouting();
 

@@ -2,6 +2,7 @@
 using Domain.Commands.Client.Delete;
 using Domain.Commands.Client.Post;
 using Domain.Commands.Client.Put;
+using Domain.Queries.Address;
 using Domain.Models;
 using Domain.Queries.Client;
 using MediatR;
@@ -127,7 +128,7 @@ namespace FeaturesAPI.Controllers
         /// <summary>
         ///     Action to get a "client" in the database.
         /// </summary>
-        /// <param name="query">Model to get a client</param>
+        /// <param name="id">Model to get a client</param>
         /// <returns>Returns a client.</returns>
         /// <response code="200">Returned a client.</response>
         /// <response code="400">Returned if the model couldn't be parsed or saved</response>
@@ -161,5 +162,6 @@ namespace FeaturesAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
     }
 }

@@ -46,6 +46,7 @@ namespace Domain.Commands.Client.Post
                 {
                     var clientSearch = _clientRepository.GetByDoc(request.Client.DocNumber);
                     var userCommand = new PostUserCommand { User = request.Client.User };
+                    userCommand.User.Role = "User";
                     var resultUser = await _mediator.Send(userCommand);
 
                     if ( clientSearch != null ||

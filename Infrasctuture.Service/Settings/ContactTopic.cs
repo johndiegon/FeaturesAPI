@@ -6,5 +6,7 @@ namespace Infrasctuture.Service.Settings
     {
         public string ConnectionString { get; set; }
         public string TopicName { get; set; }
+        public string IDAccessKey { get; set; }
+        public string AccessKey { get; set; }
     }
 }

@@ -1,21 +1,15 @@
-﻿using FeaturesAPI.Domain.Models;
-using FluentValidation;
+﻿using Domain.Validators;
+using MediatR;
 using System.Text.RegularExpressions;
 
-namespace Domain.Validators
+namespace Domain.Queries.Address
 {
-    public class AddressValidator : AbstractValidator<AddressData>
+    public class GetAddressByZipCode : Validate, IRequest<GetAddressResponse>
     {
-        public AddressValidator()
-        {
-            RuleFor(x => x.Number)
-             .NotNull()
-             .WithMessage("Number cannot be null");
-
-            RuleFor(x => x.ZipCode)
-             .Must(BeAValidZipCode)
-             .WithMessage("ZipCode it is not a valid.");
-
+        public string ZipCode { get; set; }
+        public override bool IsValid()
+        { 
+            return BeAValidZipCode(ZipCode);
         }
 
         private bool BeAValidZipCode(string zipCode)
