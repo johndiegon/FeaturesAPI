@@ -30,8 +30,8 @@ namespace Infrastructure.Data.Repositorys
         public List<ResumeContactListEntity> Get() =>
           _clients.Find(entity => true).ToList();
 
-        public ResumeContactListEntity Get(string id) =>
-          _clients.Find<ResumeContactListEntity>(entity => entity.IdClient == id).FirstOrDefault();
+        public ResumeContactListEntity Get(string IdClient) =>
+          _clients.Find<ResumeContactListEntity>(entity => entity.IdClient == IdClient).FirstOrDefault();
 
         public ResumeContactListEntity Update(ResumeContactListEntity entityIn)
         {

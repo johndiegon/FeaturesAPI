@@ -1,10 +1,7 @@
 ﻿using Amazon.SQS;
-using Azure.Messaging.ServiceBus;
-using Infrasctuture.Service.Contracts;
 using Infrasctuture.Service.Interfaces;
-using Infrasctuture.Service.Interfaces.settings;
 using System;
-using System.Text.Json;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Infrasctuture.Service.ServicesHandlers
@@ -17,15 +14,18 @@ namespace Infrasctuture.Service.ServicesHandlers
             _topicSettings = topicSettings;
         }
 
-        public async Task<ImportedFile> SendMessage(ImportedFile orderList, string filType)
+        public async Task SendMessage(string message, string queueName)
         {
-            var client = new AmazonSQSClient(_topicSettings.IDAccessKey, _topicSettings.AccessKey, Amazon.RegionEndpoint.SAEast1);
-            string orderListJS = JsonSerializer.Serialize(orderList);
-            await client.SendMessageAsync(_topicSettings.ConnectionString, orderListJS);
+            var queueSettings= _topicSettings.Queues.Where( t => t.QueueName == queueName).FirstOrDefault();
+            if(queueSettings != null)
+            {
+                var client = new AmazonSQSClient(_topicSettings.IDAccessKey, _topicSettings.AccessKey, Amazon.RegionEndpoint.SAEast1);
+                await client.SendMessageAsync(queueSettings.ConnectionString, message);
+            }else
+            {
+                new ArgumentException(string.Format("A fila de mensagens {0} não está configurada para receber mensagems.", queueName));
+            }
 
-            orderList.DateMessage = DateTime.Now;
-
-            return await Task.FromResult(orderList);
         }
 
      

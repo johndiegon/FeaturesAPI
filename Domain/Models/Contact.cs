@@ -16,6 +16,7 @@ namespace Domain.Models
         public ContactStatus Status { get; set; }
         public IEnumerable<Order> Orders {get;set;}
         public int DaysLastSale { get; set; }
+        public int MinDayToSendMessage { get; set; }
         public DateTime DateLastSale { get; set; }
         public int OrdersInLastMonth { get; set; }
         public int OrdersInLastYear { get; set; }

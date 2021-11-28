@@ -4,6 +4,7 @@ using Infrasctuture.Service.Contracts;
 using Infrasctuture.Service.Interfaces;
 using Infrastructure.Data.Interfaces;
 using MediatR;
+using Newtonsoft.Json;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,8 +51,10 @@ namespace Domain.Commands.File.Post
                         IdClient = request.IdClient,
                         PathFile = storageFile
                     };
+                    
+                    var message = JsonConvert.SerializeObject(importedFile);
 
-                    await _topicService.SendMessage(importedFile, "contacttopic" );
+                    await _topicService.SendMessage(message, "inputContact");
 
                     response.Data = new Data 
                     {

@@ -52,7 +52,7 @@ namespace Infrastructure.Data.Repositorys
         {
             foreach(var c in contacts)
             {
-                _contact.ReplaceOne(contact => contact.Id == c.Id, c);
+                _contact.ReplaceOne(contact => contact.Phone == c.Phone, c);
             }
         }
     }

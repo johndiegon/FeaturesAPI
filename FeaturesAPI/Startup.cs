@@ -40,6 +40,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
+using Domain.Commands.List.SendAMessage;
 
 namespace FeaturesAPI
 {
@@ -140,6 +141,10 @@ namespace FeaturesAPI
             services.AddTransient<IRequestHandler<PostTypeListCommand, PostTypeListCommandResponse>, PostTypeListCommandHandler>();
             services.AddTransient<IRequestHandler<PostResumeListCommand, CommandResponse>, PostResumeListCommandHandler>();
             services.AddTransient<IRequestHandler<GetResumeListCommand, GetResumeListCommandResponse>, GetResumeListCommandHandler>();
+
+            #endregion
+            #region >> Send a Message 
+            services.AddTransient<IRequestHandler<MessageToListCommand, CommandResponse>, MessageToListCommandHandler>();
 
             #endregion
             #endregion

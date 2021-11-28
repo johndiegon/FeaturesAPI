@@ -21,6 +21,7 @@ namespace FeaturesAPI.Infrastructure.Data.Entities
         public string IdUser { get; set; }
         public StatusEntity Status { get; set; }
         public string Phone { get; set; }
+        public int MinDayToSendMessage { get; set; }    
         public IEnumerable<string> IdFeatures { get; set; }
         public IEnumerable<string> IdPurchases { get; set; }
     }

@@ -38,8 +38,8 @@ namespace Infrasctuture.Service.ServicesHandlers
 
         public async Task<string> UploadFile(IFormFile file)
         {
-            string containerName = Guid.NewGuid().ToString() + ".csv";
-            containerName = containerName.Replace(" ", "").Replace(".", "").ToLower();
+            string containerName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName); 
+            //containerName = containerName.Replace(" ", "").Replace(".", "").ToLower();
 
             using (var client = new AmazonS3Client(_blobSettings.IDAccessKey, _blobSettings.AccessKey ,Amazon.RegionEndpoint.SAEast1))
             {

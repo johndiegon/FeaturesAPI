@@ -1,5 +1,4 @@
-﻿using Domain.Commands.List.Post;
-using Domain.Models;
+﻿using Domain.Models;
 using Domain.Validators;
 using MediatR;
 
