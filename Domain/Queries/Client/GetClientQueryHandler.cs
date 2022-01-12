@@ -4,6 +4,7 @@ using FeaturesAPI.Domain.Models;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,7 +35,7 @@ namespace Domain.Queries.Client
                 }
                 else
                 {
-                    var client = _clientRepository.GetByUser(request.IdUser);
+                    var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
 
                     response = new GetClientQueryResponse
                     {
