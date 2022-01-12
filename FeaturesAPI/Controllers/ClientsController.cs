@@ -153,15 +153,11 @@ namespace FeaturesAPI.Controllers
         {
             try
             {
-
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
 
-                var query = new GetClientQuery
-                {
-                    IdUser = idUser
+                var query = new GetClientQuery { IdUser = idUser };
 
-                };
                 var response = await _mediator.Send(query);
 
                 if (response.Data.Status == Status.Sucessed)
