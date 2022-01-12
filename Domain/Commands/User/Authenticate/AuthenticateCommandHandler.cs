@@ -39,6 +39,8 @@ namespace Domain.Commands.Authenticate
                 if (user.Password != request.User.Password)
                     return GetResponseErro("Senha inválida.");
 
+                user.Role = request.User.Role;
+                
                 //// Gera o Token
                 var token = GenerateToken(user);
 
@@ -64,8 +66,8 @@ namespace Domain.Commands.Authenticate
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Login.ToString()),
-                    new Claim(ClaimTypes.Role, "Teste") //user.Role.ToString()
+                    new Claim(ClaimTypes.Name, user.Login),
+                    new Claim(ClaimTypes.Sid, user.Id)
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

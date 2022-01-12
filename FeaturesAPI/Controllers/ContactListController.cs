@@ -5,11 +5,13 @@ using Domain.Commands.List.Put;
 using Domain.Commands.List.SendAMessage;
 using Domain.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -75,6 +77,7 @@ namespace API.Controllers
         {
             try
             {
+
                 var response = await _mediator.Send(contactList);
 
                 if (response.Data.Status == Status.Sucessed)
@@ -103,11 +106,18 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPut("send-message")]
-        public async Task<ActionResult<CommandResponse>> SendAMessageToList(MessageToListCommand messageToList)
+        public async Task<ActionResult<CommandResponse>> SendAMessageToList(MessageRequest message)
         {
             try
             {
+                var claimsIdentity = User.Identity as ClaimsIdentity;
+                var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
+
+                var messageToList = new MessageToListCommand {  MessageRequest = message , IdUser = idUser };
+
+
                 var response = await _mediator.Send(messageToList);
 
                 if (response.Data.Status == Status.Sucessed)

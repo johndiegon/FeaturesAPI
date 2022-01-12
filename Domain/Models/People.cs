@@ -13,7 +13,7 @@ namespace FeaturesAPI.Domain.Models
         public DocType DocType { get; set; }
         public string Email { get; set; }
         public AddressData Address { get; set; }
-        public string Phone { get; set; }
+        public List<string> Phone { get; set; }
         public string IdUser { get; set; }
         public UserModel User { get; set; }
         public EntityStatus Status  { get; set; }

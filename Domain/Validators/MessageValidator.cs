@@ -7,15 +7,15 @@ namespace Domain.Validators
     {
         public MessageValidator()
         {
-            RuleFor(x => x.Message)
+            RuleFor(x => x.MessageRequest)
                 .NotNull()
                 .WithMessage("{PropertyName} cannot be null");
 
-            RuleFor(x => x.IdClient)
+            RuleFor(x => x.IdUser)
                  .NotNull()
                  .WithMessage("{PropertyName} cannot be null");
 
-            RuleFor(x => x.IdList)
+            RuleFor(x => x.MessageRequest.IdList)
                .NotNull()
                .WithMessage("{PropertyName} cannot be null");
         }

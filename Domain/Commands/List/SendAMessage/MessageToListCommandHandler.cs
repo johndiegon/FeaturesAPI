@@ -5,6 +5,7 @@ using Infrastructure.Data.Interfaces;
 using MediatR;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@ namespace Domain.Commands.List.SendAMessage
     {
         private readonly IContactListRepository _contactListRepository;
         private readonly IResumeContactListRepository _resumeContactListRepository;
+        private readonly IClientRepository _clientRepository;
         private readonly ITopicServiceBuss _topicService;
         private readonly IStorage _blobStorage;
         private readonly IMapper _mapper;
@@ -23,6 +25,7 @@ namespace Domain.Commands.List.SendAMessage
         public MessageToListCommandHandler(IContactListRepository contactListRepository,
                                            IResumeContactListRepository resumeContactListRepository,
                                            ITopicServiceBuss topicService,
+                                           IClientRepository clientRepository,
                                            IStorage blobStorage,
                                            IMapper mapper,
                                            IMediator mediator
@@ -34,6 +37,7 @@ namespace Domain.Commands.List.SendAMessage
             _blobStorage = blobStorage;
             _mapper = mapper;
             _mediator = mediator;
+            _clientRepository = clientRepository;
         }
 
 
@@ -51,11 +55,12 @@ namespace Domain.Commands.List.SendAMessage
                 else
                 {
                     #region >> Bloquear lista 
-                    var resumo = _resumeContactListRepository.Get(request.IdClient);
+                    var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
+                    var resumo = _resumeContactListRepository.Get(client.Id);
 
                     foreach (var item in resumo.ContactLists)
                     {
-                        if (item.Id == request.IdList)
+                        if (item.Id == request.MessageRequest.IdList)
                         {
                             if (item.DateMessage != null)
                             {
@@ -78,9 +83,9 @@ namespace Domain.Commands.List.SendAMessage
 
                     string storageFile = string.Empty;
 
-                    if (request.Picture != null)
+                    if (request.MessageRequest.Picture != null)
                     {
-                        storageFile = await _blobStorage.UploadFile(request.Picture);
+                        storageFile = await _blobStorage.UploadFile(request.MessageRequest.Picture);
                     }
 
                     #endregion
@@ -90,9 +95,9 @@ namespace Domain.Commands.List.SendAMessage
                     var messageObject = new
                     {
                         Picture = storageFile,
-                        Message = request.Message,
-                        IdList = request.IdList,
-                        IdClient = request.IdClient
+                        Message = request.MessageRequest.Message,
+                        IdList = request.MessageRequest.IdList,
+                        IdUser = request.IdUser
                     };
 
                     var message = JsonConvert.SerializeObject(messageObject);

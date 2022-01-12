@@ -8,7 +8,7 @@ namespace Domain.Validators.Client
     {
         public GetClientQueryValidator()
         {
-            RuleFor(x => x.IdClient).NotNull().WithMessage("{PropertyName} cannot be null");
+            RuleFor(x => x.IdUser).NotNull().WithMessage("{PropertyName} cannot be null");
         }
     }
 }

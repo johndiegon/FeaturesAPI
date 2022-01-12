@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Commands.Authenticate;
 using Domain.Models;
+using FeaturesAPI.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,10 +36,11 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
         [Route("login")]
-        public async Task<ActionResult<AuthenticateCommandResponse>> Authenticate([FromBody] AuthenticateCommand authenticate)
+        public async Task<ActionResult<AuthenticateCommandResponse>> Authenticate([FromBody] UserModel user )
         {
             try
             {
+                var authenticate = new AuthenticateCommand() { User = user };
                 var response = await _mediator.Send(authenticate);
 
                 if (response.Data.Status == Status.Sucessed)

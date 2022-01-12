@@ -3,9 +3,11 @@ using Domain.Commands.List.GetResume;
 using Domain.Commands.List.PostResume;
 using Domain.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FeaturesWPP.API.Controllers
@@ -67,13 +69,17 @@ namespace FeaturesWPP.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpGet("{idClient}")]
-        public async Task<ActionResult<GetResumeListCommandResponse>> Get(string idClient)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult<GetResumeListCommandResponse>> Get()
         {
             try
             {
+                var claimsIdentity = User.Identity as ClaimsIdentity;
+                var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
+                
                 var command = new GetResumeListCommand();
-                command.IdClient = idClient;
+                command.IdUser= idUser;
+                
                 var response = await _mediator.Send(command);
 
                 if (response.Data.Status == Status.Sucessed)

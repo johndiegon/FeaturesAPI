@@ -3,6 +3,7 @@ using Domain.Models;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,17 +13,20 @@ namespace Domain.Commands.List.GetResume
     public class GetResumeListCommandHandler : IRequestHandler<GetResumeListCommand, GetResumeListCommandResponse>
     {
         private readonly IResumeContactListRepository _repository;
+        private readonly IClientRepository _clientRepository;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
         public GetResumeListCommandHandler(IResumeContactListRepository repository
                                      , IMapper mapper
                                      , IMediator mediator
+                                     , IClientRepository clientRepository
                                      )
         {
             _repository = repository;
             _mapper = mapper;
             _mediator = mediator;
+            _clientRepository = clientRepository;
         }
 
         public async Task<GetResumeListCommandResponse> Handle(GetResumeListCommand request, CancellationToken cancellationToken)
@@ -37,7 +41,8 @@ namespace Domain.Commands.List.GetResume
                 }
                 else
                 {
-                    var repost = _repository.Get(request.IdClient);
+                    var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
+                    var repost = _repository.Get(client.Id);
 
                     var resume = _mapper.Map<ResumeContactList>(repost);
 
