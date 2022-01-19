@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -34,15 +35,18 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpPost("{idClient}")]
-        public async Task<ActionResult<PostFileCommandResponse>> Input(IFormFile file , [FromRoute] string idClient)
+        [HttpPost]
+        public async Task<ActionResult<PostFileCommandResponse>> Input(IFormFile file )
         {
             try
             {
+                var claimsIdentity = User.Identity as ClaimsIdentity;
+                var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
+
                 var inputFile = new PostFileCommand
                 {
                     File = file,
-                    IdClient = idClient,
+                    IdUser = idUser,
                     FileType = FileType.Pedido
                 };
 

@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
+using Domain.Commands.User;
 using Domain.Models;
 using FeaturesAPI.Domain.Models;
 using Infrastructure.Data.Interfaces;
 using MediatR;
-using Microsoft.IdentityModel.Tokens;
 using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,10 +36,15 @@ namespace Domain.Commands.Authenticate
                 if (user.Password != request.User.Password)
                     return GetResponseErro("Senha inválida.");
 
+                //Verifica se o usuário existe
+                if (!user.IsConfirmedEmail)
+                    return GetResponseErro("O email não foi validado.");
+
+
                 user.Role = request.User.Role;
                 
                 //// Gera o Token
-                var token = GenerateToken(user);
+                var token = TokenUser.GenerateToken(user, 2);
 
                 // Oculta a senha
                 user.Password = "";
@@ -56,24 +58,6 @@ namespace Domain.Commands.Authenticate
                 var message = string.Concat("Ocorreru um erro interno: ", ex.Message);
                 return await Task.FromResult(GetResponseErro(message));
             }
-        }
-
-        public static string GenerateToken(UserModel user)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(Settings.TokenSecret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, user.Login),
-                    new Claim(ClaimTypes.Sid, user.Id)
-                }),
-                Expires = DateTime.UtcNow.AddHours(2),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
         }
 
         private AuthenticateCommandResponse GetResponseErro(string Message)

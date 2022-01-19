@@ -16,6 +16,7 @@ namespace FeaturesAPI.Infrastructure.Data.Entities
         public string DocNumber { get; set; }
         public string DocType { get; set; }
         public string Email { get; set; }
+        public bool IsASubscriber { get; set; }
         public TypeListEntity TypeList {get;set;}
         public AddressEntity Address { get; set; }
         public string IdUser { get; set; }

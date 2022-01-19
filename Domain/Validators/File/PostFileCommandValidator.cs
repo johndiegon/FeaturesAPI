@@ -21,7 +21,7 @@ namespace Domain.Validators.File
                .Must(BeAValidExtension)
                .WithMessage("Extension is not valid.");
 
-            RuleFor(x => x.IdClient)
+            RuleFor(x => x.IdUser)
                 .NotNull()
                 .WithMessage("{PropertyName} cannot be null.");
         }

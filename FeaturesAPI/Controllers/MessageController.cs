@@ -1,49 +1,55 @@
 ﻿using AutoMapper;
+using Domain.Commands.List.SendAMessage;
 using Domain.Models;
-using Domain.Queries.Address;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FeaturesAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AddressController : ControllerBase
+    public class MessageController: ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public AddressController(IMapper mapper, IMediator mediator)
+        public MessageController(IMapper mapper, IMediator mediator)
         {
             _mapper = mapper;
             _mediator = mediator;
         }
 
+
         /// <summary>
-        ///     Action to get a Address in the database.
+        ///     Action to update a contact.
         /// </summary>
-        /// <param name="zipCode">Model to get a client</param>
-        /// <returns>Returns a client.</returns>
-        /// <response code="200">Returned a client.</response>
+        /// <param name="messageToList">contact with data </param>
+        /// <returns>Returns if contact was updated.</returns>
+        /// <response code="200">Returned if the contact was inputed</response>
         /// <response code="400">Returned if the model couldn't be parsed or saved</response>
         /// <response code="422">Returned when the validation failed</response>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpGet]
-        public async Task<ActionResult<GetAddressResponse>> GetAddressByzipCode(string zipCode)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpPut("send-message")]
+         public async Task<ActionResult<CommandResponse>> SendAMessageToList(MessageRequest message)
         {
             try
             {
-                var query = new GetAddressByZipCode
-                {
-                    ZipCode = zipCode
-                };
+                var claimsIdentity = User.Identity as ClaimsIdentity;
+                var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
 
-                var response = await _mediator.Send(query);
+                var messageToList = new MessageToListCommand { MessageRequest = message, IdUser = idUser };
+
+
+                var response = await _mediator.Send(messageToList);
 
                 if (response.Data.Status == Status.Sucessed)
                 {
@@ -58,6 +64,8 @@ namespace FeaturesAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
+
         }
+
     }
 }

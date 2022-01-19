@@ -7,6 +7,7 @@ using Infrasctuture.Service.Contracts;
 using Infrasctuture.Service.Interfaces;
 using Infrastructure.Data.Interfaces;
 using MediatR;
+using Newtonsoft.Json;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,6 +25,7 @@ namespace Domain.Commands.Client.Post
                                      , IMapper mapper
                                      , IMediator mediator
                                      , IViaCepService viaCepService
+                                     , ITopicServiceBuss topicService
                                      )
         {
             _clientRepository = clientRepository;
@@ -82,11 +84,13 @@ namespace Domain.Commands.Client.Post
                         }
 
                         client.IdUser = user.Id;
+                        client.IsASubscriber = false;
                         var result = _clientRepository.Create(client);
-                        
+                      
                         response = new PostClientCommandResponse
                         {
-                            Client = _mapper.Map<People>(result),
+                            Client = _mapper.Map<People>(result), 
+
                             Data = new Data
                             {
                                 Message = "Client successfully registered.",

@@ -49,6 +49,7 @@ namespace Domain.Commands.List.GetResume
                     response = new GetResumeListCommandResponse
                     {
                         Resume = resume,
+                        IsASubscriber = client.IsASubscriber,
                         Data = new Data
                         {
                             Status = Status.Sucessed

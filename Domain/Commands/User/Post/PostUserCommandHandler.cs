@@ -6,6 +6,8 @@ using Infrastructure.Data.Interfaces;
 using AutoMapper;
 using System;
 using Domain.Models;
+using Newtonsoft.Json;
+using Infrasctuture.Service.Interfaces;
 
 namespace Domain.Commands.User.Post
 {
@@ -14,15 +16,18 @@ namespace Domain.Commands.User.Post
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
-     
-        public PostUserCommandHandler( IUserRepository userRepository,
+        private readonly ITopicServiceBuss _topicService;
+
+        public PostUserCommandHandler(IUserRepository userRepository,
                                        IMapper mapper,
-                                       IMediator mediator
+                                       IMediator mediator,
+                                       ITopicServiceBuss topicService
                                      ) 
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _mediator = mediator;
+            _topicService = topicService;
         }
         public async Task<PostUserCommandResponse> Handle(PostUserCommand request, CancellationToken cancellationToken)
         {
@@ -38,8 +43,15 @@ namespace Domain.Commands.User.Post
                 }
                 else
                 {
+                    
                     var userModel= _mapper.Map<UserModel>(_userRepository.Create(user));
                     var response = new PostUserCommandResponse { UserModel = userModel };
+
+                    user.IsConfirmedEmail = false;
+                    var message = JsonConvert.SerializeObject(new { IdClient = userModel.Id, Email = userModel.Login });
+
+                    await _topicService.SendMessage(message, "ConfirmEmail");
+
                     return await Task.FromResult(response); 
                 }
             }

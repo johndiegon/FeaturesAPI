@@ -69,6 +69,7 @@ namespace FeaturesWPP.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpGet]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<GetResumeListCommandResponse>> Get()
         {

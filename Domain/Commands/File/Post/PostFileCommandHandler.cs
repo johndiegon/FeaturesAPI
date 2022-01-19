@@ -6,6 +6,7 @@ using Infrastructure.Data.Interfaces;
 using MediatR;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,7 +38,7 @@ namespace Domain.Commands.File.Post
                     response.Notification = request.Notifications();
                 } else
                 {
-                    var client = _clientRepository.Get(request.IdClient);
+                    var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
 
                     if( client == null)
                     {
@@ -48,7 +49,7 @@ namespace Domain.Commands.File.Post
 
                     var importedFile = new ImportedFile
                     {
-                        IdClient = request.IdClient,
+                        IdClient = client.Id,
                         PathFile = storageFile
                     };
                     
