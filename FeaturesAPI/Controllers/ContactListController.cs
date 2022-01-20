@@ -1,17 +1,11 @@
 ﻿using AutoMapper;
-using Domain.Commands.Contact.Post;
 using Domain.Commands.List.Post;
 using Domain.Commands.List.Put;
-using Domain.Commands.List.SendAMessage;
 using Domain.Models;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace API.Controllers

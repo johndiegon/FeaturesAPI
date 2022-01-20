@@ -27,6 +27,7 @@ using System.Reflection;
 using MediatR;
 using Domain.Commands.List.SendAMessage;
 using Domain.Commands.User.ConfirmEmail;
+using Domain.Commands.Contact.Disable;
 
 namespace CrossCutting.Configurations
 {
@@ -56,8 +57,11 @@ namespace CrossCutting.Configurations
             services.AddTransient<IRequestHandler<PostFileCommand, PostFileCommandResponse>, PostFileCommandHandler>();
             #endregion
             #region >> Contact
+
             services.AddTransient<IRequestHandler<PostContactCommand, PostContactCommandResponse>, PostContactCommandHandler>();
             services.AddTransient<IRequestHandler<PutContactCommand, CommandResponse>, PutContactCommandHandler>();
+            services.AddTransient<IRequestHandler<DisableContactCommand, CommandResponse>, DisableContactCommandHandler>();
+
             #endregion
             #region >> List
             services.AddTransient<IRequestHandler<PostContactListCommand, PostContactListCommandResponse>, PostContactListCommandHandler>();
