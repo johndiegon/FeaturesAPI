@@ -3,6 +3,7 @@ using Domain.Commands.File.Post;
 using Domain.Models;
 using Domain.Models.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -35,6 +36,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost]
         public async Task<ActionResult<PostFileCommandResponse>> Input(IFormFile file )
         {

@@ -61,7 +61,6 @@ namespace FeaturesWPP.API.Controllers
         /// <summary>
         ///     Action to update a contact.
         /// </summary>
-        /// <param name="idClient">contact with data </param>
         /// <returns>Returns a list of contacts.</returns>
         /// <response code="200">Returned result of search</response>
         /// <response code="400">Returned if the model request is invalid</response>
@@ -69,8 +68,9 @@ namespace FeaturesWPP.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpGet]
         [Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpGet]
+
         public async Task<ActionResult<GetResumeListCommandResponse>> Get()
         {
             try

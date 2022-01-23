@@ -2,8 +2,8 @@
 {
     public enum DocType
     {
-        Cpf = 0,
-        Cnpj = 1,
+        Cpf = 1,
+        Cnpj = 2,
         
     }
 }

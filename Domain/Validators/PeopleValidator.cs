@@ -1,7 +1,6 @@
 ﻿using FeaturesAPI.Domain.Models;
 using FluentValidation;
-using System.Collections.Generic;
-using System.Linq;
+using FeaturesAPI.Domain.Models.Enum;
 using System.Text.RegularExpressions;
 
 namespace Domain.Validators
@@ -38,25 +37,31 @@ namespace Domain.Validators
                     .NotNull()
                     .WithMessage("{PropertyName} cannot be null");
 
-            RuleFor(x => x.DocNumber)
+            RuleFor(x => x)
                     .Must(BeADocumentValid)
                     .WithMessage("{PropertyName} it is not a valid document");
 
         }
 
-        private bool BeADocumentValid(string DocNumber)
+        private bool BeADocumentValid(People people)
         {
-            if(DocNumber != null)
-            {
-                DocNumber = DocNumber.Trim();
-                DocNumber = DocNumber.Replace(".", "").Replace("-", "").Replace("/", "");
+            var docNumber =  people.DocNumber;
 
-                switch (DocNumber.Length)
+            if (docNumber != null)
+            {
+                docNumber = docNumber.Trim();
+                docNumber = docNumber.Replace(".", "").Replace("-", "").Replace("/", "");
+
+                switch (docNumber.Length)
                 {
                     case 11:
-                        return IsCPF(DocNumber);
+                        if (people.DocType == DocType.Cpf)
+                            return IsCPF(docNumber);
+                        else return false;
                     case 14:
-                        return IsCnpj(DocNumber);
+                        if (people.DocType == DocType.Cnpj)
+                            return IsCnpj(docNumber);
+                        else return false;
                     default:
                         return false;
                 }

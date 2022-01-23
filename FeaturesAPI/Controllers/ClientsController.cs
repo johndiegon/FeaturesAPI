@@ -41,10 +41,13 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
-        public async Task<ActionResult<PostClientCommandResponse>> Create(PostClientCommand client)
+        public async Task<ActionResult<PostClientCommandResponse>> Create(People people)
         {
             try
             {
+                var client = new PostClientCommand() {  Client = people };
+                client.Client.User.Login = client.Client.Email;
+
                 var response = await _mediator.Send(client);
 
                 if (response.Data.Status == Status.Sucessed)
