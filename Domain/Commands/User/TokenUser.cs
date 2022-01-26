@@ -17,7 +17,7 @@ namespace Domain.Commands.User
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Login),
+                    new Claim(ClaimTypes.Email, user.Login),
                     new Claim(ClaimTypes.Sid, user.Id)
                 }),
                 Expires = DateTime.UtcNow.AddHours(hours),

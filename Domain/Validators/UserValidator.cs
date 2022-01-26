@@ -11,10 +11,6 @@ namespace Domain.Validators
                .NotNull()
                .WithMessage("{PropertyName} cannot be null");
 
-            RuleFor(x => x.Password)
-               .NotNull()
-               .WithMessage("{PropertyName} cannot be null");
-
         }
     }
 }

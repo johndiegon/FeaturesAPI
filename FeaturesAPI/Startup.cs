@@ -41,6 +41,8 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
 using Domain.Commands.List.SendAMessage;
+using Domain.Commands.User.ChangePassword;
+using Domain.Commands.User.ConfirmEmail;
 
 namespace FeaturesAPI
 {
@@ -123,11 +125,16 @@ namespace FeaturesAPI
             services.AddTransient<IRequestHandler<GetAddressByZipCode, GetAddressResponse>, GetAddressHandler>();
 
             #endregion
+           
             #region >> User
             services.AddTransient<IRequestHandler<PostUserCommand, PostUserCommandResponse>, PostUserCommandHandler>();
             services.AddTransient<IRequestHandler<PutUserCommand, CommandResponse>, PutUserCommandHandler>();
             services.AddTransient<IRequestHandler<AuthenticateCommand, AuthenticateCommandResponse>, AuthenticateCommandHandler>();
+            services.AddTransient<IRequestHandler<ChangePasswordCommand, CommandResponse>, ChangePasswordCommandHandler>();
+            services.AddTransient<IRequestHandler<ConfirmEmailCommand, CommandResponse>, ConfirmEmailCommandHandler>();
+
             #endregion
+
             #region >> File
             services.AddTransient<IRequestHandler<PostFileCommand, PostFileCommandResponse>, PostFileCommandHandler>();
             #endregion

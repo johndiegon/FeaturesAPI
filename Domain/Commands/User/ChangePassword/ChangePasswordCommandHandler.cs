@@ -1,39 +1,42 @@
-﻿using AutoMapper;
-using Domain.Models;
+﻿using Domain.Models;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Domain.Commands.User.ConfirmEmail
+namespace Domain.Commands.User.ChangePassword
 {
-    public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, CommandResponse>
+    public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, CommandResponse>
     {
         private readonly IUserRepository _userRepository;
-     
-        public ConfirmEmailCommandHandler(IUserRepository userRepository, IMapper mapper)
+
+        public ChangePasswordCommandHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
-
-        public async Task<CommandResponse> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
             try
             {
+                if (!request.IsValid())
+                {
+                    GetResponseErro("As senhas estão invalidas.");
+                }
                 // Recupera o usuário
                 var user = _userRepository.GetByLogin(request.Email);
+
 
                 //Verifica se o usuário existe
                 if (user == null)
                     return GetResponseErro("Usuário inválido.");
 
-                user.IsConfirmedEmail = true;
+                user.Password = request.Password;
 
                 _userRepository.Update(user);
 
                 // Retorna os dados
-                return await Task.FromResult(new CommandResponse { Data = new Data { Message = "Email confirmed",  Status = Status.Sucessed } });
+                return await Task.FromResult(new CommandResponse { Data = new Data { Message = "Passwordd changed", Status = Status.Sucessed } });
 
             }
             catch (Exception ex)

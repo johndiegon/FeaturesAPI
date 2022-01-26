@@ -6,6 +6,6 @@ namespace Domain.Commands.User.ConfirmEmail
 {
     public class ConfirmEmailCommand : IRequest<CommandResponse>
     {
-        public UserModel User { get; set; }
+        public string Email { get; set; }
     }
 }
