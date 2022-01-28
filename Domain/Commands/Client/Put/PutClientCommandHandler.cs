@@ -6,6 +6,7 @@ using Infrasctuture.Service.Interfaces;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,21 +43,22 @@ namespace Domain.Commands.Client.Put
                 }
                 else
                 {
-                    var client = _mapper.Map<ClientEntity>(request.Client);
+                    var newClient = _mapper.Map<ClientEntity>(request.Client);
+                    var oldClient = _clientRepository.GetByUser(request.Client.IdUser).FirstOrDefault();
 
-                    if (client.Address.Address == null ||
-                         client.Address.District == null ||
-                         client.Address.City == null
+                    if (newClient.Address.Address == null ||
+                         newClient.Address.District == null ||
+                         newClient.Address.City == null
                         )
                     {
-                        AdressResponse endereco = _viaCepService.GetEndereco(client.Address.ZipCode.Replace("-", "")).Result;
+                        AdressResponse endereco = _viaCepService.GetEndereco(newClient.Address.ZipCode.Replace("-", "")).Result;
                         if (endereco != null)
                         {
-                            client.Address.Address = endereco.Logradouro;
-                            client.Address.District = endereco.Bairro;
-                            client.Address.City = endereco.Localidade;
-                            client.Address.Uf = endereco.Uf;
-                            client.Address.Country = "Brasil";
+                            newClient.Address.Address = endereco.Logradouro;
+                            newClient.Address.District = endereco.Bairro;
+                            newClient.Address.City = endereco.Localidade;
+                            newClient.Address.Uf = endereco.Uf;
+                            newClient.Address.Country = "Brasil";
                         }
                         else
                         {
@@ -64,7 +66,9 @@ namespace Domain.Commands.Client.Put
                         }
                     }
 
-                    var result = _clientRepository.Update(client);
+                    newClient.IdUser = oldClient.IdUser;
+                    newClient.Id = oldClient.Id;
+                    var result = _clientRepository.Update(newClient);
 
                     response = new PutClientCommandResponse
                     {
