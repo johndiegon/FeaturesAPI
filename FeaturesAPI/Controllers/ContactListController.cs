@@ -2,6 +2,7 @@
 using Domain.Commands.List.Post;
 using Domain.Commands.List.Put;
 using Domain.Models;
+using FeaturesAPI.Atributes;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ApiKey]
         [HttpPost]
         public async Task<ActionResult<PostContactListCommandResponse>> CreateContactList(PostContactListCommand contactList)
         {
@@ -66,6 +68,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ApiKey]
         [HttpPut]
         public async Task<ActionResult<PutContactListCommandResponse>> UpdateContactList(PutContactListCommand contactList)
         {

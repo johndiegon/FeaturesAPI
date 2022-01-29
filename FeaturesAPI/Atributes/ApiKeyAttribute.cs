@@ -9,11 +9,11 @@ namespace FeaturesAPI.Atributes
     public class ApiKeyAttribute : Attribute, IAsyncActionFilter
     {
         private const string ApiKeyName = "api_key";
-        private const string ApiKey = "balta_demo_IlTevUM/z0ey3NwCV/unWg==";
+        private const string ApiKey = "7794f4c0-d0b9-4bc3-85f8-92d0508306a5";
 
         public async Task OnActionExecutionAsync(  ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (!context.HttpContext.Request.Query.TryGetValue(ApiKeyName, out var extractedApiKey))
+            if (!context.HttpContext.Request.Headers.TryGetValue(ApiKeyName, out var extractedApiKey))
             {
                 context.Result = new ContentResult()
                 {

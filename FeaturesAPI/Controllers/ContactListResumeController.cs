@@ -2,6 +2,7 @@
 using Domain.Commands.List.GetResume;
 using Domain.Commands.List.PostResume;
 using Domain.Models;
+using FeaturesAPI.Atributes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -35,6 +36,7 @@ namespace FeaturesWPP.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ApiKey]
         [HttpPost]
         public async Task<ActionResult<CommandResponse>> CreateContactList(PostResumeListCommand contactListResume)
         {
@@ -70,7 +72,6 @@ namespace FeaturesWPP.API.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet]
-
         public async Task<ActionResult<GetResumeListCommandResponse>> Get()
         {
             try
