@@ -38,28 +38,18 @@ namespace Domain.Commands.List.Post
                 }
                 else
                 {
-                    var contactListSearch = _contactListRepository.GetByClientId(request.ContactList.IdClient).Where(List => List.TypeList.Name == request.ContactList.TypeList.Name);
+                    var contactList = _mapper.Map<ContactListEntity>(request.ContactList);
+                    var result = _contactListRepository.Create(contactList);
 
-                    if (contactListSearch.Count() > 0)
+                    response = new PostContactListCommandResponse
                     {
-                        response = GetResponseErro("The request is invalid.");
-                        response.Notification = request.Notifications();
-                    }
-                    else
-                    {
-                        var contactList = _mapper.Map<ContactListEntity>(request.ContactList);
-                        var result = _contactListRepository.Create(contactList);
-
-                        response = new PostContactListCommandResponse
+                        IdContactList = result.Id,
+                        Data = new Data
                         {
-                            IdContactList = result.Id,
-                            Data = new Data
-                            {
-                                Message = "ContactList successfully registered.",
-                                Status = Status.Sucessed
-                            }
-                        };
-                    }
+                            Message = "ContactList successfully registered.",
+                            Status = Status.Sucessed
+                        }
+                    };
                 }
 
                 return await Task.FromResult(response);

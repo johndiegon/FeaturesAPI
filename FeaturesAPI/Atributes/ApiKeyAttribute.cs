@@ -8,12 +8,12 @@ namespace FeaturesAPI.Atributes
     [AttributeUsage(validOn: AttributeTargets.Class | AttributeTargets.Method)]
     public class ApiKeyAttribute : Attribute, IAsyncActionFilter
     {
-        private const string ApiKeyName = "api_key";
-        private const string ApiKey = "7794f4c0-d0b9-4bc3-85f8-92d0508306a5";
+        private const string ApiKeyName = "";
+        private const string ApiKey = "api_key 7794f4c0-d0b9-4bc3-85f8-92d0508306a5";
 
         public async Task OnActionExecutionAsync(  ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (!context.HttpContext.Request.Headers.TryGetValue(ApiKeyName, out var extractedApiKey))
+            if (!context.HttpContext.Request.Headers.TryGetValue("Authorization", out var extractedApiKey))
             {
                 context.Result = new ContentResult()
                 {
