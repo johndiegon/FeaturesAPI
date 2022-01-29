@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Domain.Models.Enums;
 using Domain.Commands.Contact.Disable;
+using FeaturesAPI.Atributes;
 
 namespace API.Controllers
 {
@@ -39,6 +40,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ApiKey]
         [HttpPut]
         public async Task<ActionResult<CommandResponse>> Update(PutContactCommand command)
         {
@@ -73,6 +75,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ApiKey]
         [HttpPost]
         public async Task<ActionResult<PostContactCommandResponse>> Create(PostContactCommand command)
         {
@@ -106,6 +109,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ApiKey]
         [HttpGet("{idClient}")]
         public async Task<ActionResult<GetContactsQueryResponse>> Get(string idClient)
         {
