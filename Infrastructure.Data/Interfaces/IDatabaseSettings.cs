@@ -5,6 +5,7 @@
         string BooksCollectionName { get; set; }
         string UsersCollectionName { get; set; }
         string ClientsCollectionName { get; set; }
+        string DataDashboardCollectionName { get; set; }
         string ContactListCollectionName { get; set; }
         string CategorysCollectionName { get; set; }
         string ContactCollecionName { get; set; }

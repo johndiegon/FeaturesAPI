@@ -1,21 +1,21 @@
 ﻿using AutoMapper;
 using Domain.Models;
-using FeaturesAPI.Domain.Models;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Domain.Queries.ClientByUser
+namespace Domain.Queries.Dashboard.Get
 {
-    public class GetClientByUserQueryHandler :  IRequestHandler<GetClientByUserQuery, GetClientByUserQueryResponse>
+    public class GetDashboardQueryHandler : IRequestHandler<GetDashboardQuery, GetDashboardQueryResponse>
     {
         private readonly IClientRepository _clientRepository;
+        private readonly IDataDashboardRepository _dataDashboardRepostory;
         private readonly IMapper _mapper;
 
-        public GetClientByUserQueryHandler(IClientRepository clientRepository
+        public GetDashboardQueryHandler(IClientRepository clientRepository
                                      , IMapper mapper
                                      )
         {
@@ -23,11 +23,11 @@ namespace Domain.Queries.ClientByUser
             _mapper = mapper;
         }
 
-        public async Task<GetClientByUserQueryResponse> Handle(GetClientByUserQuery request, CancellationToken cancellationToken)
+        public async Task<GetDashboardQueryResponse> Handle(GetDashboardQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var response = new GetClientByUserQueryResponse();
+                var response = new GetDashboardQueryResponse();
                 if (!request.IsValid())
                 {
                     response = GetResponseErro("The request is invalid.");
@@ -35,15 +35,16 @@ namespace Domain.Queries.ClientByUser
                 }
                 else
                 {
-                    var client = _clientRepository.GetByUser(request.IdUser);
+                    var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
+                    var dashs = _dataDashboardRepostory.GetByClient(client.Id);
 
-                    response = new GetClientByUserQueryResponse
+                    var lastDash = dashs.Select(d => d.DateTime).Max();
+
+                    response.DataDashboard = _mapper.Map<DataDashboard>(dashs.Where(d => d.DateTime > lastDash).FirstOrDefault());
+                    response.DataDashboard = _mapper.Map<DataDashboard>(dashs);
+                    response.Data = new Data
                     {
-                        Clients = _mapper.Map<IEnumerable<People>>(client),
-                        Data = new Data
-                        {
-                            Status = Status.Sucessed
-                        }
+                        Status = Status.Sucessed
                     };
                 }
 
@@ -55,9 +56,9 @@ namespace Domain.Queries.ClientByUser
             }
         }
 
-        private GetClientByUserQueryResponse GetResponseErro(string Message)
+        private GetDashboardQueryResponse GetResponseErro(string Message)
         {
-            return new GetClientByUserQueryResponse
+            return new GetDashboardQueryResponse
             {
                 Data = new Data
                 {

@@ -43,6 +43,8 @@ using System.Text;
 using Domain.Commands.List.SendAMessage;
 using Domain.Commands.User.ChangePassword;
 using Domain.Commands.User.ConfirmEmail;
+using Domain.Commands.Dashboard;
+using Domain.Queries.Dashboard.Get;
 
 namespace FeaturesAPI
 {
@@ -135,6 +137,12 @@ namespace FeaturesAPI
 
             #endregion
 
+            #region >> Dash
+
+            services.AddTransient<IRequestHandler<PostDashboardCommand, CommandResponse>, PostDashboardCommandHandler>();
+            services.AddTransient<IRequestHandler<GetDashboardQuery, GetDashboardQueryResponse>, GetDashboardQueryHandler>();
+            #endregion
+
             #region >> File
             services.AddTransient<IRequestHandler<PostFileCommand, PostFileCommandResponse>, PostFileCommandHandler>();
             #endregion
@@ -175,6 +183,7 @@ namespace FeaturesAPI
             services.AddScoped<ITypeListRepository, TypeListRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IResumeContactListRepository, ResumeContactListRepository>();
+            services.AddScoped<IDataDashboardRepository, DataDashboardRepository>();
 
             services.AddSingleton<ClientRepository>();
             services.AddControllersWithViews();
@@ -201,6 +210,7 @@ namespace FeaturesAPI
             services.AddAutoMapper(Assembly.GetAssembly(typeof(ClientProfile)));
             services.AddAutoMapper(Assembly.GetAssembly(typeof(UserProfile)));
             services.AddAutoMapper(Assembly.GetAssembly(typeof(ResumeContactListProfile)));
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(DataDashboardProfile)));
 
             var key = Encoding.ASCII.GetBytes(Settings.TokenSecret);
 
