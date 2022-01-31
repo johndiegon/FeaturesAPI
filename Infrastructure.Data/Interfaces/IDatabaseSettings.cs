@@ -12,6 +12,8 @@
         string ConnectionString { get; set; }
         string TypeListCollectionName { get; set; }
         string ResumeListCollectionName { get; set; }
+        string ChatCollectionName { get; set; } 
+        string LastMessageCollectionName { get; set; }
         string DatabaseName { get; set; }
     }
   

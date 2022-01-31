@@ -15,5 +15,7 @@ namespace FeaturesAPI.Infrastructure.Models
         public string TypeListCollectionName { get; set; }
         public string ResumeListCollectionName { get; set; }
         public string DataDashboardCollectionName { get; set; }
+        public string ChatCollectionName { get; set; }
+        public string LastMessageCollectionName { get; set; }
     }
 }
