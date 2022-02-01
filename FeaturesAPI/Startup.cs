@@ -45,6 +45,9 @@ using Domain.Commands.User.ChangePassword;
 using Domain.Commands.User.ConfirmEmail;
 using Domain.Commands.Dashboard;
 using Domain.Queries.Dashboard.Get;
+using Domain.Commands.Chat;
+using Domain.Queries.Chat.Get;
+using Domain.Queries.Chat.GetLast;
 
 namespace FeaturesAPI
 {
@@ -175,10 +178,20 @@ namespace FeaturesAPI
             #endregion
             #endregion
 
+            #region >>Chat
+            services.AddTransient<IRequestHandler<PostMessageChat, CommandResponse>, PostMessageChatHandler>();
+            services.AddTransient<IRequestHandler<GetChatMessage, GetChatMessageResponse>, GetChatMessageHandler>();
+            services.AddTransient<IRequestHandler<GetLastMessages, GetLastMessagesResponse>, GetLastMessagesHandler>();
+
+
+            #endregion
+
             services.AddScoped(typeof(IViaCepService), typeof(ViaCepService));
             
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IContactListRepository, ContactListRepository>();
+            services.AddScoped<IChatRepository, ChatRepository>();
+            services.AddScoped<ILastMessageRepository, LastMessageRepository>();
             services.AddScoped<IContactRepository, ContactRepository>();
             services.AddScoped<ITypeListRepository, TypeListRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -186,31 +199,24 @@ namespace FeaturesAPI
             services.AddScoped<IDataDashboardRepository, DataDashboardRepository>();
 
             services.AddSingleton<ClientRepository>();
-            services.AddControllersWithViews();
-
             services.AddSingleton<ContactListRepository>();
-            services.AddControllersWithViews();
-
             services.AddSingleton<ContactRepository>();
-            services.AddControllersWithViews();
-
             services.AddSingleton<TypeListRepository>();
-            services.AddControllersWithViews();
-
             services.AddSingleton<UserRepository>();
-            services.AddControllersWithViews();
-
             services.AddSingleton<ResumeContactListRepository>();
+            services.AddSingleton<ChatRepository>();
+            services.AddSingleton<LastMessageRepository>();
+
             services.AddControllersWithViews();
 
             services.AddScoped<IStorage, OrderStorage>();
             services.AddScoped<ITopicServiceBuss, ServiceTopic>();
 
-
             services.AddAutoMapper(Assembly.GetAssembly(typeof(ClientProfile)));
             services.AddAutoMapper(Assembly.GetAssembly(typeof(UserProfile)));
             services.AddAutoMapper(Assembly.GetAssembly(typeof(ResumeContactListProfile)));
             services.AddAutoMapper(Assembly.GetAssembly(typeof(DataDashboardProfile)));
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(ChatProfile)));
 
             var key = Encoding.ASCII.GetBytes(Settings.TokenSecret);
 

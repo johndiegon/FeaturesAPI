@@ -60,7 +60,6 @@ namespace Domain.Commands.Chat
                         Message = request.Message.Message,
                         PhoneFrom = request.Message.PhoneFrom,
                         PhoneTo = request.Message.PhoneTo,
-                        UrlPicture = request.Message.UrlPicture
                     };
                     messages.Add(message);
 
@@ -83,7 +82,6 @@ namespace Domain.Commands.Chat
                         Message = request.Message.Message,
                         PhoneFrom = request.Message.PhoneFrom,
                         PhoneTo = request.Message.PhoneTo,
-                        UrlPicture = request.Message.UrlPicture
                     };
                     chat.MessageList.Add(message);
 
