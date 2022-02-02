@@ -14,6 +14,8 @@
         string ResumeListCollectionName { get; set; }
         string ChatCollectionName { get; set; } 
         string LastMessageCollectionName { get; set; }
+        string SessionWhatsAppCollectionName { get; set; }
+        string MessagesDefaultColletionName { get; set; }
         string DatabaseName { get; set; }
     }
   

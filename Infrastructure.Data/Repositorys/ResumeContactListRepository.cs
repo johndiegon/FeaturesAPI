@@ -33,6 +33,9 @@ namespace Infrastructure.Data.Repositorys
         public ResumeContactListEntity Get(string IdClient) =>
           _clients.Find<ResumeContactListEntity>(entity => entity.IdClient == IdClient).FirstOrDefault();
 
+        public IEnumerable<ResumeContactListEntity> GetByClientId(string IdClient) =>
+          _clients.Find<ResumeContactListEntity>(entity => entity.IdClient == IdClient).ToList();
+
         public ResumeContactListEntity Update(ResumeContactListEntity entityIn)
         {
             _clients.ReplaceOne(entity => entity.Id == entityIn.Id, entityIn);

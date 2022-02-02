@@ -19,6 +19,9 @@ namespace Domain.Profiles
 
             CreateMap<ListLastMessageEntity, ListLastMessages>();
             CreateMap<LastMessageEntity, LastMessage>();
+
+            CreateMap<MessageDefault, MessageEntity>();
+            CreateMap<MessageEntity, MessageDefault>();
         }
     }
 }

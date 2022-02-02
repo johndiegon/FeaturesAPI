@@ -8,13 +8,13 @@ namespace Domain.Commands.User.ChangePassword
     {
         public string Email { get; set; }   
         public string Password { get; set; }
-        public string RePassword { get; set; }
+        public string OldPassword { get; set; }
         public override bool IsValid()
         {
-            if(Email == null || Password == null || RePassword == null)
+            if(Email == null || Password == null || OldPassword == null)
                 return false;
             
-            if (Password != RePassword)
+            if (Password != OldPassword)
                 return false;
             else
                 return true;

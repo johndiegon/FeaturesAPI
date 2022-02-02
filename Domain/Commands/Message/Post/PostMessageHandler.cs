@@ -1,39 +1,42 @@
 ﻿using AutoMapper;
 using Domain.Models;
+using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Domain.Commands.List.GetResume
+namespace Domain.Commands.Message.Post
 {
-
-    public class GetResumeListCommandHandler : IRequestHandler<GetResumeListCommand, GetResumeListCommandResponse>
+    public class PostMessageHandler : IRequestHandler<PostMessageCommand, CommandResponse>
     {
-        private readonly IResumeContactListRepository _repository;
+        private readonly IMessagesDefaultRepository _messageRepository;
         private readonly IClientRepository _clientRepository;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public GetResumeListCommandHandler(IResumeContactListRepository repository
+        public PostMessageHandler(IMessagesDefaultRepository messageRepository
                                      , IMapper mapper
                                      , IMediator mediator
                                      , IClientRepository clientRepository
                                      )
         {
-            _repository = repository;
+            _messageRepository = messageRepository;
             _mapper = mapper;
             _mediator = mediator;
             _clientRepository = clientRepository;
         }
 
-        public async Task<GetResumeListCommandResponse> Handle(GetResumeListCommand request, CancellationToken cancellationToken)
+
+        public async Task<CommandResponse> Handle(PostMessageCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var response = new GetResumeListCommandResponse();
+                var response = new CommandResponse();
                 if (!request.IsValid())
                 {
                     response = GetResponseErro("The request is invalid.");
@@ -42,18 +45,19 @@ namespace Domain.Commands.List.GetResume
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                    var repost = _repository.GetByClientId(client.Id);
 
-                    var resume = _mapper.Map<ResumeContactList>(repost);
-
-                    response = new GetResumeListCommandResponse
+                    var messageEntity = new MessagesDefaultEntity()
                     {
-                        Resume = resume,
-                        IsASubscriber = client.IsASubscriber,
-                        Data = new Data
-                        {
-                            Status = Status.Sucessed
-                        }
+                        IdClient = client.Id,
+                        Message = request.Message,
+                    };
+
+                    var message =  _messageRepository.Create(messageEntity);
+
+                    response.Data = new Data
+                    {
+                        Message = "Mensagem criada com sucesso!",
+                        Status = Status.Sucessed
                     };
                 }
 
@@ -65,9 +69,9 @@ namespace Domain.Commands.List.GetResume
             }
         }
 
-        private GetResumeListCommandResponse GetResponseErro(string Message)
+        private CommandResponse GetResponseErro(string Message)
         {
-            return new GetResumeListCommandResponse
+            return new CommandResponse
             {
                 Data = new Data
                 {
@@ -76,6 +80,5 @@ namespace Domain.Commands.List.GetResume
                 }
             };
         }
-
     }
 }

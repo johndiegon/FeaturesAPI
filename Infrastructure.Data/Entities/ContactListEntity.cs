@@ -16,7 +16,7 @@ namespace Infrastructure.Data.Entities
         public DateTime CreationDate { get; set; }
         public int Count { get; set; }
         public DateTime? DateMessage { get; set; }
-        public List<object> ListSendMessage { get;set; }
+        public List<MessageEntity> ListSendMessage { get;set; }
 
         public List<ContactEntity> ListContact { get; set; }
     }

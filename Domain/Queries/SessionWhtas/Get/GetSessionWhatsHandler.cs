@@ -1,55 +1,58 @@
 ﻿using AutoMapper;
 using Domain.Models;
+using FeaturesAPI.Domain.Models;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Domain.Commands.List.GetResume
+namespace Domain.Queries.SessionWhtas.Get
 {
-
-    public class GetResumeListCommandHandler : IRequestHandler<GetResumeListCommand, GetResumeListCommandResponse>
+    public class GetSessionWhatsHandler : IRequestHandler<GetSessionWhats, GetSessionWhatsResponse>
     {
-        private readonly IResumeContactListRepository _repository;
+        private readonly ISessionWhatsAppRepository _sessionRepository;
         private readonly IClientRepository _clientRepository;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public GetResumeListCommandHandler(IResumeContactListRepository repository
+        public GetSessionWhatsHandler(ISessionWhatsAppRepository sessionRepository
                                      , IMapper mapper
                                      , IMediator mediator
                                      , IClientRepository clientRepository
                                      )
         {
-            _repository = repository;
+            _sessionRepository = sessionRepository;
             _mapper = mapper;
             _mediator = mediator;
             _clientRepository = clientRepository;
         }
 
-        public async Task<GetResumeListCommandResponse> Handle(GetResumeListCommand request, CancellationToken cancellationToken)
+        public async Task<GetSessionWhatsResponse> Handle(GetSessionWhats request, CancellationToken cancellationToken)
         {
             try
             {
-                var response = new GetResumeListCommandResponse();
+                var response = new GetSessionWhatsResponse();
                 if (!request.IsValid())
                 {
                     response = GetResponseErro("The request is invalid.");
-                    response.Notification = request.Notifications();
                 }
                 else
                 {
-                    var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                    var repost = _repository.GetByClientId(client.Id);
 
-                    var resume = _mapper.Map<ResumeContactList>(repost);
+                    var clientId = !string.IsNullOrEmpty(request.IdClient) ? request.IdClient
+                                        : _clientRepository.GetByUser(request.IdUser).FirstOrDefault().Id;
 
-                    response = new GetResumeListCommandResponse
+                    var session  = _sessionRepository.GetByClientId(clientId).Where( s=> s.Phone == request.Phone);
+
+                    var resume = _mapper.Map<SessionWhatsApp>(session);
+
+                    response = new GetSessionWhatsResponse
                     {
-                        Resume = resume,
-                        IsASubscriber = client.IsASubscriber,
+                        SessionWhtas = resume,
                         Data = new Data
                         {
                             Status = Status.Sucessed
@@ -65,9 +68,9 @@ namespace Domain.Commands.List.GetResume
             }
         }
 
-        private GetResumeListCommandResponse GetResponseErro(string Message)
+        private GetSessionWhatsResponse GetResponseErro(string Message)
         {
-            return new GetResumeListCommandResponse
+            return new GetSessionWhatsResponse
             {
                 Data = new Data
                 {
@@ -76,6 +79,5 @@ namespace Domain.Commands.List.GetResume
                 }
             };
         }
-
     }
 }
