@@ -68,7 +68,7 @@ namespace Domain.Commands.Chat
                         IdClient = client.Id,
                         PhoneFrom = request.Message.PhoneFrom,
                         PhoneTo = request.Message.PhoneTo,
-                        NameReceiver = contact.Name,
+                        NameReceiver = contact != null ? contact.Name : "",
                         MessageList = messages
                     };
                     _chatRepository.Create(chat);
@@ -83,6 +83,7 @@ namespace Domain.Commands.Chat
                         PhoneFrom = request.Message.PhoneFrom,
                         PhoneTo = request.Message.PhoneTo,
                     };
+                    chat.NameReceiver = chat.NameReceiver != contact.Name ? contact.Name : chat.NameReceiver;
                     chat.MessageList.Add(message);
 
                     _chatRepository.Update(chat);

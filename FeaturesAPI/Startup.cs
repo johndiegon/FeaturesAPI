@@ -236,13 +236,8 @@ namespace FeaturesAPI
             services.AddScoped<IStorage, OrderStorage>();
             services.AddScoped<ITopicServiceBuss, ServiceTopic>();
 
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(ClientProfile)));
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(UserProfile)));
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(ResumeContactListProfile)));
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(DataDashboardProfile)));
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(ChatProfile)));
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(ChatProfile)));
-
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(FeaturesProfile)));
+            
             var key = Encoding.ASCII.GetBytes(Settings.TokenSecret);
 
             //Autenticação 

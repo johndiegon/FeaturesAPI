@@ -8,5 +8,12 @@ namespace Domain.Commands.Chat
     {
         public MessageOnChat Message { get; set; }
         public string IdUser { get; set; }
+
+        public override bool IsValid()
+        {
+            if(IdUser == null)
+                return false;
+            return true;
+        }
     }
 }
