@@ -31,6 +31,11 @@ namespace Domain.Commands.User.ChangePassword
                 if (user == null)
                     return GetResponseErro("Usuário inválido.");
 
+                //Verifica se o usuário existe
+                if (user.Password != request.OldPassword)
+                    return GetResponseErro("Senhas inválida.");
+
+
                 user.Password = request.Password;
 
                 _userRepository.Update(user);

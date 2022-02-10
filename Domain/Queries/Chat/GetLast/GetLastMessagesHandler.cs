@@ -7,49 +7,42 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Domain.Commands.List.GetResume
+namespace Domain.Queries.Chat.GetLast
 {
-
-    public class GetResumeListCommandHandler : IRequestHandler<GetResumeListCommand, GetResumeListCommandResponse>
+    public class GetLastMessagesHandler : IRequestHandler<GetLastMessages, GetLastMessagesResponse>
     {
-        private readonly IResumeContactListRepository _repository;
         private readonly IClientRepository _clientRepository;
+        private readonly ILastMessageRepository _lastMessageRepository;
         private readonly IMapper _mapper;
-        private readonly IMediator _mediator;
 
-        public GetResumeListCommandHandler(IResumeContactListRepository repository
+        public GetLastMessagesHandler(IClientRepository clientRepository
+                                     , ILastMessageRepository lastMessageRepository
                                      , IMapper mapper
-                                     , IMediator mediator
-                                     , IClientRepository clientRepository
                                      )
         {
-            _repository = repository;
-            _mapper = mapper;
-            _mediator = mediator;
             _clientRepository = clientRepository;
+            _lastMessageRepository = lastMessageRepository;
+            _mapper = mapper;
         }
 
-        public async Task<GetResumeListCommandResponse> Handle(GetResumeListCommand request, CancellationToken cancellationToken)
+        public async Task<GetLastMessagesResponse> Handle(GetLastMessages request, CancellationToken cancellationToken)
         {
             try
             {
-                var response = new GetResumeListCommandResponse();
+                var response = new GetLastMessagesResponse();
+               
                 if (!request.IsValid())
                 {
                     response = GetResponseErro("The request is invalid.");
-                    response.Notification = request.Notifications();
                 }
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                    var repost = _repository.GetByClientId(client.Id);
+                    var lastMessage = _lastMessageRepository.GetByClientId(client.Id).FirstOrDefault();
 
-                    var resume = _mapper.Map<ResumeContactList>(repost);
-
-                    response = new GetResumeListCommandResponse
+                    response = new GetLastMessagesResponse
                     {
-                        Resume = resume,
-                        IsASubscriber = client.IsASubscriber,
+                        ListLastMessages = _mapper.Map<ListLastMessages>(lastMessage),
                         Data = new Data
                         {
                             Status = Status.Sucessed
@@ -65,9 +58,9 @@ namespace Domain.Commands.List.GetResume
             }
         }
 
-        private GetResumeListCommandResponse GetResponseErro(string Message)
+        private GetLastMessagesResponse GetResponseErro(string Message)
         {
-            return new GetResumeListCommandResponse
+            return new GetLastMessagesResponse
             {
                 Data = new Data
                 {
@@ -76,6 +69,6 @@ namespace Domain.Commands.List.GetResume
                 }
             };
         }
-
     }
 }
+
