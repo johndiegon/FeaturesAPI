@@ -17,10 +17,13 @@ namespace Domain.Queries.Dashboard.Get
 
         public GetDashboardQueryHandler(IClientRepository clientRepository
                                      , IMapper mapper
+                                 , IDataDashboardRepository dataDashboardRepostory
+
                                      )
         {
             _clientRepository = clientRepository;
             _mapper = mapper;
+            _dataDashboardRepostory = dataDashboardRepostory;
         }
 
         public async Task<GetDashboardQueryResponse> Handle(GetDashboardQuery request, CancellationToken cancellationToken)
