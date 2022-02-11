@@ -50,6 +50,7 @@ namespace Domain.Commands.Message.Put
                         Id= request.IdMessage,
                         IdClient = client.Id,
                         Message = request.Message,
+                        Title = request.Title
                     };
 
                     var message = _messageRepository.Update(messageEntity);

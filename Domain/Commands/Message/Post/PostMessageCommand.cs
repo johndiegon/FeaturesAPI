@@ -8,6 +8,7 @@ namespace Domain.Commands.Message.Post
     {
         public string IdUser { get; set; }
         public string Message { get; set; }
+        public string Title { get; set; }
 
         public override bool IsValid()
         {

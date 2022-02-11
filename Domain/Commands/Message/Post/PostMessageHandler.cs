@@ -50,6 +50,7 @@ namespace Domain.Commands.Message.Post
                     {
                         IdClient = client.Id,
                         Message = request.Message,
+                        Title = request.Title
                     };
 
                     var message =  _messageRepository.Create(messageEntity);
