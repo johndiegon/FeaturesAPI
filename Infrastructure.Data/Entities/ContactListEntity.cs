@@ -12,13 +12,14 @@ namespace Infrastructure.Data.Entities
         public string Id { get; set; }
         public string IdClient { get; set; }
         public string Name { get; set; }
-        public TypeListEntity TypeList { get; set; }
         public DateTime CreationDate { get; set; }
+        public TypeListEntity TypeList { get; set; }
         public int Count { get; set; }
         public DateTime? DateMessage { get; set; }
+        public List<ContactEntity> ListContact { get; set; }
+
         public List<MessageEntity> ListSendMessage { get;set; }
 
-        public List<ContactEntity> ListContact { get; set; }
     }
     public class MessageEntity
     {

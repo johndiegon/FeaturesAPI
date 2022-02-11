@@ -8,7 +8,7 @@ namespace Domain.Models
 
         public string IdClient { get; set; }
 
-        public IList<ContactList> ContactLists { get; set; }
+        public List<ContactList> ContactLists { get; set; }
     }
 
 }

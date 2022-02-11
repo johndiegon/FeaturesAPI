@@ -12,6 +12,6 @@ namespace Infrastructure.Data.Entities
 
         public string IdClient { get; set; }
 
-        public IList<ContactListEntity> ContactLists{ get; set; }
+        public List<ContactListEntity> ContactLists{ get; set; }
     }
 }

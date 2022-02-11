@@ -23,7 +23,7 @@ namespace Infrastructure.Data.Entities
         public int OrdersTotal { get; set; }
         public decimal AveragePrice { get; set; }
         public ContactStatusEntity Status { get; set; }
-        public IEnumerable<OrderEntity> Orders { get; set; }
+        public List<OrderEntity> Orders { get; set; }
 
     }
     public class OrderEntity

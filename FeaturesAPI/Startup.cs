@@ -237,7 +237,8 @@ namespace FeaturesAPI
             services.AddScoped<ITopicServiceBuss, ServiceTopic>();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(FeaturesProfile)));
-            
+
+
             var key = Encoding.ASCII.GetBytes(Settings.TokenSecret);
 
             //Autenticação 

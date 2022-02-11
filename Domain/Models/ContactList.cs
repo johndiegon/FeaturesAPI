@@ -15,8 +15,8 @@ namespace Domain.Models
         public TypeList TypeList { get; set; }
         public int Count { get; set; }
         public DateTime? DateMessage { get; set; }       
-        public IEnumerable<Contact> ListContact { get; set; }
-        public List<object> ListSendMessage { get; set; }
+        public List<Contact> ListContact { get; set; }
+        public List<Message> ListSendMessage { get; set; }
 
         public override bool IsValid()
         {

@@ -42,7 +42,7 @@ namespace Domain.Commands.List.GetResume
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                    var repost = _repository.GetByClientId(client.Id);
+                    var repost = _repository.GetByClientId(client.Id).FirstOrDefault();
 
                     var resume = _mapper.Map<ResumeContactList>(repost);
 

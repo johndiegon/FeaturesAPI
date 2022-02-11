@@ -31,8 +31,8 @@ namespace Domain.Profiles
             CreateMap<ListLastMessageEntity, ListLastMessages>();
             CreateMap<LastMessageEntity, LastMessage>();
 
-            CreateMap<MessageDefault, MessageEntity>();
-            CreateMap<MessageEntity, MessageDefault>();
+            CreateMap<MessageDefault, MessagesDefaultEntity>();
+            CreateMap<MessagesDefaultEntity, MessageDefault>();
 
             #endregion
 
@@ -85,8 +85,10 @@ namespace Domain.Profiles
             CreateMap<GeneralDataEntity, GeneralData>();
             CreateMap<GeneralData, GeneralDataEntity>();
 
-            CreateMap<ResumeContactList, ResumeContactListEntity>();
             CreateMap<ResumeContactListEntity, ResumeContactList>();
+
+            CreateMap<ResumeContactList, ResumeContactListEntity>();
+
 
             CreateMap<SessionWhatsApp, SessionWhatsAppEntity>();
             CreateMap<SessionWhatsAppEntity, SessionWhatsApp>();
