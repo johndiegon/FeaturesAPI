@@ -23,6 +23,12 @@ namespace Domain.Commands.User.ChangePassword
                 {
                     GetResponseErro("As senhas estão invalidas.");
                 }
+
+                if (!request.IsEqual())
+                {
+                    GetResponseErro("As senhas não podem as mesmas");
+                }            
+
                 // Recupera o usuário
                 var user = _userRepository.GetByLogin(request.Email);
 
@@ -33,7 +39,7 @@ namespace Domain.Commands.User.ChangePassword
 
                 //Verifica se o usuário existe
                 if (user.Password != request.OldPassword)
-                    return GetResponseErro("Senhas inválida.");
+                    return GetResponseErro("Senha inválida.");
 
 
                 user.Password = request.Password;

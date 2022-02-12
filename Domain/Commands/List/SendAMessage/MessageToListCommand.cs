@@ -20,7 +20,6 @@ namespace Domain.Commands.List.SendAMessage
     {
         public string IdList { get; set; }
         public string Message { get; set; }
-        public IFormFile Picture { get; set; }
     }
 
 }

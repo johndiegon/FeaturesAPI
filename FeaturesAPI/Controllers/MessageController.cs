@@ -81,14 +81,14 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult<CommandResponse>> Post(string message)
+        public async Task<ActionResult<CommandResponse>> Post(string message, string title)
         {
             try
             {
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
 
-                var messageToList = new PostMessageCommand { Message = message, IdUser = idUser };
+                var messageToList = new PostMessageCommand { Message = message, IdUser = idUser, Title = title };
 
 
                 var response = await _mediator.Send(messageToList);

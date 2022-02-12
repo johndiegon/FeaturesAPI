@@ -13,8 +13,13 @@ namespace Domain.Commands.User.ChangePassword
         {
             if(Email == null || Password == null || OldPassword == null)
                 return false;
-            
-            if (Password != OldPassword)
+            else
+                return true;
+        }
+
+        public bool IsEqual()
+        {
+            if (Password == OldPassword)
                 return false;
             else
                 return true;

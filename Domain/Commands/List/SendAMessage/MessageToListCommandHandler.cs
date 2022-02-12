@@ -83,10 +83,7 @@ namespace Domain.Commands.List.SendAMessage
 
                     string storageFile = string.Empty;
 
-                    if (request.MessageRequest.Picture != null)
-                    {
-                        storageFile = await _blobStorage.UploadFile(request.MessageRequest.Picture);
-                    }
+                    
 
                     #endregion
 
