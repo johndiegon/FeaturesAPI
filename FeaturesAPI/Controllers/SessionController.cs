@@ -106,7 +106,8 @@ namespace FeaturesAPI.Controllers
         /// <summary>
         ///     Action to post a session in database.
         /// </summary>
-        /// <param name="session">Model to post a session</param>
+        /// <param name="phone">Model to post a session</param>
+        /// <param name="idClient">Model to post a session</param>
         /// <response code="200">Returned a client.</response>
         /// <response code="400">Returned if the model couldn't be parsed or saved</response>
         /// <response code="422">Returned when the validation failed</response>
@@ -115,15 +116,13 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ApiKey]
         [HttpGet]
-        [Route("Phone")]
+        [Route("{idClient}/Phone/{phone}")]
         public async Task<ActionResult<GetSessionWhatsResponse>> GetSession(string phone, string idClient)
         {
 
             try
             {
-                var claimsIdentity = User.Identity as ClaimsIdentity;
-                var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
-
+        
                 var getSession = new GetSessionWhats() { IdClient = idClient, Phone = phone };
                 var response = await _mediator.Send(getSession);
 

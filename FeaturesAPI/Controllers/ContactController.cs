@@ -1,19 +1,17 @@
 ﻿using AutoMapper;
+using Domain.Commands.Contact.Disable;
 using Domain.Commands.Contact.Post;
 using Domain.Commands.Contact.Put;
 using Domain.Models;
 using Domain.Queries.ContactByClientId;
+using FeaturesAPI.Atributes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Domain.Models.Enums;
-using Domain.Commands.Contact.Disable;
-using FeaturesAPI.Atributes;
 
 namespace API.Controllers
 {

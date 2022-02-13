@@ -54,6 +54,7 @@ using Domain.Commands.Message.Delete;
 using Domain.Commands.Message.Put;
 using Domain.Commands.Message.Post;
 using Domain.Queries.Message.Get;
+using Domain.Queries.Message.GetSend;
 
 namespace FeaturesAPI
 {
@@ -204,6 +205,7 @@ namespace FeaturesAPI
             services.AddTransient<IRequestHandler<PutMessageCommand, CommandResponse>, PutMessageHandler>();
             services.AddTransient<IRequestHandler<PostMessageCommand, CommandResponse>, PostMessageHandler>();
             services.AddTransient<IRequestHandler<GetMessageQuery, GetMessageResponse>, GetMessageHandler>();
+            services.AddTransient<IRequestHandler<GetSendMessageQuery, GetSendMessageResponse>, GetSendMessageQueryHandler>();
 
             #endregion
 

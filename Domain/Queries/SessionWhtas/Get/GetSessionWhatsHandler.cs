@@ -4,9 +4,7 @@ using FeaturesAPI.Domain.Models;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,29 +34,31 @@ namespace Domain.Queries.SessionWhtas.Get
             try
             {
                 var response = new GetSessionWhatsResponse();
-                if (!request.IsValid())
+
+                var clientId = !string.IsNullOrEmpty(request.IdClient) ? request.IdClient
+                                      : _clientRepository.GetByUser(request.IdUser).FirstOrDefault().Id;
+
+                var session = _sessionRepository.GetByClientId(clientId).Where(s => s.Phone == request.Phone).FirstOrDefault();
+
+                var resume = _mapper.Map<SessionWhatsApp>(session);
+
+                response = new GetSessionWhatsResponse
                 {
-                    response = GetResponseErro("The request is invalid.");
-                }
-                else
-                {
-
-                    var clientId = !string.IsNullOrEmpty(request.IdClient) ? request.IdClient
-                                        : _clientRepository.GetByUser(request.IdUser).FirstOrDefault().Id;
-
-                    var session  = _sessionRepository.GetByClientId(clientId).Where( s=> s.Phone == request.Phone);
-
-                    var resume = _mapper.Map<SessionWhatsApp>(session);
-
-                    response = new GetSessionWhatsResponse
+                    SessionWhtas = resume,
+                    Data = new Data
                     {
-                        SessionWhtas = resume,
-                        Data = new Data
-                        {
-                            Status = Status.Sucessed
-                        }
-                    };
-                }
+                        Status = Status.Sucessed
+                    }
+                };
+                //if (!request.IsValid())
+                //{
+                //    response = GetResponseErro("The request is invalid.");
+                //}
+                //else
+                //{
+
+                  
+                //}
 
                 return await Task.FromResult(response);
             }

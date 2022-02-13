@@ -10,6 +10,7 @@ namespace Domain.Models
         public decimal InactiveCustomers90Days { get; set; }
         public decimal InactiveCustomers60Days { get; set; }
         public decimal InactiveCustomers30Days { get; set; }
+        public decimal ActiveClients { get; set; }
         public decimal OrderQuantity { get; set; }
         public decimal AverageTicket { get; set; }
         public int OrdersDuringTheNigth { get; set; }
