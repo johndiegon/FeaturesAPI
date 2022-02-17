@@ -62,7 +62,7 @@ namespace Domain.Commands.List.SendAMessage
                     {
                         if (item.Id == request.MessageRequest.IdList)
                         {
-                            if (item.DateMessage != null)
+                            if (item.DateMessage == null)
                             {
                                 item.DateMessage = DateTime.Now;
                             }
@@ -100,7 +100,10 @@ namespace Domain.Commands.List.SendAMessage
                     var message = JsonConvert.SerializeObject(messageObject);
 
                     await _topicService.SendMessage(message, "sendMessageToList");
+
                     #endregion
+
+                    response.Data = new Data {  Status = Status.Sucessed };
                 }
                 return response;
             }
