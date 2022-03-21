@@ -1,23 +1,43 @@
 using Domain;
 using Domain.Commands.Authenticate;
+using Domain.Commands.Chat;
 using Domain.Commands.Client.Delete;
 using Domain.Commands.Client.Post;
 using Domain.Commands.Client.Put;
 using Domain.Commands.Contact.Post;
 using Domain.Commands.Contact.Put;
+using Domain.Commands.Dashboard;
 using Domain.Commands.File.Post;
 using Domain.Commands.List.GetResume;
 using Domain.Commands.List.Post;
 using Domain.Commands.List.PostResume;
 using Domain.Commands.List.Put;
+using Domain.Commands.List.SendAMessage;
+using Domain.Commands.Message.Delete;
+using Domain.Commands.Message.Post;
+using Domain.Commands.Message.Put;
+using Domain.Commands.Post.TwiilioAccess;
+using Domain.Commands.Post.TwilioAccess;
+using Domain.Commands.Put.TwiilioAccess;
+using Domain.Commands.Put.TwilioAccess;
+using Domain.Commands.SessionWhats.Post;
 using Domain.Commands.TypeList.Post;
+using Domain.Commands.User.ChangePassword;
+using Domain.Commands.User.ConfirmEmail;
 using Domain.Commands.User.Post;
 using Domain.Commands.User.Put;
-using Domain.Queries.Address;
 using Domain.Models;
 using Domain.Profiles;
+using Domain.Queries.Address;
+using Domain.Queries.Chat.Get;
+using Domain.Queries.Chat.GetLast;
 using Domain.Queries.Client;
 using Domain.Queries.ContactByClientId;
+using Domain.Queries.Dashboard.Get;
+using Domain.Queries.List.Get;
+using Domain.Queries.Message.Get;
+using Domain.Queries.Message.GetSend;
+using Domain.Queries.TwilioAccess.Get;
 using FeaturesAPI.Infrastructure.Data.Interface;
 using FeaturesAPI.Infrastructure.Models;
 using FeaturesAPI.Services;
@@ -40,21 +60,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
-using Domain.Commands.List.SendAMessage;
-using Domain.Commands.User.ChangePassword;
-using Domain.Commands.User.ConfirmEmail;
-using Domain.Commands.Dashboard;
-using Domain.Queries.Dashboard.Get;
-using Domain.Commands.Chat;
-using Domain.Queries.Chat.Get;
-using Domain.Queries.Chat.GetLast;
-using Domain.Queries.SessionWhtas.Get;
-using Domain.Commands.SessionWhats.Post;
-using Domain.Commands.Message.Delete;
-using Domain.Commands.Message.Put;
-using Domain.Commands.Message.Post;
-using Domain.Queries.Message.Get;
-using Domain.Queries.Message.GetSend;
 
 namespace FeaturesAPI
 {
@@ -156,10 +161,12 @@ namespace FeaturesAPI
             #region >> File
             services.AddTransient<IRequestHandler<PostFileCommand, PostFileCommandResponse>, PostFileCommandHandler>();
             #endregion
+          
             #region >> Contact
             services.AddTransient<IRequestHandler<PostContactCommand, PostContactCommandResponse>, PostContactCommandHandler>();
             services.AddTransient<IRequestHandler<PutContactCommand, CommandResponse>, PutContactCommandHandler>();
             #endregion
+            
             #region >> List
             services.AddTransient<IRequestHandler<PostContactListCommand, PostContactListCommandResponse>, PostContactListCommandHandler>();
             services.AddTransient<IRequestHandler<PutContactListCommand, PutContactListCommandResponse>, PutContactListCommandHandler>();
@@ -168,21 +175,35 @@ namespace FeaturesAPI
             services.AddTransient<IRequestHandler<GetResumeListCommand, GetResumeListCommandResponse>, GetResumeListCommandHandler>();
 
             #endregion
+            
             #region >> Send a Message 
             services.AddTransient<IRequestHandler<MessageToListCommand, CommandResponse>, MessageToListCommandHandler>();
 
             #endregion
+
+            #region >> Credentials Twilio
+            
+            services.AddTransient<IRequestHandler<PostTwilioAccess, CommandResponse>, PostTwilioAccessHandler>();
+            services.AddTransient<IRequestHandler<PutTwilioAccess, CommandResponse>, PutTwilioAccessHandler>();
+            services.AddTransient<IRequestHandler<GetTwilioCredentials, GetTwilioCredentialsResponse>, GetTwilioCredentialsHandler>();
+
+            #endregion
+
             #endregion
 
             #region >> Query
+
             #region >> Client
             services.AddTransient<IRequestHandler<GetClientQuery, GetClientQueryResponse>, GetClientQueryHandler>();
+            services.AddTransient<IRequestHandler<GetListQuery, GetListResponse>, GetListQueryHandler>();
+
             #endregion
 
             #region >> Contact
             services.AddTransient<IRequestHandler<GetContactsQuery, GetContactsQueryResponse>, GetContactsQueryHandler>();
 
             #endregion
+          
             #endregion
 
             #region >> Chat
@@ -194,7 +215,7 @@ namespace FeaturesAPI
 
             #region >> Session 
 
-            services.AddTransient<IRequestHandler<GetSessionWhats, GetSessionWhatsResponse>, GetSessionWhatsHandler>();
+            services.AddTransient<IRequestHandler<GetTwilioCredentials, GetTwilioCredentialsResponse>, GetTwilioCredentialsHandler>();
             services.AddTransient<IRequestHandler<PostSessionWhatsCommand, CommandResponse>, PostSessionWhatsHandler>();
 
             #endregion
@@ -206,7 +227,7 @@ namespace FeaturesAPI
             services.AddTransient<IRequestHandler<PostMessageCommand, CommandResponse>, PostMessageHandler>();
             services.AddTransient<IRequestHandler<GetMessageQuery, GetMessageResponse>, GetMessageHandler>();
             services.AddTransient<IRequestHandler<GetSendMessageQuery, GetSendMessageResponse>, GetSendMessageQueryHandler>();
-
+        
             #endregion
 
             services.AddScoped(typeof(IViaCepService), typeof(ViaCepService));
@@ -222,6 +243,7 @@ namespace FeaturesAPI
             services.AddScoped<IDataDashboardRepository, DataDashboardRepository>();
             services.AddScoped<ISessionWhatsAppRepository , SessionWhatsAppRepository>();
             services.AddScoped<IMessagesDefaultRepository, MessagesDefaultRepository>();
+            services.AddScoped<ITwillioAccessRepository, TwillioAccessRepository>();
 
             services.AddSingleton<ClientRepository>();
             services.AddSingleton<ContactListRepository>();
@@ -233,13 +255,13 @@ namespace FeaturesAPI
             services.AddSingleton<LastMessageRepository>();
             services.AddSingleton<SessionWhatsAppRepository>();
             services.AddSingleton<MessagesDefaultRepository>();
+            services.AddSingleton<TwillioAccessRepository>();
             services.AddControllersWithViews();
 
             services.AddScoped<IStorage, OrderStorage>();
             services.AddScoped<ITopicServiceBuss, ServiceTopic>();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(FeaturesProfile)));
-
 
             var key = Encoding.ASCII.GetBytes(Settings.TokenSecret);
 

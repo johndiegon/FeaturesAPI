@@ -3,6 +3,7 @@ using Domain.Models;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -41,12 +42,13 @@ namespace Domain.Queries.Chat.Get
                                                   .FirstOrDefault();
 
                     var messageOnChat = _chatRepository.GetByClientId(client.Id)
-                                                       .Where( chat => chat.PhoneTo == request.PhoneTo)
-                                                       .FirstOrDefault();
+                                                      .Where(chat => chat.PhoneTo == request.PhoneTo)
+                                                      .FirstOrDefault();
 
                     response = new GetChatMessageResponse
                     {
-                        MessageOnChat = _mapper.Map<MessageOnChat>(messageOnChat),
+                        MessagesOnChat = messageOnChat == null ? null 
+                                              : _mapper.Map<List<MessageOnChat>>(messageOnChat.MessageList),
                         Data = new Data
                         {
                             Status = Status.Sucessed

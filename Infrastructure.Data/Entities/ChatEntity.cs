@@ -24,5 +24,6 @@ namespace Infrastructure.Data.Entities
         public DateTime DateTime { get; set; }
         public string Message { get; set; }
         public string UrlPicture { get; set; }
+        public bool WasVisible { get; set; }
     }
 }

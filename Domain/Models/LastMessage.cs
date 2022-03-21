@@ -10,5 +10,6 @@ namespace Domain.Models
         public string NameTo { get; set; }
         public DateTime DateTime { get; set; }
         public string Message { get; set; }
+        public string UrlMessage { get; set; }
     }
 }

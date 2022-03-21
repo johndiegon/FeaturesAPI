@@ -98,6 +98,11 @@ namespace Domain.Profiles
             CreateMap<UserModel, UserEntity>();
             CreateMap<UserEntity, UserModel>();
             #endregion
+
+            #region >> Mapping Credentials
+            CreateMap<TwilioCredentials, TwillioAccessEntity>();
+            CreateMap<TwillioAccessEntity, TwilioCredentials>();
+            #endregion
         }
     }
 }

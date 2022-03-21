@@ -7,7 +7,6 @@ using Infrasctuture.Service.Contracts;
 using Infrasctuture.Service.Interfaces;
 using Infrastructure.Data.Interfaces;
 using MediatR;
-using Newtonsoft.Json;
 using System;
 using System.Threading;
 using System.Threading.Tasks;

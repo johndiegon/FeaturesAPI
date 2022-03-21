@@ -19,5 +19,6 @@ namespace FeaturesAPI.Infrastructure.Models
         public string SessionWhatsAppCollectionName { get; set; }   
         public string LastMessageCollectionName { get; set; }
         public string MessagesDefaultColletionName { get; set; }
+        public string TwillioAccessCollentionName {  get; set; }    
     }
 }

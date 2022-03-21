@@ -19,5 +19,7 @@ namespace Domain.Models
         }
         public DateTime DateTime { get; set; }    
         public string Message { get; set; }
+        public bool WasVisible { get; set; }
+        public string UrlPicture { get; set; }
     }
 }

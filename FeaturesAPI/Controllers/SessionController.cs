@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Commands.SessionWhats.Post;
 using Domain.Models;
-using Domain.Queries.SessionWhtas.Get;
+using Domain.Queries.TwilioAccess.Get;
 using FeaturesAPI.Atributes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -77,7 +77,7 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpGet]
-        public async Task<ActionResult<GetSessionWhatsResponse>> Get(string phone)
+        public async Task<ActionResult<GetTwilioCredentialsResponse>> Get(string phone)
         {
 
             try
@@ -85,7 +85,7 @@ namespace FeaturesAPI.Controllers
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
 
-                var getSession = new GetSessionWhats() {  IdUser = idUser , Phone = phone};
+                var getSession = new GetTwilioCredentials() {  IdUser = idUser , PhoneFrom = phone};
                 var response = await _mediator.Send(getSession);
 
                 if (response.Data.Status == Status.Sucessed)
@@ -117,13 +117,13 @@ namespace FeaturesAPI.Controllers
         [ApiKey]
         [HttpGet]
         [Route("{idClient}/Phone/{phone}")]
-        public async Task<ActionResult<GetSessionWhatsResponse>> GetSession(string phone, string idClient)
+        public async Task<ActionResult<GetTwilioCredentialsResponse>> GetSession(string phone, string idClient)
         {
 
             try
             {
         
-                var getSession = new GetSessionWhats() { IdClient = idClient, Phone = phone };
+                var getSession = new GetTwilioCredentials() { IdClient = idClient, PhoneFrom = phone };
                 var response = await _mediator.Send(getSession);
 
                 if (response.Data.Status == Status.Sucessed)
