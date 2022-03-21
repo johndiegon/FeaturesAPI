@@ -21,9 +21,9 @@ namespace Domain.Validators
             //        .Must(BeAValidPhone)
             //        .WithMessage("{PropertyName} it is not a valid phone");
 
-            RuleFor(x => x.User)
-                    .NotNull()
-                    .WithMessage("{PropertyName} cannot be null");
+            //RuleFor(x => x.User)
+            //        .NotNull()
+            //        .WithMessage("{PropertyName} cannot be null");
 
             RuleFor(x => x.DocType)
                     .NotNull()

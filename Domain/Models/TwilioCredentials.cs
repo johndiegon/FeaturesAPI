@@ -10,7 +10,7 @@ namespace Domain.Models
         public string PhoneFrom
         {
             get { return _phone; }
-            set { _phone = Phone.TakeAValidNumber(value); }
+            set { _phone = PhoneValid.TakeAValidNumber(value); }
         }
         public string AccountSid { get; set; }
         public string AuthToken { get; set; }

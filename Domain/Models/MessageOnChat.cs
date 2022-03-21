@@ -10,12 +10,12 @@ namespace Domain.Models
         public string PhoneFrom 
         { 
             get { return _phoneFrom; } 
-            set { _phoneFrom = Phone.TakeAValidNumber(value); } 
+            set { _phoneFrom = PhoneValid.TakeAValidNumber(value); } 
         }
         public string PhoneTo
         {
             get { return _phoneTo; }
-            set { _phoneTo = Phone.TakeAValidNumber(value); }
+            set { _phoneTo = PhoneValid.TakeAValidNumber(value); }
         }
         public DateTime DateTime { get; set; }    
         public string Message { get; set; }

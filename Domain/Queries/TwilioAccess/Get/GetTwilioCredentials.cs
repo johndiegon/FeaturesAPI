@@ -10,7 +10,7 @@ namespace Domain.Queries.TwilioAccess.Get
         public string PhoneFrom
         {
             get { return _phone; }
-            set { _phone = Phone.TakeAValidNumber(value); }
+            set { _phone = PhoneValid.TakeAValidNumber(value); }
         }
         public string IdUser { get; set; }
         public string IdClient { get; set; }

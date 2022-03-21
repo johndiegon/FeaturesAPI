@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Helpers
+﻿namespace Domain.Helpers
 {
-    public static class Phone
+    public static class PhoneValid
     {
         public static string TakeAValidNumber(string phone)
         {

@@ -46,10 +46,15 @@ namespace Domain.Commands.Chat
                     return await Task.FromResult(GetResponseErro("Request invalid."));
 
                 var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                var contact = _contactRepository.GetByPhone(request.Message.PhoneTo).Where(c => c.IdClient == client.Id).FirstOrDefault();
+                var phoneClient = client.Phone
+                                        .Where( p => p == request.Message.PhoneFrom || p == request.Message.PhoneTo)
+                                        .FirstOrDefault();
+                var phoneContact = phoneClient == request.Message.PhoneTo ? request.Message.PhoneFrom
+                                                                        : request.Message.PhoneTo;
 
+                var contact = _contactRepository.GetByPhone(phoneContact).Where(c => c.IdClient == client.Id).FirstOrDefault();
 
-                var chat =  _chatRepository.GetByClientId(client.Id).Where(c => c.PhoneFrom == request.Message.PhoneFrom).FirstOrDefault();
+                var chat =  _chatRepository.GetByClientId(client.Id).Where(c => c.PhoneFrom == phoneClient).FirstOrDefault();
 
                 if (chat == null)
                 {
@@ -66,8 +71,8 @@ namespace Domain.Commands.Chat
                     chat = new ChatEntity
                     {
                         IdClient = client.Id,
-                        PhoneFrom = request.Message.PhoneFrom,
-                        PhoneTo = request.Message.PhoneTo,
+                        PhoneFrom = phoneClient,
+                        PhoneTo = phoneContact,
                         NameReceiver = contact != null ? contact.Name : "",
                         MessageList = messages
                     };
