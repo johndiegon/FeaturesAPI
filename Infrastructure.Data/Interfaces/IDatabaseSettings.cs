@@ -16,7 +16,8 @@
         string LastMessageCollectionName { get; set; }
         string SessionWhatsAppCollectionName { get; set; }
         string MessagesDefaultColletionName { get; set; }
-        string TwillioAccessCollentionName { get; set; }
+        string TwilioAccessColletionName { get; set; }
+        string TwilioRequestCollectionName { get; set; }
         string DatabaseName { get; set; }
     }
   

@@ -15,7 +15,7 @@ namespace Infrastructure.Data.Repositorys
             var client = new MongoClient(settingsMongo);
             var database = client.GetDatabase(settings.DatabaseName);
 
-            _collection = database.GetCollection<TwillioAccessEntity>(settings.TwillioAccessCollentionName);
+            _collection = database.GetCollection<TwillioAccessEntity>(settings.TwilioAccessColletionName);
         }
         public TwillioAccessEntity Create(TwillioAccessEntity entity)
         {

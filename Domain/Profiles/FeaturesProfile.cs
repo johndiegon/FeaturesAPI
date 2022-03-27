@@ -77,8 +77,9 @@ namespace Domain.Profiles
             CreateMap<ContactStatusEntity, ContactStatus>();
             #endregion
 
+            #region >> Others
             CreateMap<DataDashboard, DataDashboardEntity>()
-             .ForMember(m => m.Id, opt => opt.Ignore());
+            .ForMember(m => m.Id, opt => opt.Ignore());
 
             CreateMap<DataDashboardEntity, DataDashboard>();
 
@@ -89,9 +90,14 @@ namespace Domain.Profiles
 
             CreateMap<ResumeContactList, ResumeContactListEntity>();
 
-
             CreateMap<SessionWhatsApp, SessionWhatsAppEntity>();
             CreateMap<SessionWhatsAppEntity, SessionWhatsApp>();
+            #endregion
+
+            #region >> Twilio
+            CreateMap<TwilioWhatsRequest, TwilioRequestEntity>();
+            CreateMap<TwilioRequestEntity, TwilioWhatsRequest>();
+            #endregion
 
             #region >> Mapping Command
 
