@@ -18,7 +18,7 @@ namespace Domain.Commands.TwilioRequest.Post
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public PostTwilioRequestHandler( ITwilioRequestRepository twilioRequestRepository
+        public PostTwilioRequestHandler(ITwilioRequestRepository twilioRequestRepository
                                        , IMapper mapper
                                        , IMediator mediator
                                        )
@@ -70,3 +70,4 @@ namespace Domain.Commands.TwilioRequest.Post
             };
         }
     }
+}

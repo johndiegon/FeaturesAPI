@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Domain.Commands.SessionWhats.Post;
 using Domain.Commands.TwilioRequest.Post;
 using Domain.Models;
 using FeaturesAPI.Atributes;
@@ -7,7 +6,6 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FeaturesAPI.Controllers
