@@ -42,7 +42,7 @@ namespace Domain.Queries.Chat.Get
                                                   .FirstOrDefault();
 
                     var messageOnChat = _chatRepository.GetByClientId(client.Id)
-                                                      .Where(chat => chat.PhoneTo == request.PhoneTo)
+                                                      .Where(chat => chat.PhoneTo == request.PhoneTo )
                                                       .FirstOrDefault();
 
                     response = new GetChatMessageResponse

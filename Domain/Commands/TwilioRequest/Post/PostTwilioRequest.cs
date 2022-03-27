@@ -6,7 +6,7 @@ namespace Domain.Commands.TwilioRequest.Post
 {
     public class PostTwilioRequest : Validate, IRequest<CommandResponse>
     {
-        public TwilioWhatsRequest Request { get; set; }
+        public object Request { get; set; }
         
         public override bool IsValid()
         {

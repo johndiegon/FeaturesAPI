@@ -2,7 +2,6 @@
 using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MongoDB.Driver;
-using System;
 
 namespace Infrastructure.Data.Repositorys
 {

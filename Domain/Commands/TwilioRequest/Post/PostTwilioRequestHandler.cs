@@ -40,7 +40,11 @@ namespace Domain.Commands.TwilioRequest.Post
                 }
                 else
                 {
-                    var twilioRequest = _mapper.Map<TwilioRequestEntity>(request.Request);
+                    var twilioRequest = new TwilioRequestEntity()
+                    {
+                        Body = request.Request.ToString()
+                    };
+                    //var twilioRequest = _mapper.Map<TwilioRequestEntity>(request.Request);
                     _twilioRequestRepository.Create(twilioRequest);
 
                     response.Data = new Data

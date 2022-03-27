@@ -54,7 +54,7 @@ namespace Domain.Commands.Chat
 
                 var contact = _contactRepository.GetByPhone(phoneContact).Where(c => c.IdClient == client.Id).FirstOrDefault();
 
-                var chat =  _chatRepository.GetByClientId(client.Id).Where(c => c.PhoneFrom == phoneClient).FirstOrDefault();
+                var chat =  _chatRepository.GetByClientId(client.Id).Where(c => c.PhoneTo == phoneContact).FirstOrDefault();
 
                 if (chat == null)
                 {
@@ -99,10 +99,10 @@ namespace Domain.Commands.Chat
                 
                 if(listLastMessage != null)
                 {
-                    if (listLastMessage.MessageList.Where(lastMessage => lastMessage.PhoneTo == phoneClient || lastMessage.PhoneFrom == phoneClient).Count() > 0)
+                    if (listLastMessage.MessageList.Where(lastMessage => lastMessage.PhoneTo == phoneContact || lastMessage.PhoneFrom == phoneContact).Count() > 0)
                     {
-                        foreach (var message in listLastMessage.MessageList.Where(lastMessage => lastMessage.PhoneTo == phoneClient ||
-                                                                                                 lastMessage.PhoneFrom== phoneClient))
+                        foreach (var message in listLastMessage.MessageList.Where(lastMessage => lastMessage.PhoneTo == phoneContact ||
+                                                                                                 lastMessage.PhoneFrom== phoneContact))
                         {
                             message.DateTime = DateTime.Now;
                             message.Message = request.Message.Message;

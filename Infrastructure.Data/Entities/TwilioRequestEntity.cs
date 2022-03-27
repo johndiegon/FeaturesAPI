@@ -10,6 +10,7 @@ namespace Infrastructure.Data.Entities
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
+
         public string MessageSid { get; set; }
         public string SmsSid { get; set; }
         public string AccountSid { get; set; }
@@ -17,7 +18,7 @@ namespace Infrastructure.Data.Entities
         public string From { get; set; }
         public string To { get; set; }
         public string Body { get; set; }
-        public decimal NumMedia { get; set; }
+        public string NumMedia { get; set; }
         public List<string> MediaContentType { get; set; }
         public List<string> MediaUrl { get; set; }
         public string FromCity { get; set; }

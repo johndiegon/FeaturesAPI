@@ -12,7 +12,7 @@ namespace Domain.Models
         public string From { get; set; }
         public string To { get; set; }
         public string Body { get; set; }
-        public decimal NumMedia {get;set; }
+        public string NumMedia {get;set; }
         public List<string> MediaContentType { get; set; }
         public List<string> MediaUrl { get; set; }
         public string FromCity { get; set; }

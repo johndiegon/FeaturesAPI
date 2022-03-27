@@ -1,18 +1,16 @@
 ﻿using AutoMapper;
-using Domain.Commands.Client.Delete;
 using Domain.Commands.Client.Post;
 using Domain.Commands.Client.Put;
-using Domain.Queries.Address;
 using Domain.Models;
 using Domain.Queries.Client;
+using FeaturesAPI.Domain.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using FeaturesAPI.Domain.Models;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace FeaturesAPI.Controllers
 {
