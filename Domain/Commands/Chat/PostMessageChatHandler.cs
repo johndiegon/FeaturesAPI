@@ -87,6 +87,7 @@ namespace Domain.Commands.Chat
                         Message = request.Message.Message,
                         PhoneFrom = request.Message.PhoneFrom,
                         PhoneTo = request.Message.PhoneTo,
+
                     };
                     chat.NameReceiver = chat.NameReceiver != contact.Name ? contact.Name : chat.NameReceiver;
                     chat.MessageList.Add(message);
@@ -98,14 +99,32 @@ namespace Domain.Commands.Chat
                 
                 if(listLastMessage != null)
                 {
-                    foreach (var message in listLastMessage.MessageList.Where(lastMessage => lastMessage.PhoneTo == request.Message.PhoneTo))
+                    if (listLastMessage.MessageList.Where(lastMessage => lastMessage.PhoneTo == phoneClient || lastMessage.PhoneFrom == phoneClient).Count() > 0)
                     {
-                        message.DateTime = DateTime.Now;
-                        message.Message = request.Message.Message;
-                        message.NameTo = contact.Name;
-                        message.NameFrom = client.Name;
+                        foreach (var message in listLastMessage.MessageList.Where(lastMessage => lastMessage.PhoneTo == phoneClient ||
+                                                                                                 lastMessage.PhoneFrom== phoneClient))
+                        {
+                            message.DateTime = DateTime.Now;
+                            message.Message = request.Message.Message;
+                            message.NameFrom = phoneClient == request.Message.PhoneFrom ? client.Name : contact.Name;
+                            message.NameTo = phoneClient == request.Message.PhoneTo ? client.Name : contact.Name;
+                            message.PhoneTo = request.Message.PhoneTo;
+                            message.PhoneFrom = request.Message.PhoneFrom;
+                        }
                     }
-                    _lastMessageRepository.Update(listLastMessage);
+                    else
+                    {
+                        listLastMessage.MessageList.Add(new LastMessageEntity()
+                        {
+                            DateTime = DateTime.Now,
+                            Message = request.Message.Message,
+                            NameTo = contact.Name,
+                            NameFrom = client.Name,
+                            PhoneFrom = phoneClient,
+                            PhoneTo = phoneContact,
+                        });
+                    }
+                     _lastMessageRepository.Update(listLastMessage);
                 } else
                 {
                     var list = new List<LastMessageEntity>();
@@ -113,18 +132,18 @@ namespace Domain.Commands.Chat
                     {
                         DateTime = DateTime.Now,
                         Message = request.Message.Message,
-                        NameFrom = contact.Name,
-                        NameTo = contact.Name,
+                        NameFrom = phoneClient == request.Message.PhoneFrom ? client.Name : contact.Name,
+                        NameTo = phoneClient == request.Message.PhoneTo ? client.Name : contact.Name,
                         PhoneFrom = request.Message.PhoneFrom,
-                        PhoneTo = request.Message.PhoneTo
+                        PhoneTo = request.Message.PhoneTo,
                     };
 
                     list.Add(lastMessage);
                     listLastMessage = new ListLastMessageEntity()
                     {
                         IdClient = client.Id,
-                        PhoneFrom = request.Message.PhoneFrom,
-                        MessageList = list
+                        PhoneFrom = phoneClient,
+                        MessageList = list    
                     };
                     _lastMessageRepository.Create(listLastMessage);
                 }
