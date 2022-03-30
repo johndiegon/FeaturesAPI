@@ -1,16 +1,13 @@
 ﻿using AutoMapper;
 using Domain.Commands.TwilioRequest.Post;
 using Domain.Models;
-using FeaturesAPI.Atributes;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Threading.Tasks;
 using Twilio.AspNet.Common;
 using Twilio.AspNet.Core;
 using Twilio.TwiML;
-using Twilio.TwiML.Messaging;
 
 namespace FeaturesAPI.Controllers
 {
@@ -40,7 +37,6 @@ namespace FeaturesAPI.Controllers
         [HttpPost]
         public TwiMLResult Post([FromForm] SmsRequest request)
         {
-
             try
             {
                 var command = new PostTwilioRequest { Request = request };
