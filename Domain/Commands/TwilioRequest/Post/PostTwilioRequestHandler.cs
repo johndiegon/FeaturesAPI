@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using Domain.Models;
+using Infrasctuture.Service.Interfaces;
 using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,10 +14,12 @@ namespace Domain.Commands.TwilioRequest.Post
     public class PostTwilioRequestHandler : IRequestHandler<PostTwilioRequest, CommandResponse>
     {
         private readonly ITwilioRequestRepository _twilioRequestRepository;
+        private readonly ITopicServiceBuss _topicService;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
         public PostTwilioRequestHandler(ITwilioRequestRepository twilioRequestRepository
+                                       , ITopicServiceBuss topicService
                                        , IMapper mapper
                                        , IMediator mediator
                                        )
@@ -26,6 +27,7 @@ namespace Domain.Commands.TwilioRequest.Post
             _twilioRequestRepository = twilioRequestRepository;
             _mapper = mapper;
             _mediator = mediator;
+            _topicService = topicService;
         }
 
         public async Task<CommandResponse> Handle(PostTwilioRequest request, CancellationToken cancellationToken)
@@ -40,12 +42,17 @@ namespace Domain.Commands.TwilioRequest.Post
                 }
                 else
                 {
-                    var twilioRequest = new TwilioRequestEntity()
+                    
+                    var twilioRequest = new TwilioRequestEntity
                     {
-                        Body = request.Request.ToString()
+                        Request = request.Request
                     };
-                    //var twilioRequest = _mapper.Map<TwilioRequestEntity>(request.Request);
+
                     _twilioRequestRepository.Create(twilioRequest);
+
+                    var message = JsonConvert.SerializeObject(request.Request);
+
+                    await _topicService.SendMessage(message, "twiliorequest");
 
                     response.Data = new Data
                     {

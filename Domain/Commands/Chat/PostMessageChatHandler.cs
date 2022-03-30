@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Models;
+using FeaturesAPI.Infrastructure.Data.Entities;
 using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
@@ -45,7 +46,13 @@ namespace Domain.Commands.Chat
                 if (!request.IsValid())
                     return await Task.FromResult(GetResponseErro("Request invalid."));
 
-                var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
+                ClientEntity client = null;
+
+                if(string.IsNullOrEmpty(request.IdClient))
+                    client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
+                else
+                    client = _clientRepository.GetByUser(request.IdClient).FirstOrDefault();
+
                 var phoneClient = client.Phone
                                         .Where( p => p == request.Message.PhoneFrom || p == request.Message.PhoneTo)
                                         .FirstOrDefault();

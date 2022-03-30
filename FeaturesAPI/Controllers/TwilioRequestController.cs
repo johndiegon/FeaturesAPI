@@ -38,7 +38,7 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
-        public TwiMLResult Post([FromBody] SmsRequest request)
+        public TwiMLResult Post([FromForm] SmsRequest request)
         {
 
             try

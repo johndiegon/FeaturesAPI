@@ -3,6 +3,7 @@ using Domain.Commands.Chat;
 using Domain.Models;
 using Domain.Queries.Chat.Get;
 using Domain.Queries.Chat.GetLast;
+using FeaturesAPI.Atributes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -70,9 +71,50 @@ namespace FeaturesAPI.Controllers
         }
 
         /// <summary>
+        ///     Action to update a  "message" in the database.
+        /// </summary>
+        /// <param name="message">Model to post chat.</param>
+        /// <response code="200">Returned if the message was post.</response>
+        /// <response code="400">Returned if the message was parsed or saved</response>
+        /// <response code="422">Returned when the validation failed</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ApiKey]
+        [HttpPost("{idClient}")]
+        public async Task<ActionResult<CommandResponse>> PostMessage(MessageOnChat message, string idClient)
+        {
+            try
+            {
+
+                var command = new PostMessageChat()
+                {
+                    Message = message,
+                    IdClient = idClient,
+                };
+
+                var response = await _mediator.Send(command);
+
+                if (response.Data.Status == Status.Sucessed)
+                {
+                    return await Task.FromResult(response);
+                }
+                else
+                {
+                    return UnprocessableEntity(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        /// <summary>
         ///     Action to get list the last message.
         /// </summary>
-         /// <response code="200">Returned with the last message.</response>
+        /// <response code="200">Returned with the last message.</response>
         /// <response code="400">Returned if the message was parsed or saved</response>
         /// <response code="422">Returned when the validation failed</response>
         [ProducesResponseType(StatusCodes.Status200OK)]
