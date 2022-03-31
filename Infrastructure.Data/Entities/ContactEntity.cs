@@ -26,12 +26,17 @@ namespace Infrastructure.Data.Entities
         public List<OrderEntity> Orders { get; set; }
 
     }
+
     public class OrderEntity
     {
+        public string OrderId { get; set; }
         public DateTime DateOrder { get; set; }
-        public decimal Price { get; set; }
+        public DateTime DateOrderEnd { get; set; }
+        public decimal PriceItems { get; set; }
+        public decimal PriceDelivery { get; set; }
+        public decimal Discount { get; set; }
+        public decimal Total { get; set; }
     }
-
     public enum ContactStatusEntity
     {
         Active, 

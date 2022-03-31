@@ -30,7 +30,7 @@ namespace Domain.Validators.File
         {
             var extesion = Path.GetExtension(fileName).Replace(".", "");
 
-            return extesion == "csv" ? true  : false;
+            return extesion.ToUpper() == "CSV" ? true  : false;
         }
 
     }

@@ -13,6 +13,7 @@ namespace Domain.Models
         public string Phone { get; set; }
         public string Email { get; set; }
         public string IdClient { get; set; }
+        public DateTime DateInclude { get; set; }
         public ContactStatus Status { get; set; }
         public IEnumerable<Order> Orders {get;set;}
         public int DaysLastSale { get; set; }
@@ -32,7 +33,12 @@ namespace Domain.Models
     }
     public class Order
     {
+        public string OrderId { get; set; }
         public DateTime DateOrder { get; set; }
-        public decimal Price { get; set; }
+        public DateTime DateOrderEnd { get; set; }
+        public decimal PriceItems { get; set; }
+        public decimal PriceDelivery { get; set; }
+        public decimal Discount { get; set; }
+        public decimal Total { get; set; }
     }
 }
