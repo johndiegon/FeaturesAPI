@@ -12,10 +12,10 @@ namespace Domain.Commands.Chat
 
         public override bool IsValid()
         {
-            if(string.IsNullOrEmpty(IdUser) && !string.IsNullOrEmpty(IdClient))
-                return false;
-            if (!string.IsNullOrEmpty(IdUser) && string.IsNullOrEmpty(IdClient))
-                return false;
+            //if(string.IsNullOrEmpty(IdUser) && !string.IsNullOrEmpty(IdClient))
+            //    return false;
+            //if (!string.IsNullOrEmpty(IdUser) && string.IsNullOrEmpty(IdClient))
+            //    return false;
             return true;
         }
     }

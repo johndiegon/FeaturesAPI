@@ -107,7 +107,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        //[ApiKey]
+        [ApiKey]
         [HttpGet("{idClient}")]
         public async Task<ActionResult<GetContactsQueryResponse>> Get(string idClient)
         {
@@ -131,6 +131,46 @@ namespace API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        /// <summary>
+        ///     Action to update a contact.
+        /// </summary>
+        /// <param name="idClient">contact with data </param>
+        /// <param name="phone">contact with data </param>
+        /// <returns>Returns a list of contacts.</returns>
+        /// <response code="200">Returned result of search</response>
+        /// <response code="400">Returned if the model request is invalid</response>
+        /// <response code="422">Returned when the validation failed</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ApiKey]
+        [HttpGet("{idClient}/{phone}")]
+        public async Task<ActionResult<GetContactsQueryResponse>> Get(string idClient, string phone)
+        {
+            try
+            {
+                var command = new GetContactsQuery();
+                command.IdClient = idClient;
+                command.Phone = phone;
+
+                var response = await _mediator.Send(command);
+
+                if (response.Data.Status == Status.Sucessed)
+                {
+                    return await Task.FromResult(response);
+                }
+                else
+                {
+                    return UnprocessableEntity(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
 
         /// <summary>

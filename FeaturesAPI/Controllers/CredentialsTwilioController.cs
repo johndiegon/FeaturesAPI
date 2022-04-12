@@ -113,7 +113,7 @@ namespace FeaturesAPI.Controllers
         }
 
         /// <summary>
-        ///     Action to create a twilio credentias.
+        ///     Action to get a twilio credentias.
         /// </summary>
         /// <param name="credentials">contact with data </param>
         /// <returns>Returns if credentials was searched.</returns>
@@ -167,7 +167,7 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ApiKey]
-        [HttpGet("credentials/twilio/{phone}/{IdClient}")]
+        [HttpGet("{phone}/{IdClient}")]
         public async Task<ActionResult<CommandResponse>> GetCredentials(string phone, string idClient)
         {
             try

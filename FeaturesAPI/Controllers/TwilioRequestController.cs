@@ -46,13 +46,13 @@ namespace FeaturesAPI.Controllers
                 if (response.Data.Status == Status.Sucessed)
                 {
                     var messagingResponse = new MessagingResponse();
-                    messagingResponse.Message("its ok");
+                    messagingResponse.Message("its ok.");
                     return TwiML(messagingResponse);
                 }
                 else
                 {
                     var messagingResponse = new MessagingResponse();
-                    messagingResponse.Message("its not ok");
+                    messagingResponse.Message("its not ok.");
                     return TwiML(messagingResponse);
                 }
             }

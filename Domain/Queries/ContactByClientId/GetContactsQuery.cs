@@ -6,6 +6,7 @@ namespace Domain.Queries.ContactByClientId
     public class GetContactsQuery : Validate, IRequest<GetContactsQueryResponse>
     {
         public string IdClient { get; set; }
+        public string Phone { get; set; }
         public override bool IsValid()
         {
            return IdClient == null ? false : true;

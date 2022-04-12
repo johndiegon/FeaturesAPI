@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Domain.Models;
 using FeaturesAPI.Infrastructure.Data.Entities;
+using Infrasctuture.Service.Interfaces;
 using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,7 @@ namespace Domain.Commands.Chat
         private readonly IChatRepository _chatRepository;
         private readonly IContactRepository _contactRepository;
         private readonly ILastMessageRepository _lastMessageRepository;
+        private readonly ITopicServiceBuss _topicService;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         
@@ -26,6 +29,7 @@ namespace Domain.Commands.Chat
                                      , IContactRepository contactRepository
                                      , IChatRepository chatRepository
                                      , ILastMessageRepository lastMessageRepository
+                                     , ITopicServiceBuss topicService
                                      , IMapper mapper
                                      , IMediator mediator
                                      )
@@ -36,6 +40,7 @@ namespace Domain.Commands.Chat
             _lastMessageRepository = lastMessageRepository;
             _mapper = mapper;
             _mediator = mediator;
+            _topicService = topicService;
         }
 
         public async Task<CommandResponse> Handle(PostMessageChat request, CancellationToken cancellationToken)
@@ -153,6 +158,15 @@ namespace Domain.Commands.Chat
                         MessageList = list    
                     };
                     _lastMessageRepository.Create(listLastMessage);
+
+
+                    if (phoneClient == request.Message.PhoneFrom)
+                    {
+                        var message = JsonConvert.SerializeObject(request);
+
+                        _topicService.SendMessage(message, "twiliorequest");
+                    }
+
                 }
 
                 return new CommandResponse

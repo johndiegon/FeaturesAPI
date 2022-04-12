@@ -60,6 +60,8 @@ namespace Domain.Commands.Message.Post
                         Message = "Mensagem criada com sucesso!",
                         Status = Status.Sucessed
                     };
+
+
                 }
 
                 return await Task.FromResult(response);

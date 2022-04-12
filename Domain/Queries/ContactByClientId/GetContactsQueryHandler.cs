@@ -4,6 +4,7 @@ using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,11 +35,21 @@ namespace Domain.Queries.ContactByClientId
                 }
                 else
                 {
-                    var contacts = _contactRepository.GetByClient(request.IdClient);
+                    IEnumerable<Contact> contacts ;
+                    if (string.IsNullOrEmpty(request.Phone))
+                    {
+                        var contactsEntity = _contactRepository.GetByClient(request.IdClient);
+                        contacts = _mapper.Map<IEnumerable<Contact>>(contactsEntity);
+                    } else
+                    {
+                        var contactsEntity = _contactRepository.GetByPhone(request.IdClient)
+                            .Where( c=> c.IdClient == request.IdClient);
+                        contacts = _mapper.Map<IEnumerable<Contact>>(contactsEntity);
+                    }
 
                     response = new GetContactsQueryResponse
                     {
-                        Contacts = _mapper.Map<IEnumerable<Contact>>(contacts),
+                        Contacts = contacts,
                         Data = new Data
                         {
                             Status = Status.Sucessed
