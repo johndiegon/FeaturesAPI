@@ -73,7 +73,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ApiKey]
+        //[ApiKey]
         [HttpPost]
         public async Task<ActionResult<PostContactCommandResponse>> Create(PostContactCommand command)
         {

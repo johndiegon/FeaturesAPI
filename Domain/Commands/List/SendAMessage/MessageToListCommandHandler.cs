@@ -83,7 +83,7 @@ namespace Domain.Commands.List.SendAMessage
 
                     string storageFile = string.Empty;
 
-                    
+
 
                     #endregion
 
@@ -94,7 +94,8 @@ namespace Domain.Commands.List.SendAMessage
                         Picture = storageFile,
                         Message = request.MessageRequest.Message,
                         IdList = request.MessageRequest.IdList,
-                        IdUser = request.IdUser
+                        IdUser = request.IdUser,
+                        From = client.Phone
                     };
 
                     var message = JsonConvert.SerializeObject(messageObject);

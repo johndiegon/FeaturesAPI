@@ -166,7 +166,7 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ApiKey]
+        //[ApiKey]
         [HttpGet("{phone}/{IdClient}")]
         public async Task<ActionResult<CommandResponse>> GetCredentials(string phone, string idClient)
         {

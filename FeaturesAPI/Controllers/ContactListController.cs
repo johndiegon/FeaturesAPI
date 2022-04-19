@@ -107,18 +107,18 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [ApiKey]
         [HttpGet("{idList}")]
         public async Task<ActionResult<GetListResponse>> Get(string idList)
         {
             try
             {
-                var claimsIdentity = User.Identity as ClaimsIdentity;
-                var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
+                //var claimsIdentity = User.Identity as ClaimsIdentity;
+                //var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
 
                 var query = new GetListQuery();
                 query.Id = idList;
-                query.IdUser = idUser;
+                //query.IdUser = idUser;
 
                 var response = await _mediator.Send(query);
 

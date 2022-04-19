@@ -35,20 +35,18 @@ namespace Domain.Queries.List.Get
             try
             {
                 var response = new GetListResponse();
-               
-                    var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                    var repost = _repository.GetByClientId(client.Id).Where( list => list.Id == request.Id).FirstOrDefault();
+                var repost = _repository.Get(request.Id);
 
-                    var resume = _mapper.Map<ContactList>(repost);
+                var resume = _mapper.Map<ContactList>(repost);
 
-                    response = new GetListResponse
+                response = new GetListResponse
+                {
+                    ContactList = resume.ListContact,
+                    Data = new Data
                     {
-                        ContactList = resume.ListContact,
-                        Data = new Data
-                        {
-                            Status = Status.Sucessed
-                        }
-                    };
+                        Status = Status.Sucessed
+                    }
+                };
 
                 return await Task.FromResult(response);
             }
