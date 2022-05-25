@@ -1,5 +1,6 @@
 ﻿using Amazon.SQS;
 using Infrasctuture.Service.Interfaces;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,7 +29,23 @@ namespace Infrasctuture.Service.ServicesHandlers
 
         }
 
-     
+        public async Task SendMessage(object objectMessage, string queueName)
+        {
+            var message = JsonConvert.SerializeObject(objectMessage);
+
+            var queueSettings = _topicSettings.Queues.Where(t => t.QueueName == queueName).FirstOrDefault();
+            if (queueSettings != null)
+            {
+                var client = new AmazonSQSClient(_topicSettings.IDAccessKey, _topicSettings.AccessKey, Amazon.RegionEndpoint.SAEast1);
+                await client.SendMessageAsync(queueSettings.ConnectionString, message);
+            }
+            else
+            {
+                new ArgumentException(string.Format("A fila de mensagens {0} não está configurada para receber mensagems.", queueName));
+            }
+
+        }
+
         //public async Task<ImportedFile> SendMessage(ImportedFile orderList, string filType)
         //{
         //    var client = new ServiceBusClient(_topicSettings.ConnectionString);

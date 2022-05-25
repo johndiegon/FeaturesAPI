@@ -7,6 +7,7 @@ using Domain.Commands.Client.Put;
 using Domain.Commands.Contact.Post;
 using Domain.Commands.Contact.Put;
 using Domain.Commands.Dashboard;
+using Domain.Commands.Facebook.Post;
 using Domain.Commands.File.Post;
 using Domain.Commands.List.GetResume;
 using Domain.Commands.List.Post;
@@ -182,8 +183,15 @@ namespace FeaturesAPI
 
             #endregion
 
+            #region >> Facebook WebHook
+
+            services.AddTransient<IRequestHandler<PostFacebookMessageCommand, CommandResponse>, PostFacebookMessageHandler>();
+            #endregion
+
+
+
             #region >> Credentials Twilio
-            
+
             services.AddTransient<IRequestHandler<PostTwilioAccess, CommandResponse>, PostTwilioAccessHandler>();
             services.AddTransient<IRequestHandler<PutTwilioAccess, CommandResponse>, PutTwilioAccessHandler>();
             services.AddTransient<IRequestHandler<GetTwilioCredentials, GetTwilioCredentialsResponse>, GetTwilioCredentialsHandler>();
