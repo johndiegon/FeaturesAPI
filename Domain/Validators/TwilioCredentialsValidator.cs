@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Domain.Validators
 {
-    internal class TwilioCredentialsValidator : AbstractValidator<TwilioCredentials>
+    internal class TwilioCredentialsValidator : AbstractValidator<Credentials>
     {
         public TwilioCredentialsValidator()
         {

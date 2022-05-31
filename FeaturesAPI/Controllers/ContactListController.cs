@@ -71,7 +71,8 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ApiKey]
+        //[ApiKey]
+        [AllowAnonymous]
         [HttpPut]
         public async Task<ActionResult<PutContactListCommandResponse>> UpdateContactList(PutContactListCommand contactList)
         {
@@ -107,7 +108,8 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ApiKey]
+        //[ApiKey]
+        [AllowAnonymous]
         [HttpGet("{idList}")]
         public async Task<ActionResult<GetListResponse>> Get(string idList)
         {

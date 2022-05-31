@@ -6,7 +6,7 @@ namespace Domain.Commands.Put.TwiilioAccess
 {
     public class PutTwilioAccess : Validate, IRequest<CommandResponse>
     {
-        public TwilioCredentials Credentials { get; set; }
+        public Credentials Credentials { get; set; }
         public string IdUser { get; set; }
 
         public override bool IsValid()

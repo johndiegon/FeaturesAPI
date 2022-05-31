@@ -106,8 +106,8 @@ namespace Domain.Profiles
             #endregion
 
             #region >> Mapping Credentials
-            CreateMap<TwilioCredentials, TwillioAccessEntity>();
-            CreateMap<TwillioAccessEntity, TwilioCredentials>();
+            CreateMap<Credentials, TwillioAccessEntity>();
+            CreateMap<TwillioAccessEntity, Credentials>();
             #endregion
         }
     }

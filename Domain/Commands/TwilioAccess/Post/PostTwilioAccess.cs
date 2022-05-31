@@ -6,7 +6,7 @@ namespace Domain.Commands.Post.TwiilioAccess
 {
     public class PostTwilioAccess : Validate, IRequest<CommandResponse>
     {
-        public TwilioCredentials Credentials { get; set; }
+        public Credentials Credentials { get; set; }
         public string IdUser { get; set; }
 
         public override bool IsValid()

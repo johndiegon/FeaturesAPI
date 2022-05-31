@@ -37,9 +37,14 @@ namespace Domain.Queries.TwilioAccess.Get
                 var clientId = !string.IsNullOrEmpty(request.IdClient) ? request.IdClient
                                       : _clientRepository.GetByUser(request.IdUser).FirstOrDefault().Id;
 
-                var credentials = _twillioAccessRepository.GetByClientId(clientId).Where(s => s.PhoneFrom == request.PhoneFrom).FirstOrDefault();
+                var credentials = _twillioAccessRepository.GetByClientId(clientId);
 
-                var resume = _mapper.Map<TwilioCredentials>(credentials);
+                var credential = _twillioAccessRepository
+                    .GetByClientId(clientId)
+                    .Where(c => c.PhoneFrom == request.PhoneFrom)
+                    .FirstOrDefault();
+
+                var resume = _mapper.Map<Credentials>(credential);
 
                 response = new GetTwilioCredentialsResponse
                 {

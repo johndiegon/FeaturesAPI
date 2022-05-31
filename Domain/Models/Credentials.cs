@@ -2,7 +2,7 @@
 
 namespace Domain.Models
 {
-    public class TwilioCredentials
+    public class Credentials
     {
         private string _phone;
         public string Id { get; set; }

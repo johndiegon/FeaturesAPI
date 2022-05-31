@@ -16,11 +16,11 @@ namespace FeaturesAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CredentialsTwilioController : ControllerBase
+    public class CredentialsController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
-        public CredentialsTwilioController(IMapper mapper, IMediator mediator)
+        public CredentialsController(IMapper mapper, IMediator mediator)
         {
             _mapper = mapper;
             _mediator = mediator;
@@ -39,7 +39,7 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost]
-        public async Task<ActionResult<CommandResponse>> Post(TwilioCredentials credentials)
+        public async Task<ActionResult<CommandResponse>> Post(Credentials credentials)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPut]
-        public async Task<ActionResult<CommandResponse>> Put(TwilioCredentials credentials)
+        public async Task<ActionResult<CommandResponse>> Put(Credentials credentials)
         {
             try
             {
@@ -167,8 +167,8 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         //[ApiKey]
-        [HttpGet("{phone}/{IdClient}")]
-        public async Task<ActionResult<CommandResponse>> GetCredentials(string phone, string idClient)
+        [HttpGet("{phone}/{idClient}")]
+        public async Task<ActionResult<CommandResponse>> GetCredentials([FromRoute]string phone, [FromRoute] string idClient)
         {
             try
             {
