@@ -105,8 +105,8 @@ namespace Domain.Commands.Chat.PostList
                                 {
                                     lastMessage.DateTime = DateTime.Now;
                                     lastMessage.Message = message.Message;
-                                    lastMessage.NameFrom  = phoneClient == message.PhoneFrom ? client.Name : contact.Name;
-                                    lastMessage.NameTo    = phoneClient == message.PhoneTo ? client.Name : contact.Name;
+                                    lastMessage.NameFrom  = client.Name;
+                                    lastMessage.NameTo    = contact.Name;
                                     lastMessage.PhoneTo = phoneClient == message.PhoneFrom ? phoneClient : contact.Phone;
                                     lastMessage.PhoneFrom = phoneClient == message.PhoneTo ? phoneClient : contact.Phone;
 
@@ -119,8 +119,8 @@ namespace Domain.Commands.Chat.PostList
                                         IdClient = client.Id,
                                         DateTime = DateTime.Now,
                                         Message = message.Message,
-                                        NameFrom = phoneClient == message.PhoneFrom ? client.Name : contact.Name,
-                                        NameTo   = phoneClient == message.PhoneTo ? client.Name : contact.Name,
+                                        NameFrom = client.Name,
+                                        NameTo   = contact.Name,
                                         PhoneTo   = phoneClient == message.PhoneFrom ? phoneClient : contact.Phone,
                                         PhoneFrom = phoneClient == message.PhoneTo ? phoneClient : contact.Phone
                                 };

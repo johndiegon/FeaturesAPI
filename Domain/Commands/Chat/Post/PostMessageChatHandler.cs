@@ -117,8 +117,8 @@ namespace Domain.Commands.Chat.Post
                 {
                     lastMessage.DateTime = DateTime.Now;
                     lastMessage.Message = request.Message.Message;
-                    lastMessage.NameFrom = phoneClient == request.Message.PhoneFrom ? client.Name : contact.Name;
-                    lastMessage.NameTo   = phoneClient == request.Message.PhoneTo ? client.Name : contact.Name;
+                    lastMessage.NameFrom = client.Name;
+                    lastMessage.NameTo = contact.Name;
                     lastMessage.PhoneTo   = phoneClient == request.Message.PhoneFrom ? phoneClient : contact.Phone;
                     lastMessage.PhoneFrom = phoneClient == request.Message.PhoneTo ? phoneClient : contact.Phone;
 
@@ -130,8 +130,8 @@ namespace Domain.Commands.Chat.Post
                         IdClient = client.Id,
                         DateTime = DateTime.Now,
                         Message = request.Message.Message,
-                        NameFrom = phoneClient == request.Message.PhoneFrom ? client.Name : contact.Name,
-                        NameTo = phoneClient == request.Message.PhoneTo ? client.Name : contact.Name,
+                        NameFrom = client.Name,
+                        NameTo   = contact.Name,
                         PhoneFrom = phoneClient == request.Message.PhoneFrom ? phoneClient : contact.Phone,
                         PhoneTo   = phoneClient == request.Message.PhoneTo ? phoneClient : contact.Phone
                 };
