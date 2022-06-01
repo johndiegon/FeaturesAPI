@@ -55,7 +55,7 @@ namespace Domain.Commands.Chat.PostList
                             var contact = _contactRepository.GetByPhone(phoneContact).Where(c => c.IdClient == client.Id).FirstOrDefault();
                             var chat = _chatRepository.GetByClientId(client.Id).Where(c => c.PhoneTo == phoneContact).FirstOrDefault();
 
-                            foreach (var message in request.Messages.Where(m => m.PhoneFrom == phoneClient && m.PhoneTo == phoneContact))
+                            foreach (var message in request.Messages.Where(m => m.PhoneFrom == phoneContact && m.PhoneTo == phoneClient))
                             {
                                 if (chat == null)
                                 {
