@@ -103,14 +103,14 @@ namespace Domain.Commands.Chat.Post
                         PhoneTo = request.Message.PhoneTo,
 
                     };
-                    chat.NameReceiver = chat.NameReceiver != contact.Name ? contact.Name : chat.NameReceiver;
+                    chat.NameReceiver = contact.Name ;
                     chat.MessageList.Add(message);
 
                     _chatRepository.Update(chat);
                 }
 
                 var lastMessage = _lastMessageRepository.GetByClientId(client.Id)
-                    .Where(lastMessage => lastMessage.PhoneTo == phoneContact || lastMessage.PhoneFrom == phoneContact)
+                    .Where(l => l.PhoneTo == phoneContact || l.PhoneFrom == phoneContact)
                     .FirstOrDefault();
                 
                 if(lastMessage != null)
