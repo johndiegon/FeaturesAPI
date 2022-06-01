@@ -58,9 +58,14 @@ namespace Domain.Commands.Chat.Post
                 else
                     client = _clientRepository.GetByUser(request.IdClient).FirstOrDefault();
 
-                var phoneClient = client.Phone
+                var phoneClient = request.Message.PhoneFrom == null ? client.Phone.FirstOrDefault()
+                                        : client.Phone
                                         .Where( p => p == request.Message.PhoneFrom || p == request.Message.PhoneTo)
                                         .FirstOrDefault();
+
+                if (request.Message.PhoneFrom == null)
+                    request.Message.PhoneFrom = phoneClient;
+
                 var phoneContact = phoneClient == request.Message.PhoneTo ? request.Message.PhoneFrom
                                                                         : request.Message.PhoneTo;
 
@@ -107,41 +112,25 @@ namespace Domain.Commands.Chat.Post
                     _chatRepository.Update(chat);
                 }
 
-                var listLastMessage = _lastMessageRepository.GetByClientId(client.Id).FirstOrDefault();
+                var lastMessage = _lastMessageRepository.GetByClientId(client.Id)
+                    .Where(lastMessage => lastMessage.PhoneTo == phoneContact || lastMessage.PhoneFrom == phoneContact)
+                    .FirstOrDefault();
                 
-                if(listLastMessage != null)
+                if(lastMessage != null)
                 {
-                    if (listLastMessage.MessageList.Where(lastMessage => lastMessage.PhoneTo == phoneContact || lastMessage.PhoneFrom == phoneContact).Count() > 0)
-                    {
-                        foreach (var message in listLastMessage.MessageList.Where(lastMessage => lastMessage.PhoneTo == phoneContact ||
-                                                                                                 lastMessage.PhoneFrom== phoneContact))
-                        {
-                            message.DateTime = DateTime.Now;
-                            message.Message = request.Message.Message;
-                            message.NameFrom = phoneClient == request.Message.PhoneFrom ? client.Name : contact.Name;
-                            message.NameTo = phoneClient == request.Message.PhoneTo ? client.Name : contact.Name;
-                            message.PhoneTo = request.Message.PhoneTo;
-                            message.PhoneFrom = request.Message.PhoneFrom;
-                        }
-                    }
-                    else
-                    {
-                        listLastMessage.MessageList.Add(new LastMessageEntity()
-                        {
-                            DateTime = DateTime.Now,
-                            Message = request.Message.Message,
-                            NameTo = contact.Name,
-                            NameFrom = client.Name,
-                            PhoneFrom = phoneClient,
-                            PhoneTo = phoneContact,
-                        });
-                    }
-                     _lastMessageRepository.Update(listLastMessage);
+                    lastMessage.DateTime = DateTime.Now;
+                    lastMessage.Message = request.Message.Message;
+                    lastMessage.NameFrom = phoneClient == request.Message.PhoneFrom ? client.Name : contact.Name;
+                    lastMessage.NameTo = phoneClient == request.Message.PhoneTo ? client.Name : contact.Name;
+                    lastMessage.PhoneTo = request.Message.PhoneTo;
+                    lastMessage.PhoneFrom = request.Message.PhoneFrom;
+
+                    _lastMessageRepository.Update(lastMessage);
                 } else
                 {
-                    var list = new List<LastMessageEntity>();
-                    var lastMessage = new LastMessageEntity()
+                    lastMessage = new LastMessageEntity()
                     {
+                        IdClient = client.Id,
                         DateTime = DateTime.Now,
                         Message = request.Message.Message,
                         NameFrom = phoneClient == request.Message.PhoneFrom ? client.Name : contact.Name,
@@ -150,23 +139,16 @@ namespace Domain.Commands.Chat.Post
                         PhoneTo = request.Message.PhoneTo,
                     };
 
-                    list.Add(lastMessage);
-                    listLastMessage = new ListLastMessageEntity()
-                    {
-                        IdClient = client.Id,
-                        PhoneFrom = phoneClient,
-                        MessageList = list    
-                    };
-                    _lastMessageRepository.Create(listLastMessage);
+                    _lastMessageRepository.Create(lastMessage);
+                }
 
 
-                    if (phoneClient == request.Message.PhoneFrom)
-                    {
-                        var message = JsonConvert.SerializeObject(request);
+                if (phoneClient == request.Message.PhoneFrom)
+                {
+                    request.IdClient = client.Id;
+                    var message = JsonConvert.SerializeObject(request);
 
-                        _topicService.SendMessage(message, "twiliorequest");
-                    }
-
+                    _topicService.SendMessage(message, "twiliorequest");
                 }
 
                 return new CommandResponse

@@ -22,13 +22,13 @@ namespace Domain.Profiles
             CreateMap<Chat, ChatEntity>();
             CreateMap<MessageOnChat, MessageOnChatEntity>();
 
-            CreateMap<ListLastMessages, ListLastMessageEntity>();
+            CreateMap<ListLastMessages, LastMessageEntity>();
             CreateMap<LastMessage, LastMessageEntity>();
 
             CreateMap<ChatEntity, Chat>();
             CreateMap<MessageOnChatEntity, MessageOnChat>();
 
-            CreateMap<ListLastMessageEntity, ListLastMessages>();
+            CreateMap<LastMessageEntity, ListLastMessages>();
             CreateMap<LastMessageEntity, LastMessage>();
 
             CreateMap<MessageDefault, MessagesDefaultEntity>();

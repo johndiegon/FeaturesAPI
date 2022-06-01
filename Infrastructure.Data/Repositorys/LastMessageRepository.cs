@@ -8,7 +8,7 @@ namespace Infrastructure.Data.Repositorys
 {
     public class LastMessageRepository :  ILastMessageRepository
     {
-        private readonly IMongoCollection<ListLastMessageEntity> _collection;
+        private readonly IMongoCollection<LastMessageEntity> _collection;
 
         public LastMessageRepository(IDatabaseSettings settings)
         {
@@ -16,10 +16,10 @@ namespace Infrastructure.Data.Repositorys
             var client = new MongoClient(settingsMongo);
             var database = client.GetDatabase(settings.DatabaseName);
 
-            _collection = database.GetCollection<ListLastMessageEntity>(settings.LastMessageCollectionName);
+            _collection = database.GetCollection<LastMessageEntity>(settings.LastMessageCollectionName);
         }
 
-        public ListLastMessageEntity Create(ListLastMessageEntity entity)
+        public LastMessageEntity Create(LastMessageEntity entity)
         {
             _collection.InsertOne(entity);
             return entity;
@@ -28,13 +28,13 @@ namespace Infrastructure.Data.Repositorys
         public void Delete(string id) =>
             _collection.DeleteOne(listLastMessage => listLastMessage.Id == id);
 
-        public ListLastMessageEntity Get(string id) =>
-            _collection.Find<ListLastMessageEntity>(listLastMessage => listLastMessage.Id == id).FirstOrDefault();
+        public LastMessageEntity Get(string id) =>
+            _collection.Find<LastMessageEntity>(listLastMessage => listLastMessage.Id == id).FirstOrDefault();
 
-        public IEnumerable<ListLastMessageEntity> GetByClientId(string idClient) =>
-            _collection.Find<ListLastMessageEntity>(listLastMessage => listLastMessage.IdClient == idClient).ToList();
+        public IEnumerable<LastMessageEntity> GetByClientId(string idClient) =>
+            _collection.Find<LastMessageEntity>(listLastMessage => listLastMessage.IdClient == idClient).ToList();
 
-        public ListLastMessageEntity Update(ListLastMessageEntity listLastMessageIn)
+        public LastMessageEntity Update(LastMessageEntity listLastMessageIn)
         {
             _collection.ReplaceOne(listLastMessage => listLastMessage.Id == listLastMessageIn.Id, listLastMessageIn);
             return listLastMessageIn;

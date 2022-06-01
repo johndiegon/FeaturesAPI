@@ -97,39 +97,37 @@ namespace Domain.Commands.Chat.PostList
                                     _chatRepository.Update(chat);
                                 }
 
-                                var listLastMessage = _lastMessageRepository.GetByClientId(client.Id).FirstOrDefault();
+                                var lastMessage = _lastMessageRepository.GetByClientId(client.Id)
+                                                  .Where(lastMessage => lastMessage.PhoneTo == phoneContact || lastMessage.PhoneFrom == phoneContact)
+                                                  .FirstOrDefault();
 
-                                if (listLastMessage != null)
+                                if (lastMessage != null)
                                 {
-                                    if (listLastMessage.MessageList.Where(lastMessage => lastMessage.PhoneTo == phoneContact || lastMessage.PhoneFrom == phoneContact).Count() > 0)
-                                    {
-                                        foreach (var lastMessage in listLastMessage.MessageList.Where(lastMessage => lastMessage.PhoneTo == phoneContact ||
-                                                                                                                 lastMessage.PhoneFrom == phoneContact))
-                                        {
-                                            lastMessage.DateTime = DateTime.Now;
-                                            lastMessage.Message = message.Message;
-                                            lastMessage.PhoneFrom = phoneClient == message.PhoneFrom ? client.Name : contact.Name;
-                                            lastMessage.NameTo = phoneClient == message.PhoneTo ? client.Name : contact.Name;
-                                            lastMessage.PhoneTo = message.PhoneTo;
-                                            lastMessage.PhoneFrom = message.PhoneFrom;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        listLastMessage.MessageList.Add(new LastMessageEntity()
-                                        {
-                                            DateTime = DateTime.Now,
-                                            Message = message.Message,
-                                            NameTo = contact.Name,
-                                            NameFrom = client.Name,
-                                            PhoneFrom = phoneClient,
-                                            PhoneTo = phoneContact,
-                                        });
-                                    }
-                                    _lastMessageRepository.Update(listLastMessage);
+                                    lastMessage.DateTime = DateTime.Now;
+                                    lastMessage.Message = message.Message;
+                                    lastMessage.NameFrom = phoneClient == message.PhoneFrom ? client.Name : contact.Name;
+                                    lastMessage.NameTo = phoneClient == message.PhoneTo ? client.Name : contact.Name;
+                                    lastMessage.PhoneTo = message.PhoneTo;
+                                    lastMessage.PhoneFrom = message.PhoneFrom;
 
+                                    _lastMessageRepository.Update(lastMessage);
                                 }
-                        }
+                                else
+                                {
+                                    lastMessage = new LastMessageEntity()
+                                    {
+                                        IdClient = client.Id,
+                                        DateTime = DateTime.Now,
+                                        Message = message.Message,
+                                        NameFrom = phoneClient == message.PhoneFrom ? client.Name : contact.Name,
+                                        NameTo = phoneClient == message.PhoneTo ? client.Name : contact.Name,
+                                        PhoneFrom = message.PhoneFrom,
+                                        PhoneTo = message.PhoneTo,
+                                    };
+
+                                    _lastMessageRepository.Create(lastMessage);
+                                }
+                            }
                     }
 
                     }

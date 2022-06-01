@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Infrastructure.Data.Interfaces
 {
-    public interface ILastMessageRepository : IRepository<ListLastMessageEntity>
+    public interface ILastMessageRepository : IRepository<LastMessageEntity>
     {
-        IEnumerable<ListLastMessageEntity> GetByClientId(string id);
+        IEnumerable<LastMessageEntity> GetByClientId(string id);
     }
 }

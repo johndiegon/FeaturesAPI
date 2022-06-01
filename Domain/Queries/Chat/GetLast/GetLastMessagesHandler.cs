@@ -38,11 +38,28 @@ namespace Domain.Queries.Chat.GetLast
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                    var lastMessage = _lastMessageRepository.GetByClientId(client.Id).FirstOrDefault();
+                    var listLastMessage = _lastMessageRepository.GetByClientId(client.Id).ToList();
+
+                    var lastMessagesResponse = new ListLastMessages(); ;
+
+                    lastMessagesResponse.IdClient = client.Id;
+
+                    if(listLastMessage.Count > 0)
+                    {
+                        lastMessagesResponse.MessageList = listLastMessage.Select(o => new LastMessage
+                        {
+                            DateTime = o.DateTime,
+                            Message = o.Message,
+                            NameFrom = o.NameFrom,
+                            NameTo = o.NameTo,
+                            PhoneFrom = o.PhoneFrom,
+                            PhoneTo = o.PhoneTo,
+                        }).ToList();
+                    }
 
                     response = new GetLastMessagesResponse
                     {
-                        ListLastMessages = _mapper.Map<ListLastMessages>(lastMessage),
+                        ListLastMessages = lastMessagesResponse,
                         Data = new Data
                         {
                             Status = Status.Sucessed
