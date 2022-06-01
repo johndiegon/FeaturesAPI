@@ -2,7 +2,7 @@
 using Domain.Validators;
 using MediatR;
 
-namespace Domain.Commands.Chat
+namespace Domain.Commands.Chat.Post
 {
     public class PostMessageChat : Validate, IRequest<CommandResponse>
     {

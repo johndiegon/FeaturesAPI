@@ -1,6 +1,8 @@
 using Domain;
 using Domain.Commands.Authenticate;
 using Domain.Commands.Chat;
+using Domain.Commands.Chat.Post;
+using Domain.Commands.Chat.PostList;
 using Domain.Commands.Client.Delete;
 using Domain.Commands.Client.Post;
 using Domain.Commands.Client.Put;
@@ -188,7 +190,10 @@ namespace FeaturesAPI
             services.AddTransient<IRequestHandler<PostFacebookMessageCommand, CommandResponse>, PostFacebookMessageHandler>();
             #endregion
 
-
+            #region >> Message Chat From Facebook
+            services.AddTransient<IRequestHandler<PostListMessageChat, CommandResponse>, PostListMessageChatHandler>();
+            
+            #endregion
 
             #region >> Credentials Twilio
 

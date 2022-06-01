@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Domain.Commands.Chat;
+using Domain.Commands.Chat.Post;
+using Domain.Commands.Chat.PostList;
 using Domain.Models;
 using Domain.Queries.Chat.Get;
 using Domain.Queries.Chat.GetLast;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -86,7 +88,6 @@ namespace FeaturesAPI.Controllers
         {
             try
             {
-
                 var command = new PostMessageChat()
                 {
                     Message = message,
@@ -110,6 +111,44 @@ namespace FeaturesAPI.Controllers
             }
         }
 
+        /// <summary>
+        ///     Action to update a  "message" in the database.
+        /// </summary>
+        /// <param name="message">Model to post chat.</param>
+        /// <response code="200">Returned if the message was post.</response>
+        /// <response code="400">Returned if the message was parsed or saved</response>
+        /// <response code="422">Returned when the validation failed</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ApiKey]
+        [HttpPost]
+        [Route("ListMessage")]
+        public async Task<ActionResult<CommandResponse>> PostListMessage([FromBody]List<MessageOnChat> messages)
+        {
+            try
+            {
+                var command = new PostListMessageChat()
+                {
+                    Messages = messages
+                };
+
+                var response = await _mediator.Send(command);
+
+                if (response.Data.Status == Status.Sucessed)
+                {
+                    return await Task.FromResult(response);
+                }
+                else
+                {
+                    return UnprocessableEntity(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         /// <summary>
         ///     Action to get list the last message.

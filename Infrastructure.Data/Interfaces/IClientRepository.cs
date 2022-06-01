@@ -7,5 +7,6 @@ namespace Infrastructure.Data.Interfaces
     {
         ClientEntity GetByDoc(string id);
         IEnumerable<ClientEntity> GetByUser(string id);
+        ClientEntity GetByPhone(string number);
     }
 }

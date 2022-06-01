@@ -32,6 +32,10 @@ namespace FeaturesAPI.Services
         public IEnumerable<ClientEntity> GetByUser(string idUser) =>
             _clients.Find<ClientEntity>(client => client.IdUser == idUser).ToEnumerable();
 
+        public ClientEntity GetByPhone(string number) =>
+           _clients.Find<ClientEntity>(client => client.Phone.Contains(number)).FirstOrDefault();
+
+
         public ClientEntity Create(ClientEntity client)
         {
             _clients.InsertOne(client);
