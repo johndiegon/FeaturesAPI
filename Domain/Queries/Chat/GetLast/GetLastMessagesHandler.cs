@@ -43,8 +43,8 @@ namespace Domain.Queries.Chat.GetLast
                     var lastMessagesResponse = new ListLastMessages(); ;
 
                     lastMessagesResponse.IdClient = client.Id;
-
-                    if(listLastMessage.Count > 0)
+                    lastMessagesResponse.PhoneFrom = client.Phone.FirstOrDefault();
+                    if (listLastMessage.Count > 0)
                     {
                         lastMessagesResponse.MessageList = listLastMessage.Select(o => new LastMessage
                         {

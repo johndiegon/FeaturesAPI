@@ -105,10 +105,10 @@ namespace Domain.Commands.Chat.PostList
                                 {
                                     lastMessage.DateTime = DateTime.Now;
                                     lastMessage.Message = message.Message;
-                                    lastMessage.NameFrom = phoneClient == message.PhoneFrom ? client.Name : contact.Name;
-                                    lastMessage.NameTo = phoneClient == message.PhoneTo ? client.Name : contact.Name;
-                                    lastMessage.PhoneTo = message.PhoneTo;
-                                    lastMessage.PhoneFrom = message.PhoneFrom;
+                                    lastMessage.NameFrom  = phoneClient == message.PhoneFrom ? client.Name : contact.Name;
+                                    lastMessage.NameTo    = phoneClient == message.PhoneTo ? client.Name : contact.Name;
+                                    lastMessage.PhoneTo = phoneClient == message.PhoneFrom ? phoneClient : contact.Phone;
+                                    lastMessage.PhoneFrom = phoneClient == message.PhoneTo ? phoneClient : contact.Phone;
 
                                     _lastMessageRepository.Update(lastMessage);
                                 }
@@ -120,10 +120,10 @@ namespace Domain.Commands.Chat.PostList
                                         DateTime = DateTime.Now,
                                         Message = message.Message,
                                         NameFrom = phoneClient == message.PhoneFrom ? client.Name : contact.Name,
-                                        NameTo = phoneClient == message.PhoneTo ? client.Name : contact.Name,
-                                        PhoneFrom = message.PhoneFrom,
-                                        PhoneTo = message.PhoneTo,
-                                    };
+                                        NameTo   = phoneClient == message.PhoneTo ? client.Name : contact.Name,
+                                        PhoneTo   = phoneClient == message.PhoneFrom ? phoneClient : contact.Phone,
+                                        PhoneFrom = phoneClient == message.PhoneTo ? phoneClient : contact.Phone
+                                };
 
                                     _lastMessageRepository.Create(lastMessage);
                                 }

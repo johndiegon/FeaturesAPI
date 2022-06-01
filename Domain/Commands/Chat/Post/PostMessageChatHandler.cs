@@ -58,10 +58,7 @@ namespace Domain.Commands.Chat.Post
                 else
                     client = _clientRepository.GetByUser(request.IdClient).FirstOrDefault();
 
-                var phoneClient = request.Message.PhoneFrom == null ? client.Phone.FirstOrDefault()
-                                        : client.Phone
-                                        .Where( p => p == request.Message.PhoneFrom || p == request.Message.PhoneTo)
-                                        .FirstOrDefault();
+                var phoneClient = client.Phone.FirstOrDefault();
 
                 if (request.Message.PhoneFrom == null)
                     request.Message.PhoneFrom = phoneClient;
@@ -121,9 +118,9 @@ namespace Domain.Commands.Chat.Post
                     lastMessage.DateTime = DateTime.Now;
                     lastMessage.Message = request.Message.Message;
                     lastMessage.NameFrom = phoneClient == request.Message.PhoneFrom ? client.Name : contact.Name;
-                    lastMessage.NameTo = phoneClient == request.Message.PhoneTo ? client.Name : contact.Name;
-                    lastMessage.PhoneTo = request.Message.PhoneTo;
-                    lastMessage.PhoneFrom = request.Message.PhoneFrom;
+                    lastMessage.NameTo   = phoneClient == request.Message.PhoneTo ? client.Name : contact.Name;
+                    lastMessage.PhoneTo   = phoneClient == request.Message.PhoneFrom ? phoneClient : contact.Phone;
+                    lastMessage.PhoneFrom = phoneClient == request.Message.PhoneTo ? phoneClient : contact.Phone;
 
                     _lastMessageRepository.Update(lastMessage);
                 } else
@@ -135,9 +132,9 @@ namespace Domain.Commands.Chat.Post
                         Message = request.Message.Message,
                         NameFrom = phoneClient == request.Message.PhoneFrom ? client.Name : contact.Name,
                         NameTo = phoneClient == request.Message.PhoneTo ? client.Name : contact.Name,
-                        PhoneFrom = request.Message.PhoneFrom,
-                        PhoneTo = request.Message.PhoneTo,
-                    };
+                        PhoneFrom = phoneClient == request.Message.PhoneFrom ? phoneClient : contact.Phone,
+                        PhoneTo   = phoneClient == request.Message.PhoneTo ? phoneClient : contact.Phone
+                };
 
                     _lastMessageRepository.Create(lastMessage);
                 }
