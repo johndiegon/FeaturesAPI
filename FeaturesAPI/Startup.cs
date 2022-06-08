@@ -263,6 +263,7 @@ namespace FeaturesAPI
             services.AddScoped<IMessagesDefaultRepository, MessagesDefaultRepository>();
             services.AddScoped<ITwillioAccessRepository, TwillioAccessRepository>();
             services.AddScoped<ITwilioRequestRepository, TwilioRequestRepository>();
+            services.AddScoped<IFacebookMessageRepository, FacebookMessageRepository>();
 
             services.AddSingleton<ClientRepository>();
             services.AddSingleton<ContactListRepository>();

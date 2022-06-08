@@ -19,6 +19,7 @@
         string TwilioAccessColletionName { get; set; }
         string TwilioRequestCollectionName { get; set; }
         string DatabaseName { get; set; }
+        string FacebookMessageCollectionName { get; set; }
     }
   
 }

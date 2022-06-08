@@ -22,6 +22,7 @@ namespace Domain.Commands.Chat.Post
         private readonly IContactRepository _contactRepository;
         private readonly ILastMessageRepository _lastMessageRepository;
         private readonly ITopicServiceBuss _topicService;
+        private readonly IFacebookMessageRepository _facebookMessageRepository;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         
@@ -32,12 +33,14 @@ namespace Domain.Commands.Chat.Post
                                      , ITopicServiceBuss topicService
                                      , IMapper mapper
                                      , IMediator mediator
+                                     , IFacebookMessageRepository facebookMessageRepository
                                      )
         {
             _clientRepository = clientRepository;
             _chatRepository = chatRepository;
             _contactRepository = contactRepository;
             _lastMessageRepository = lastMessageRepository;
+            _facebookMessageRepository = facebookMessageRepository;
             _mapper = mapper;
             _mediator = mediator;
             _topicService = topicService;
@@ -50,6 +53,14 @@ namespace Domain.Commands.Chat.Post
 
                 if (!request.IsValid())
                     return await Task.FromResult(GetResponseErro("Request invalid."));
+
+                if (request.Message.FacebookMessageId != null)
+                {
+                    var facebookMessage = _facebookMessageRepository.GetByFacebookId(request.Message.FacebookMessageId);
+
+                    if (facebookMessage != null)
+                        return GetResponseErro("essa mensagem já foi importada");
+                }
 
                 ClientEntity client = null;
 
@@ -65,6 +76,13 @@ namespace Domain.Commands.Chat.Post
 
                 var phoneContact = phoneClient == request.Message.PhoneTo ? request.Message.PhoneFrom
                                                                         : request.Message.PhoneTo;
+
+                _facebookMessageRepository.Create(
+                    new FacebookMessageEntity { 
+                        FacebookMessageId = request.Message.FacebookMessageId, 
+                        Phone = phoneContact, 
+                        Text = request.Message.Message
+                    });
 
                 var contact = _contactRepository.GetByPhone(phoneContact).Where(c => c.IdClient == client.Id).FirstOrDefault();
 
@@ -117,10 +135,11 @@ namespace Domain.Commands.Chat.Post
                 {
                     lastMessage.DateTime = DateTime.Now;
                     lastMessage.Message = request.Message.Message;
-                    lastMessage.NameFrom = client.Name;
-                    lastMessage.NameTo = contact.Name;
-                    lastMessage.PhoneTo   = phoneClient == request.Message.PhoneFrom ? phoneClient : contact.Phone;
-                    lastMessage.PhoneFrom = phoneClient == request.Message.PhoneTo ? phoneClient : contact.Phone;
+                    lastMessage.NameFrom = contact.Name;
+                    lastMessage.PhoneFrom = contact.Phone;
+                    lastMessage.NameTo = client.Name;
+                    lastMessage.PhoneTo = phoneClient ;
+                   
 
                     _lastMessageRepository.Update(lastMessage);
                 } else
@@ -131,10 +150,10 @@ namespace Domain.Commands.Chat.Post
                         DateTime = DateTime.Now,
                         Message = request.Message.Message,
                         NameFrom = client.Name,
-                        NameTo   = contact.Name,
-                        PhoneFrom = phoneClient == request.Message.PhoneFrom ? phoneClient : contact.Phone,
-                        PhoneTo   = phoneClient == request.Message.PhoneTo ? phoneClient : contact.Phone
-                };
+                        PhoneFrom = phoneClient,
+                        NameTo = contact.Name,
+                        PhoneTo   = contact.Name
+                    };
 
                     _lastMessageRepository.Create(lastMessage);
                 }

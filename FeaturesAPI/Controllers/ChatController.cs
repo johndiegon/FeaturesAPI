@@ -82,7 +82,7 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ApiKey]
+        //[ApiKey]
         [HttpPost("{idClient}")]
         public async Task<ActionResult<CommandResponse>> PostMessage(MessageOnChat message, string idClient)
         {
@@ -121,7 +121,7 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ApiKey]
+        //[ApiKey]
         [HttpPost]
         [Route("ListMessage")]
         public async Task<ActionResult<CommandResponse>> PostListMessage([FromBody]List<MessageOnChat> messages)
