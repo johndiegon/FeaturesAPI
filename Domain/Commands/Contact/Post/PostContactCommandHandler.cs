@@ -5,6 +5,7 @@ using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,7 +39,14 @@ namespace Domain.Commands.Contact.Post
 
                     var contactsToInsert = _mapper.Map<IEnumerable<ContactEntity>>(request.Contacts);
 
+                    foreach (var contact in contactsToInsert)
+                    {
+                        contact.AveragePrice = contact.OrdersTotal > 0 
+                            ? Convert.ToString(contact.Orders.Select( o => Convert.ToDecimal(o.Total)).Sum() / contact.OrdersTotal) : "0";
+                    }
+
                     _contactRepository.CreateMany(contactsToInsert);
+
 
                     response = new PostContactCommandResponse
                     {

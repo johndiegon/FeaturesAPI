@@ -20,6 +20,12 @@ namespace Domain.Commands.List.SendAMessage
     {
         public string IdList { get; set; }
         public string Message { get; set; }
+
+        public int CountMinOrder { get; set; }  
+        public int CountMessages { get; set; }
+        public int NameOfProduct { get; set; }
+        public int ParamDate { get; set; }
+        public string Cupom { get; set; }
     }
 
 }

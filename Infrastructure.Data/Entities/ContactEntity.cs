@@ -21,7 +21,7 @@ namespace Infrastructure.Data.Entities
         public int OrdersInLastYear { get; set; }
         public int OrdersInLast6Month { get; set; }
         public int OrdersTotal { get; set; }
-        public decimal AveragePrice { get; set; }
+        public string AveragePrice { get; set; }
         public ContactStatusEntity Status { get; set; }
         public List<OrderEntity> Orders { get; set; }
 
@@ -32,10 +32,10 @@ namespace Infrastructure.Data.Entities
         public string OrderId { get; set; }
         public DateTime DateOrder { get; set; }
         public DateTime DateOrderEnd { get; set; }
-        public decimal PriceItems { get; set; }
-        public decimal PriceDelivery { get; set; }
-        public decimal Discount { get; set; }
-        public decimal Total { get; set; }
+        public string PriceItems { get; set; }
+        public string PriceDelivery { get; set; }
+        public string Discount { get; set; }
+        public string Total { get; set; }
     }
     public enum ContactStatusEntity
     {

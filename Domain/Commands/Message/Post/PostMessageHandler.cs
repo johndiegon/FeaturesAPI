@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.Helpers;
 using Domain.Models;
 using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
@@ -50,7 +51,10 @@ namespace Domain.Commands.Message.Post
                     {
                         IdClient = client.Id,
                         Message = request.Message,
-                        Title = request.Title
+                        PositiveAnwser = request.PositiveAnswer,
+                        NegativeAnwser = request.NegativeAnswer,
+                        Title = request.Title,
+                        Params = Params.Get(request.Message)
                     };
 
                     var message =  _messageRepository.Create(messageEntity);

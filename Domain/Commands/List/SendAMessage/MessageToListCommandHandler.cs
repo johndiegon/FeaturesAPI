@@ -95,7 +95,11 @@ namespace Domain.Commands.List.SendAMessage
                         Message = request.MessageRequest.Message,
                         IdList = request.MessageRequest.IdList,
                         IdUser = request.IdUser,
-                        From = client.Phone
+                        From = client.Phone,
+                        CountMinOrder = request.MessageRequest.CountMinOrder,
+                        CountMessages = request.MessageRequest.CountMessages,
+                        NameOfProduct = request.MessageRequest.NameOfProduct, 
+                        ParamDate= request.MessageRequest.ParamDate, 
                     };
 
                     var message = JsonConvert.SerializeObject(messageObject);

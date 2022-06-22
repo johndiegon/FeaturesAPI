@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
 
 namespace Infrastructure.Data.Entities
 {
@@ -11,5 +12,8 @@ namespace Infrastructure.Data.Entities
         public string IdClient { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
+        public string PositiveAnwser { get; set; }
+        public string NegativeAnwser { get; set; }
+        public List<string> Params { get; set; } 
     }
 }
