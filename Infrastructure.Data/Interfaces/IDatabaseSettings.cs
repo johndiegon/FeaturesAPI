@@ -20,6 +20,7 @@
         string TwilioRequestCollectionName { get; set; }
         string DatabaseName { get; set; }
         string FacebookMessageCollectionName { get; set; }
+        string UserHubConnetioCollectionName { get; set; }
     }
   
 }

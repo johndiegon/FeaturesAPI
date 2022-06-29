@@ -42,10 +42,20 @@ namespace Domain.Queries.Message.Get
                 }
                 else
                 {
-                    var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                    var messages = _messageRepository.GetByClientId(client.Id).ToList();
+                    var idClient = request.IdClient;
+                    var answerDefault = string.Empty;
+
+                    if (string.IsNullOrEmpty(idClient))
+                    {
+                        var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
+                        idClient = client.Id;
+                        answerDefault = string.IsNullOrEmpty(client.AnswerDefault) ? string.Empty : client.AnswerDefault;
+                    }
+                       
+                    var messages = _messageRepository.GetByClientId(idClient).ToList();
 
                     response.Messages = _mapper.Map<List<MessageDefault>>(messages);
+                    response.AnswerDefault = answerDefault;
 
                     response.Data = new Data
                     {

@@ -4,6 +4,7 @@ using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,28 +38,61 @@ namespace Domain.Commands.List.Put
                 }
                 else
                 {
-                    var contactListSearch = _contactListRepository.Get(request.ContactList.Id);
-                    
-                    if (contactListSearch == null)
+                    if (string.IsNullOrEmpty(request.Id))
                     {
-                        response = GetResponseErro("The request is invalid.");
-                        response.Notification = request.Notifications();
+                        var contactListSearch = _contactListRepository.Get(request.ContactList.Id);
+
+                        if (contactListSearch == null)
+                        {
+                            response = GetResponseErro("The request is invalid.");
+                            response.Notification = request.Notifications();
+                        }
+                        else
+                        {
+                            var contactList = _mapper.Map<ContactListEntity>(request.ContactList);
+                            var result = _contactListRepository.Update(contactList);
+
+                            response = new PutContactListCommandResponse
+                            {
+                                ContactList = request.ContactList,
+                                Data = new Data
+                                {
+                                    Message = "ContactList successfully registered.",
+                                    Status = Status.Sucessed
+                                }
+                            };
+                        }
                     }
                     else
                     {
-                        var contactList = _mapper.Map<ContactListEntity>(request.ContactList);
-                        var result = _contactListRepository.Update(contactList);
+                        var contactListEntity= _contactListRepository.Get(request.Id);
 
-                        response = new PutContactListCommandResponse
+                        if (contactListEntity == null)
                         {
-                            ContactList = request.ContactList,
-                            Data = new Data
+                            response = GetResponseErro("The request is invalid.");
+                            response.Notification = request.Notifications();
+                        }
+                        else
+                        {
+                            var contactList = _mapper.Map<List<ContactEntity>>(request.ListContact);
+                            contactListEntity.ListContact.Clear();
+                            contactListEntity.ListContact = contactList;
+                            contactListEntity.DateMessage = DateTime.Now;
+
+                            var result = _contactListRepository.Update(contactListEntity);
+
+                            response = new PutContactListCommandResponse
                             {
-                                Message = "ContactList successfully registered.",
-                                Status = Status.Sucessed
-                            }
-                        };
+                                ContactList = request.ContactList,
+                                Data = new Data
+                                {
+                                    Message = "ContactList successfully registered.",
+                                    Status = Status.Sucessed
+                                }
+                            };
+                        }
                     }
+                    
                 }
 
                 return await Task.FromResult(response);

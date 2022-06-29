@@ -67,7 +67,7 @@ namespace Domain.Commands.Chat.Post
                 if(string.IsNullOrEmpty(request.IdClient))
                     client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
                 else
-                    client = _clientRepository.GetByUser(request.IdClient).FirstOrDefault();
+                    client = _clientRepository.Get(request.IdClient);
 
                 var phoneClient = client.Phone.FirstOrDefault();
 
@@ -85,6 +85,19 @@ namespace Domain.Commands.Chat.Post
                     });
 
                 var contact = _contactRepository.GetByPhone(phoneContact).Where(c => c.IdClient == client.Id).FirstOrDefault();
+
+                if(contact == null)
+                {
+                    contact = new ContactEntity()
+                    {
+                        Name = string.IsNullOrEmpty(request.Message.NameFrom) ? phoneContact : request.Message.NameFrom,
+                        IdClient = client.Id,
+                        Status = ContactStatusEntity.Active,
+                        Phone = phoneContact,
+                        DateInclude = DateTime.Now
+                    };
+                    _contactRepository.Create(contact);
+                }
 
                 var chat =  _chatRepository.GetByClientId(client.Id).Where(c => c.PhoneTo == phoneContact).FirstOrDefault();
 

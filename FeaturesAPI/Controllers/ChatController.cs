@@ -124,7 +124,7 @@ namespace FeaturesAPI.Controllers
         [ApiKey]
         [HttpPost]
         [Route("ListMessage")]
-        public async Task<ActionResult<CommandResponse>> PostListMessage([FromBody]List<MessageOnChat> messages)
+        public async Task<ActionResult<CommandResponse>> PostListMessage([FromBody] List<MessageOnChat> messages)
         {
             try
             {
@@ -232,6 +232,44 @@ namespace FeaturesAPI.Controllers
             }
         }
 
+
+        /// <summary>
+        ///     Action to get list the chat message.
+        /// </summary>
+        /// <response code="200">Returned with the last message.</response>
+        /// <response code="400">Returned if the message was parsed or saved</response>
+        /// <response code="422">Returned when the validation failed</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ApiKey]
+        [HttpGet("{idClient}/{phone}")]
+        public async Task<ActionResult<GetChatMessageResponse>> Get(string phone, string idClient)
+        {
+            try
+            {
+                var command = new GetChatMessage()
+                {
+                    IdClient = idClient,
+                    PhoneTo = phone
+                };
+
+                var response = await _mediator.Send(command);
+
+                if (response.Data.Status == Status.Sucessed)
+                {
+                    return await Task.FromResult(response);
+                }
+                else
+                {
+                    return UnprocessableEntity(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
     }
 }

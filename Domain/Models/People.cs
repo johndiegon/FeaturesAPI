@@ -12,6 +12,7 @@ namespace FeaturesAPI.Domain.Models
         public string Name { get; set; }
         public string LastName { get; set; }
         public string DocNumber { get; set; }
+        public string AnswerDefault { get; set; }
         public DocType DocType { get; set; }
         public string Email { get; set; }
         public AddressData Address { get; set; }

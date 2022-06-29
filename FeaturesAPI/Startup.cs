@@ -30,6 +30,7 @@ using Domain.Commands.User.ChangePassword;
 using Domain.Commands.User.ConfirmEmail;
 using Domain.Commands.User.Post;
 using Domain.Commands.User.Put;
+using Domain.Commands.UserHub;
 using Domain.Models;
 using Domain.Profiles;
 using Domain.Queries.Address;
@@ -228,6 +229,7 @@ namespace FeaturesAPI
             services.AddTransient<IRequestHandler<PostMessageChat, CommandResponse>, PostMessageChatHandler>();
             services.AddTransient<IRequestHandler<GetChatMessage, GetChatMessageResponse>, GetChatMessageHandler>();
             services.AddTransient<IRequestHandler<GetLastMessages, GetLastMessagesResponse>, GetLastMessagesHandler>();
+            services.AddTransient<IRequestHandler<PostUserHubConectionCommand, CommandResponse>, PostUserHubConectionHandler>();
 
             #endregion
 
@@ -264,6 +266,7 @@ namespace FeaturesAPI
             services.AddScoped<ITwillioAccessRepository, TwillioAccessRepository>();
             services.AddScoped<ITwilioRequestRepository, TwilioRequestRepository>();
             services.AddScoped<IFacebookMessageRepository, FacebookMessageRepository>();
+            services.AddScoped<IUserHubConectionRepository, UserHubConectionRepository>();
 
             services.AddSingleton<ClientRepository>();
             services.AddSingleton<ContactListRepository>();

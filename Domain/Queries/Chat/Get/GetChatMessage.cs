@@ -7,10 +7,16 @@ namespace Domain.Queries.Chat.Get
     {
         public string IdUser { get; set; }
         public string PhoneTo { get; set; }
+        public string IdClient { get; set; }
+
         public override bool IsValid()
         {
-            if( string.IsNullOrEmpty(IdUser) ||
-                string.IsNullOrEmpty(PhoneTo)
+            if (string.IsNullOrEmpty(IdUser) ||
+                string.IsNullOrEmpty(IdClient)
+                )
+                return false;
+
+            if( string.IsNullOrEmpty(PhoneTo)
                )
                 return false;
             else

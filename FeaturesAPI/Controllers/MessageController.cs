@@ -5,6 +5,7 @@ using Domain.Commands.Message.Post;
 using Domain.Commands.Message.Put;
 using Domain.Models;
 using Domain.Queries.Message.Get;
+using FeaturesAPI.Atributes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -200,6 +201,47 @@ namespace FeaturesAPI.Controllers
         [HttpGet]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<GetMessageResponse>> Get()
+        {
+            try
+            {
+                var claimsIdentity = User.Identity as ClaimsIdentity;
+                var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
+
+                var deleteMessage = new GetMessageQuery
+                {
+                    IdUser = idUser
+                };
+
+                var response = await _mediator.Send(deleteMessage);
+
+                if (response.Data.Status == Status.Sucessed)
+                {
+                    return await Task.FromResult(response);
+                }
+                else
+                {
+                    return UnprocessableEntity(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        ///     Action to update a default message.
+        /// </summary>
+        /// <param name="message">Message that will be created in database..</param>
+        /// <response code="200">Returned if the new message was created.</response>
+        /// <response code="400">Returned if the model couldn't be parsed or saved</response>
+        /// <response code="422">Returned when the validation failed</response>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [HttpGet("{idClient}")]
+        [ApiKey]
+        public async Task<ActionResult<GetMessageResponse>> Get(string idClient)
         {
             try
             {

@@ -109,6 +109,12 @@ namespace Domain.Profiles
             CreateMap<Credentials, TwillioAccessEntity>();
             CreateMap<TwillioAccessEntity, Credentials>();
             #endregion
+
+            #region >> User Hub Connection
+
+            CreateMap<UserHubConection, UserHubConectionEntity>();
+            CreateMap<UserHubConectionEntity, UserHubConection>();
+            #endregion
         }
     }
 }
