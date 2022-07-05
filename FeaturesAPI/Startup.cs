@@ -1,6 +1,5 @@
 using Domain;
 using Domain.Commands.Authenticate;
-using Domain.Commands.Chat;
 using Domain.Commands.Chat.Post;
 using Domain.Commands.Chat.PostList;
 using Domain.Commands.Client.Delete;
@@ -23,6 +22,7 @@ using Domain.Commands.Post.TwiilioAccess;
 using Domain.Commands.Post.TwilioAccess;
 using Domain.Commands.Put.TwiilioAccess;
 using Domain.Commands.Put.TwilioAccess;
+using Domain.Commands.ReportMessage.Post;
 using Domain.Commands.SessionWhats.Post;
 using Domain.Commands.TwilioRequest.Post;
 using Domain.Commands.TypeList.Post;
@@ -42,6 +42,7 @@ using Domain.Queries.Dashboard.Get;
 using Domain.Queries.List.Get;
 using Domain.Queries.Message.Get;
 using Domain.Queries.Message.GetSend;
+using Domain.Queries.ReportMessage.Get;
 using Domain.Queries.TwilioAccess.Get;
 using FeaturesAPI.Infrastructure.Data.Interface;
 using FeaturesAPI.Infrastructure.Models;
@@ -247,7 +248,14 @@ namespace FeaturesAPI
             services.AddTransient<IRequestHandler<PostMessageCommand, CommandResponse>, PostMessageHandler>();
             services.AddTransient<IRequestHandler<GetMessageQuery, GetMessageResponse>, GetMessageHandler>();
             services.AddTransient<IRequestHandler<GetSendMessageQuery, GetSendMessageResponse>, GetSendMessageQueryHandler>();
-        
+
+            #endregion
+
+            #region >> Post Sender
+
+            services.AddTransient<IRequestHandler<PostReportMessageCommand, CommandResponse>, PostReportMessageHandler>();
+            services.AddTransient<IRequestHandler<GetReportMessageQuery, GetReportMessageResponse>, GetReportMessageHandler>();
+
             #endregion
 
             services.AddScoped(typeof(IViaCepService), typeof(ViaCepService));
@@ -267,6 +275,7 @@ namespace FeaturesAPI
             services.AddScoped<ITwilioRequestRepository, TwilioRequestRepository>();
             services.AddScoped<IFacebookMessageRepository, FacebookMessageRepository>();
             services.AddScoped<IUserHubConectionRepository, UserHubConectionRepository>();
+            services.AddScoped<IReportMessageRepository, ReportMessageRepository>();
 
             services.AddSingleton<ClientRepository>();
             services.AddSingleton<ContactListRepository>();

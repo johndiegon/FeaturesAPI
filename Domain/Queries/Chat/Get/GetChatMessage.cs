@@ -11,7 +11,7 @@ namespace Domain.Queries.Chat.Get
 
         public override bool IsValid()
         {
-            if (string.IsNullOrEmpty(IdUser) ||
+            if (string.IsNullOrEmpty(IdUser) &&
                 string.IsNullOrEmpty(IdClient)
                 )
                 return false;

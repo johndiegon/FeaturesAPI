@@ -23,5 +23,6 @@ namespace FeaturesAPI.Infrastructure.Models
         public string TwilioRequestCollectionName { get; set; }
         public string FacebookMessageCollectionName { get; set; }
         public string UserHubConnetioCollectionName { get; set; }   
+        public string ReportMessageCollectionName { get; set; }
     }
 }

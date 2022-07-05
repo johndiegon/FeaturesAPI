@@ -12,7 +12,7 @@
         string ConnectionString { get; set; }
         string TypeListCollectionName { get; set; }
         string ResumeListCollectionName { get; set; }
-        string ChatCollectionName { get; set; } 
+        string ChatCollectionName { get; set; }
         string LastMessageCollectionName { get; set; }
         string SessionWhatsAppCollectionName { get; set; }
         string MessagesDefaultColletionName { get; set; }
@@ -21,6 +21,7 @@
         string DatabaseName { get; set; }
         string FacebookMessageCollectionName { get; set; }
         string UserHubConnetioCollectionName { get; set; }
+        string ReportMessageCollectionName {get;set;}
     }
   
 }

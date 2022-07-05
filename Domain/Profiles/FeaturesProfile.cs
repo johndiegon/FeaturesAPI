@@ -5,12 +5,8 @@ using FeaturesAPI.Domain.Models;
 using FeaturesAPI.Infrastructure.Data.Entities;
 using FeaturesAPI.Infrastructure.Models;
 using Infrastructure.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using static Domain.Commands.ReportMessage.Post.PostReportMessageCommand;
+using static Infrastructure.Data.Entities.ReportMessageEntity;
 
 namespace Domain.Profiles
 {
@@ -114,6 +110,13 @@ namespace Domain.Profiles
 
             CreateMap<UserHubConection, UserHubConectionEntity>();
             CreateMap<UserHubConectionEntity, UserHubConection>();
+            #endregion
+
+            #region >> Post Report
+
+            CreateMap<HistoryAnswerEntity, HistoryAnswer>();
+            CreateMap<HistorySenderEntity, HistorySender>();
+
             #endregion
         }
     }

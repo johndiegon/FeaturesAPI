@@ -109,7 +109,6 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ApiKey]
-        [AllowAnonymous]
         [HttpGet("{idList}")]
         public async Task<ActionResult<GetListResponse>> Get(string idList)
         {
