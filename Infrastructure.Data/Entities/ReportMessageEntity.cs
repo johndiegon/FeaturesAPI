@@ -24,8 +24,8 @@ namespace Infrastructure.Data.Entities
         public class HistorySenderEntity
         {
             public DateTime DateTime { get; set; }
-            public int Count { get; set; }
             public string IdList { get; set; }
+            public int Count { get; set; }
         }
     }
 }

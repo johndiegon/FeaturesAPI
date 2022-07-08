@@ -116,6 +116,8 @@ namespace Domain.Profiles
 
             CreateMap<HistoryAnswerEntity, HistoryAnswer>();
             CreateMap<HistorySenderEntity, HistorySender>();
+            CreateMap<HistoryAnswer, HistoryAnswerEntity>();
+            CreateMap<HistorySender, HistorySenderEntity>();
 
             #endregion
         }

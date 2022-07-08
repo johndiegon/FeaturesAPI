@@ -25,5 +25,10 @@ namespace Domain.Commands.ReportMessage.Post
             public string IdList { get; set; }
             public int Count { get; set; }
         }
+
+        public override bool IsValid()
+        {
+            return true;
+        }
     }
 }

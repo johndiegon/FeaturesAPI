@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Commands.UserHub;
 using Domain.Models;
+using FeaturesAPI.Atributes;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -35,7 +35,7 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [ApiKey]
         [HttpPost]
         public async Task<ActionResult<CommandResponse>> Post(UserHubConection request)
         {

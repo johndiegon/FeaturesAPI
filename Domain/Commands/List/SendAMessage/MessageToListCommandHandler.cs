@@ -13,30 +13,19 @@ namespace Domain.Commands.List.SendAMessage
 {
     public class MessageToListCommandHandler : IRequestHandler<MessageToListCommand, CommandResponse>
     {
-        private readonly IContactListRepository _contactListRepository;
         private readonly IResumeContactListRepository _resumeContactListRepository;
         private readonly IClientRepository _clientRepository;
         private readonly ITopicServiceBuss _topicService;
-        private readonly IStorage _blobStorage;
-        private readonly IMapper _mapper;
-        private readonly IMediator _mediator;
 
 
-        public MessageToListCommandHandler(IContactListRepository contactListRepository,
-                                           IResumeContactListRepository resumeContactListRepository,
+        public MessageToListCommandHandler(IResumeContactListRepository resumeContactListRepository,
                                            ITopicServiceBuss topicService,
-                                           IClientRepository clientRepository,
-                                           IStorage blobStorage,
-                                           IMapper mapper,
-                                           IMediator mediator
-                                          )
+                                           IClientRepository clientRepository
+            )
+                                           
         {
-            _contactListRepository = contactListRepository;
             _resumeContactListRepository = resumeContactListRepository;
             _topicService = topicService;
-            _blobStorage = blobStorage;
-            _mapper = mapper;
-            _mediator = mediator;
             _clientRepository = clientRepository;
         }
 
@@ -62,15 +51,15 @@ namespace Domain.Commands.List.SendAMessage
                     {
                         if (item.Id == request.MessageRequest.IdList)
                         {
-                            if (item.DateMessage == null)
+                            if (((DateTime)item.DateMessage).AddHours(1) < DateTime.Now)
                             {
-                                item.DateMessage = DateTime.Now;
+                                SetResponseErro(response, string.Format("Você acabou de enviar uma mensagem para essa lista, aguarde uma hora para reenviar novamente.", item.DateMessage));
+
+                                return response;
                             }
                             else
                             {
-                                SetResponseErro(response, string.Format("Esta lista já recebeu uma mensagem no dia {0}.", item.DateMessage));
-
-                                return response;
+                                item.DateMessage = DateTime.Now;
                             }
                         }
                     }
@@ -83,8 +72,6 @@ namespace Domain.Commands.List.SendAMessage
 
                     string storageFile = string.Empty;
 
-
-
                     #endregion
 
                     #region >> Enviar Mensagem
@@ -93,15 +80,15 @@ namespace Domain.Commands.List.SendAMessage
                     {
                         Picture = storageFile,
                         Message = request.MessageRequest.Message,
+                        Template = request.MessageRequest.Template,
                         IdList = request.MessageRequest.IdList,
-                        IdUser = request.IdUser,
                         IdClient = client.Id,
-                        Phone = client.Phone,
+                        Phone = client.Phone.FirstOrDefault(),
                         CountMinOrder = request.MessageRequest.CountMinOrder,
                         CountMessages = request.MessageRequest.CountMessages,
                         NameOfProduct = request.MessageRequest.NameOfProduct,
                         ParamDate = request.MessageRequest.ParamDate,
-                        Template = request.MessageRequest.Template
+                        Cupom = request.MessageRequest.Cupom
                     };
 
                     var message = JsonConvert.SerializeObject(messageObject);

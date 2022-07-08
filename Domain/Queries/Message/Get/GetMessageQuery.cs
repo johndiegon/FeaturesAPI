@@ -10,10 +10,7 @@ namespace Domain.Queries.Message.Get
 
         public override bool IsValid()
         {
-            if(string.IsNullOrEmpty(IdUser))
-                return false;
-            else 
-                return true;
+            return true;
         }
     }
 }

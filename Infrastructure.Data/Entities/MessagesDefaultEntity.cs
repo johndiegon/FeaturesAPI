@@ -12,8 +12,8 @@ namespace Infrastructure.Data.Entities
         public string IdClient { get; set; }
         public string Title { get; set; }
         public string Message { get; set; }
-        public string PositiveAnwser { get; set; }
-        public string NegativeAnwser { get; set; }
+        public string PositiveAnswer { get; set; }
+        public string NegativeAnswer { get; set; }
         public List<string> Params { get; set; } 
     }
 }

@@ -51,8 +51,8 @@ namespace Domain.Commands.Message.Post
                     {
                         IdClient = client.Id,
                         Message = request.Message,
-                        PositiveAnwser = request.PositiveAnswer,
-                        NegativeAnwser = request.NegativeAnswer,
+                        PositiveAnswer = request.PositiveAnswer,
+                        NegativeAnswer = request.NegativeAnswer,
                         Title = request.Title,
                         Params = Params.Get(request.Message)
                     };

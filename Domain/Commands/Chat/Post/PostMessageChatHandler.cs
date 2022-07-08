@@ -178,6 +178,18 @@ namespace Domain.Commands.Chat.Post
                     var message = JsonConvert.SerializeObject(request);
 
                     _topicService.SendMessage(message, "twiliorequest");
+                } else
+                {
+                    var messageToAnswer = new
+                    {
+                        IdClient = client.Id,
+                        PhoneTo = phoneClient,
+                        PhoneFrom = phoneContact,
+                        Message = request.Message.Message,
+                        IsAsnwerButton = request.Message.IsAnswerButton
+                    };
+
+                    _topicService.SendMessage(messageToAnswer, "answerMessage");
                 }
 
                 return new CommandResponse

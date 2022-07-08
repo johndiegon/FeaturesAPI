@@ -54,21 +54,26 @@ namespace Domain.Commands.ReportMessage.Post
                         if (report.HistoryAnswers == null)
                             report.HistoryAnswers = new List<HistoryAnswerEntity>();
 
-                        foreach (var item in request.HistoryAnswers)
+                        if (request.HistoryAnswers != null)
                         {
-                            report.HistoryAnswers.Add(_mapper.Map<HistoryAnswerEntity>(item));
+                            foreach (var item in request.HistoryAnswers)
+                            {
+                                report.HistoryAnswers.Add(_mapper.Map<HistoryAnswerEntity>(item));
+                            }
                         }
 
                         if (report.HistorySenders == null)
                             report.HistorySenders = new List<HistorySenderEntity>();
 
-                        foreach (var item in request.HistorySenders)
+                        if (request.HistorySenders != null)
                         {
-                            report.HistorySenders.Add(_mapper.Map<HistorySenderEntity>(item));
+                            foreach (var item in request.HistorySenders)
+                            {
+                                report.HistorySenders.Add(_mapper.Map<HistorySenderEntity>(item));
+                            }
                         }
 
-                        _reportMessageRepository.Create(_mapper.Map<ReportMessageEntity>(report));
-
+                        _reportMessageRepository.Update(report);
                     }
                     else
                     {
@@ -81,7 +86,7 @@ namespace Domain.Commands.ReportMessage.Post
                             HistorySenders = request.HistorySenders != null ? _mapper.Map<List<HistorySenderEntity>>(request.HistorySenders) : null
                         };
 
-                        _reportMessageRepository.Update(_mapper.Map<ReportMessageEntity>(report));
+                        _reportMessageRepository.Create(entity);
                     }
 
                     response.Data = new Data

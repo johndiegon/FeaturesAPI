@@ -19,18 +19,20 @@ namespace Domain.Commands.Chat.PostList
         private readonly IChatRepository _chatRepository;
         private readonly IContactRepository _contactRepository;
         private readonly ILastMessageRepository _lastMessageRepository;
-     
+        private readonly ITopicServiceBuss _topicService;
+
         public PostListMessageChatHandler(IClientRepository clientRepository
                                      , IContactRepository contactRepository
                                      , IChatRepository chatRepository
                                      , ILastMessageRepository lastMessageRepository
-                
-                                     )
+                                     , ITopicServiceBuss topicService)                                                   
+
         {
             _clientRepository = clientRepository;
             _chatRepository = chatRepository;
             _contactRepository = contactRepository;
             _lastMessageRepository = lastMessageRepository;
+            _topicService = topicService;
       
         }
         public async Task<CommandResponse> Handle(PostListMessageChat request, CancellationToken cancellationToken)
@@ -126,6 +128,20 @@ namespace Domain.Commands.Chat.PostList
                                 };
 
                                     _lastMessageRepository.Create(lastMessage);
+                                }
+
+                                if(phoneContact == message.PhoneFrom)
+                                {
+                                    var messageToAnswer = new
+                                    {
+                                        IdClient = client.Id,
+                                        PhoneTo = phoneClient,
+                                        PhoneFrom = phoneContact,
+                                        Message = message.Message,
+                                        IsAsnwerButton = message.IsAnswerButton
+                                    };
+
+                                    _topicService.SendMessage(messageToAnswer, "answerMessage");
                                 }
                             }
                     }

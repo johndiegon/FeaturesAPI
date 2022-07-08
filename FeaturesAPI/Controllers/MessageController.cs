@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -51,7 +50,6 @@ namespace FeaturesAPI.Controllers
                 var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
 
                 var messageToList = new MessageToListCommand { MessageRequest = message, IdUser = idUser };
-
 
                 var response = await _mediator.Send(messageToList);
 
@@ -207,12 +205,12 @@ namespace FeaturesAPI.Controllers
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
 
-                var deleteMessage = new GetMessageQuery
+                var getMessage = new GetMessageQuery
                 {
                     IdUser = idUser
                 };
 
-                var response = await _mediator.Send(deleteMessage);
+                var response = await _mediator.Send(getMessage);
 
                 if (response.Data.Status == Status.Sucessed)
                 {
@@ -245,12 +243,10 @@ namespace FeaturesAPI.Controllers
         {
             try
             {
-                var claimsIdentity = User.Identity as ClaimsIdentity;
-                var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
-
+               
                 var deleteMessage = new GetMessageQuery
                 {
-                    IdUser = idUser
+                    IdClient = idClient
                 };
 
                 var response = await _mediator.Send(deleteMessage);
