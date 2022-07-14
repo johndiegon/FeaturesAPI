@@ -43,10 +43,20 @@ namespace Domain.Commands.Contact.Post
                     {
                         contact.AveragePrice = contact.OrdersTotal > 0 
                             ? Convert.ToString(contact.Orders.Select( o => Convert.ToDecimal(o.Total)).Sum() / contact.OrdersTotal) : "0";
+
+                        var contactsEntity = _contactRepository.GetByPhone(contact.Phone)
+                            .Where(c => c.IdClient == contact.IdClient);
+
+                        if (contactsEntity != null)
+                        {
+                            _contactRepository.Create(contact);
+                        }
+                        else
+                        {
+                            contact.Id = contactsEntity.FirstOrDefault().Id;
+                            _contactRepository.Update(contact);
+                        }
                     }
-
-                    _contactRepository.CreateMany(contactsToInsert);
-
 
                     response = new PostContactCommandResponse
                     {

@@ -24,6 +24,7 @@ namespace Infrastructure.Data.Entities
         public string AveragePrice { get; set; }
         public ContactStatusEntity Status { get; set; }
         public List<OrderEntity> Orders { get; set; }
+        public List<string> Classifications { get; set; }
 
     }
 

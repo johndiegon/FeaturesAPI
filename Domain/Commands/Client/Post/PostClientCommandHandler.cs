@@ -51,7 +51,7 @@ namespace Domain.Commands.Client.Post
                     var resultUser = await _mediator.Send(userCommand);
 
                     if ( clientSearch != null ||
-                         resultUser == null
+                         resultUser.Data.Status == Status.Error
                        )
                     {
                         response = GetResponseErro("Customer registration already exists.");

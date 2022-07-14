@@ -42,7 +42,7 @@ namespace Domain.Queries.ContactByClientId
                         contacts = _mapper.Map<IEnumerable<Contact>>(contactsEntity);
                     } else
                     {
-                        var contactsEntity = _contactRepository.GetByPhone(request.IdClient)
+                        var contactsEntity = _contactRepository.GetByPhone(request.Phone)
                             .Where( c=> c.IdClient == request.IdClient);
                         contacts = _mapper.Map<IEnumerable<Contact>>(contactsEntity);
                     }

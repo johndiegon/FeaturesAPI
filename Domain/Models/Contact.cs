@@ -24,6 +24,7 @@ namespace Domain.Models
         public int OrdersInLast6Month { get; set; }
         public int OrdersTotal { get; set; }
         public string AveragePrice { get; set; }
+        public List<string> Classifications { get; set; }
         public override bool IsValid()
         {
             ValidationResult = new ContactValidator().Validate(this);

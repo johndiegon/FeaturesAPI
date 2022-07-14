@@ -174,14 +174,17 @@ namespace Domain.Commands.Chat.Post
 
                 if (phoneClient == request.Message.PhoneFrom)
                 {
-                    request.IdClient = client.Id;
-                    var message = JsonConvert.SerializeObject(request);
+                    if (string.IsNullOrEmpty(request.Message.Template))
+                    {
+                        request.IdClient = client.Id;
+                        var message = JsonConvert.SerializeObject(request);
 
-                    _topicService.SendMessage(message, "twiliorequest");
+                        _topicService.SendMessage(message, "twiliorequest");
+                    }
                 } else
                 {
                     var messageToAnswer = new
-                    {
+                    {   
                         IdClient = client.Id,
                         PhoneTo = phoneClient,
                         PhoneFrom = phoneContact,

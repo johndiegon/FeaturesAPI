@@ -45,7 +45,16 @@ namespace Domain.Commands.User.Post
                 {
                     
                     var userModel= _mapper.Map<UserModel>(_userRepository.Create(user));
-                    var response = new PostUserCommandResponse { UserModel = userModel };
+                    var response = new PostUserCommandResponse 
+                    {
+                        Data = new Data
+                        {
+                            Message = "Usuário Cadastrado com Sucesso",
+                            Status = Status.Sucessed
+                        },
+                        UserModel = userModel 
+
+                    };
 
                     user.IsConfirmedEmail = false;
                     var message = JsonConvert.SerializeObject(new { IdClient = userModel.Id, Email = userModel.Login });

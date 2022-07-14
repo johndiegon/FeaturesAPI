@@ -51,7 +51,10 @@ namespace Domain.Commands.List.SendAMessage
                     {
                         if (item.Id == request.MessageRequest.IdList)
                         {
-                            if (((DateTime)item.DateMessage).AddHours(1) < DateTime.Now)
+                            TimeSpan time = item.DateMessage != null ? DateTime.Now - ((DateTime)item.DateMessage)
+                                            : TimeSpan.Zero;
+
+                            if (item.DateMessage != null && time.Hours < 1)
                             {
                                 SetResponseErro(response, string.Format("Você acabou de enviar uma mensagem para essa lista, aguarde uma hora para reenviar novamente.", item.DateMessage));
 
