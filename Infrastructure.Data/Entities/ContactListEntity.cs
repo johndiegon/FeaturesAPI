@@ -7,24 +7,60 @@ namespace Infrastructure.Data.Entities
 {
     public class ContactListEntity
     {
+        public ContactListEntity()
+        {
+            this.DateOrders = new List<DateOrder>();
+            this.OrderInWeeks = new List<OrderInWeek>();
+            this.CountOrders = new List<CountOrder>();
+        }
+
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string IdClient { get; set; }
         public string Name { get; set; }
-        public DateTime CreationDate { get; set; }
-        public TypeListEntity TypeList { get; set; }
+        public string Unity { get; set; }
         public int Count { get; set; }
-        public DateTime? DateMessage { get; set; }
-        public List<ContactEntity> ListContact { get; set; }
+        public TypeList Type { get; set; }
+        public DateTime CreationDate { get; set; }
+        public List<DateOrder> DateOrders { get; set; }
+        public List<CountOrder> CountOrders { get; set; }
+        public List<OrderInWeek> OrderInWeeks { get; set; }
+    }
+    public class DateOrder
+    {
+        public DateTime OrderDate { get; set; }
+        public int Count { get; set; }
+    }
 
-        public List<MessageEntity> ListSendMessage { get;set; }
+    public class OrderInWeek
+    {
+        public FilterWeekDays FilterDays { get; set; }
+        public int Count { get; set; }
+    }
 
+    public class CountOrder
+    {
+        public int OrderCount { get; set; }
+        public int Count { get; set; }
     }
     public class MessageEntity
     {
         public string TextMessage { get; set; }
         public DateTime DateTime { get; set; }
     }
-   
+
+    public enum FilterWeekDays
+    {
+        JustNight,
+        JustDay,
+        JustWeeKend,
+        JustWeek,
+    }
+    public enum TypeList
+    {
+        Order,
+        Tag
+    }
+
 }

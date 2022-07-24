@@ -44,11 +44,10 @@ namespace Domain.Commands.List.GetResume
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
                     var repost = _repository.GetByClientId(client.Id).FirstOrDefault();
 
-                    var resume = _mapper.Map<ResumeContactList>(repost);
-
+                    
                     response = new GetResumeListCommandResponse
                     {
-                        Resume = resume,
+                        Resume = repost,
                         IsASubscriber = client.IsASubscriber,
                         Data = new Data
                         {

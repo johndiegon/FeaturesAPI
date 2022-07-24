@@ -24,6 +24,6 @@ namespace Domain.Models
         public bool WasVisible { get; set; }
         public string UrlPicture { get; set; }
         public string FacebookMessageId { get; set; }
-        public bool IsAnswerButton { get; set; }
+        public bool bAnswerButton { get; set; }
     }
 }

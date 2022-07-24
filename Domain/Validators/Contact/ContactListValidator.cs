@@ -15,17 +15,9 @@ namespace Domain.Validators.Contact
                 .NotNull()
                 .WithMessage("{PropertyName} cannot be null.");
 
-            RuleFor(x => x.ListContact)
-                .NotNull()
-                .WithMessage("{PropertyName} cannot be null.");
-
             RuleFor(x => x.Name)
                 .NotNull()
                 .WithMessage("{PropertyName} cannot be null.");
-
-            RuleFor(x => x.TypeList)
-               .NotNull()
-               .WithMessage("{PropertyName} cannot be null.");
 
         }
     }

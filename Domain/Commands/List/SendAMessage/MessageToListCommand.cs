@@ -1,6 +1,7 @@
 ﻿using Domain.Models;
 using Domain.Validators;
 using MediatR;
+using System.Collections.Generic;
 
 namespace Domain.Commands.List.SendAMessage
 {
@@ -17,14 +18,13 @@ namespace Domain.Commands.List.SendAMessage
 
     public class MessageRequest
     {
-        public string IdList { get; set; }
-        public string Message { get; set; }
         public string Template { get; set; }
-        public int CountMinOrder { get; set; }  
-        public int CountMessages { get; set; }
-        public int NameOfProduct { get; set; }
-        public int ParamDate { get; set; }
-        public string Cupom { get; set; }
+        public List<Param> Params { get; set;} 
     }
-
+    public class Param
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }   
+    }
+    
 }

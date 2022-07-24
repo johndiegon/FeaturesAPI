@@ -26,5 +26,6 @@ namespace Infrastructure.Data.Entities
         public string UrlPicture { get; set; }
         public bool WasVisible { get; set; }
         public string Template { get; set; }
+        public bool bAnswerButton { get; set; }
     }
 }

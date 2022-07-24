@@ -1,27 +1,20 @@
-﻿using Domain.Validators;
-using Domain.Validators.Contact;
+﻿using Infrastructure.Data.Entities;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Models
 {
-    public class ContactList : Validate
+    public class ContactList
     {
         public string Id { get; set; }
         public string IdClient { get; set; }
         public string Name { get; set; }
-        public DateTime CreationDate { get; set; }
-        public TypeList TypeList { get; set; }
+        public string Unity { get; set; }
         public int Count { get; set; }
-        public DateTime? DateMessage { get; set; }       
-        public List<Contact> ListContact { get; set; }
-        public List<Message> ListSendMessage { get; set; }
-
-        public override bool IsValid()
-        {
-            ValidationResult = new ContactListValidator().Validate(this);
-            return ValidationResult.IsValid;
-        }
+        public TypeList Type { get; set; }
+        public DateTime CreationDate { get; set; }
+        public List<DateOrder> DateOrders { get; set; }
+        public List<CountOrder> CountOrders { get; set; }
+        public List<OrderInWeek> OrderInWeeks { get; set; }
     }
 }

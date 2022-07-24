@@ -189,7 +189,7 @@ namespace Domain.Commands.Chat.Post
                         PhoneTo = phoneClient,
                         PhoneFrom = phoneContact,
                         Message = request.Message.Message,
-                        IsAsnwerButton = request.Message.IsAnswerButton
+                        IsAsnwerButton = request.Message.bAnswerButton
                     };
 
                     _topicService.SendMessage(messageToAnswer, "answerMessage");

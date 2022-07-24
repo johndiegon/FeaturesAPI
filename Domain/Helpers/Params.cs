@@ -13,10 +13,12 @@ namespace Domain.Helpers
 
             foreach (var word in listOfWords.Where( w => w.Length > 4))
             {
-                if(word.Substring(0, 2) == "{{" &&
-                   word.Substring(word.Length - 2, 2) == "}}")
+                if(word.Contains("{{") &&
+                   word.Contains("}}")
+                   )
                 {
-                    listParams.Add(word.Replace("{", "").Replace("}", ""));
+                    var key = word.Replace("{", " ").Replace("}", " ").Split();
+                    listParams.Add(key.Where(k => k.Length > 0).FirstOrDefault());
                 }
             }
 

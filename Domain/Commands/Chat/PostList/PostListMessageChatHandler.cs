@@ -55,6 +55,18 @@ namespace Domain.Commands.Chat.PostList
                         foreach( var phoneContact in listPhoneContact)
                         {
                             var contact = _contactRepository.GetByPhone(phoneContact).Where(c => c.IdClient == client.Id).FirstOrDefault();
+
+                            if(contact == null)
+                            {
+                                var me = request.Messages.Where(m => m.PhoneFrom == phoneContact && m.PhoneTo == phoneClient).FirstOrDefault();
+
+                                contact = _contactRepository.Create(new ContactEntity()
+                                {
+                                    Name = string.IsNullOrEmpty(me.NameFrom) ? me.PhoneFrom : me.NameFrom,
+                                    Phone = me.PhoneFrom
+                                });
+                            }
+
                             var chat = _chatRepository.GetByClientId(client.Id).Where(c => c.PhoneTo == phoneContact).FirstOrDefault();
 
                             foreach (var message in request.Messages.Where(m => m.PhoneFrom == phoneContact && m.PhoneTo == phoneClient))
@@ -138,7 +150,7 @@ namespace Domain.Commands.Chat.PostList
                                         PhoneTo = phoneClient,
                                         PhoneFrom = phoneContact,
                                         Message = message.Message,
-                                        IsAsnwerButton = message.IsAnswerButton
+                                        IsAsnwerButton = message.bAnswerButton
                                     };
 
                                     _topicService.SendMessage(messageToAnswer, "answerMessage");

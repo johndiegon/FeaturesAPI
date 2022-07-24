@@ -10,9 +10,6 @@ using Domain.Commands.Dashboard;
 using Domain.Commands.Facebook.Post;
 using Domain.Commands.File.Post;
 using Domain.Commands.List.GetResume;
-using Domain.Commands.List.Post;
-using Domain.Commands.List.PostResume;
-using Domain.Commands.List.Put;
 using Domain.Commands.List.SendAMessage;
 using Domain.Commands.Message.Delete;
 using Domain.Commands.Message.Post;
@@ -24,7 +21,6 @@ using Domain.Commands.Put.TwilioAccess;
 using Domain.Commands.ReportMessage.Post;
 using Domain.Commands.SessionWhats.Post;
 using Domain.Commands.TwilioRequest.Post;
-using Domain.Commands.TypeList.Post;
 using Domain.Commands.User.ChangePassword;
 using Domain.Commands.User.ConfirmEmail;
 using Domain.Commands.User.Post;
@@ -37,9 +33,7 @@ using Domain.Queries.Chat.GetLast;
 using Domain.Queries.Client;
 using Domain.Queries.ContactByClientId;
 using Domain.Queries.Dashboard.Get;
-using Domain.Queries.List.Get;
 using Domain.Queries.Message.Get;
-using Domain.Queries.Message.GetSend;
 using Domain.Queries.ReportMessage.Get;
 using Domain.Queries.TwilioAccess.Get;
 using FeaturesAPI.Services;
@@ -95,10 +89,6 @@ namespace FeaturesAPI.Atributes
             #endregion
 
             #region >> List
-            services.AddTransient<IRequestHandler<PostContactListCommand, PostContactListCommandResponse>, PostContactListCommandHandler>();
-            services.AddTransient<IRequestHandler<PutContactListCommand, PutContactListCommandResponse>, PutContactListCommandHandler>();
-            services.AddTransient<IRequestHandler<PostTypeListCommand, PostTypeListCommandResponse>, PostTypeListCommandHandler>();
-            services.AddTransient<IRequestHandler<PostResumeListCommand, CommandResponse>, PostResumeListCommandHandler>();
             services.AddTransient<IRequestHandler<GetResumeListCommand, GetResumeListCommandResponse>, GetResumeListCommandHandler>();
 
             #endregion
@@ -136,7 +126,6 @@ namespace FeaturesAPI.Atributes
 
             #region >> Client
             services.AddTransient<IRequestHandler<GetClientQuery, GetClientQueryResponse>, GetClientQueryHandler>();
-            services.AddTransient<IRequestHandler<GetListQuery, GetListResponse>, GetListQueryHandler>();
 
             #endregion
 
@@ -168,7 +157,6 @@ namespace FeaturesAPI.Atributes
             services.AddTransient<IRequestHandler<PutMessageCommand, CommandResponse>, PutMessageHandler>();
             services.AddTransient<IRequestHandler<PostMessageCommand, CommandResponse>, PostMessageHandler>();
             services.AddTransient<IRequestHandler<GetMessageQuery, GetMessageResponse>, GetMessageHandler>();
-            services.AddTransient<IRequestHandler<GetSendMessageQuery, GetSendMessageResponse>, GetSendMessageQueryHandler>();
 
             #endregion
 
@@ -182,11 +170,9 @@ namespace FeaturesAPI.Atributes
             services.AddScoped(typeof(IViaCepService), typeof(ViaCepService));
 
             services.AddScoped<IClientRepository, ClientRepository>();
-            services.AddScoped<IContactListRepository, ContactListRepository>();
             services.AddScoped<IChatRepository, ChatRepository>();
             services.AddScoped<ILastMessageRepository, LastMessageRepository>();
             services.AddScoped<IContactRepository, ContactRepository>();
-            services.AddScoped<ITypeListRepository, TypeListRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IResumeContactListRepository, ResumeContactListRepository>();
             services.AddScoped<IDataDashboardRepository, DataDashboardRepository>();
@@ -199,9 +185,7 @@ namespace FeaturesAPI.Atributes
             services.AddScoped<IReportMessageRepository, ReportMessageRepository>();
 
             services.AddSingleton<ClientRepository>();
-            services.AddSingleton<ContactListRepository>();
             services.AddSingleton<ContactRepository>();
-            services.AddSingleton<TypeListRepository>();
             services.AddSingleton<UserRepository>();
             services.AddSingleton<ResumeContactListRepository>();
             services.AddSingleton<ChatRepository>();
