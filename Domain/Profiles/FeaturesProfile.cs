@@ -5,8 +5,7 @@ using FeaturesAPI.Domain.Models;
 using FeaturesAPI.Infrastructure.Data.Entities;
 using FeaturesAPI.Infrastructure.Models;
 using Infrastructure.Data.Entities;
-using static Domain.Commands.ReportMessage.Post.PostReportMessageCommand;
-using static Infrastructure.Data.Entities.ReportMessageEntity;
+
 
 namespace Domain.Profiles
 {
@@ -76,9 +75,6 @@ namespace Domain.Profiles
 
             CreateMap<DataDashboardEntity, DataDashboard>();
 
-            CreateMap<GeneralDataEntity, GeneralData>();
-            CreateMap<GeneralData, GeneralDataEntity>();
-
             CreateMap<ResumeContactListEntity, ResumeContactList>();
 
             CreateMap<ResumeContactList, ResumeContactListEntity>();
@@ -109,14 +105,12 @@ namespace Domain.Profiles
             CreateMap<UserHubConectionEntity, UserHubConection>();
             #endregion
 
-            #region >> Post Report
+            #region >> Report File
 
-            CreateMap<HistoryAnswerEntity, HistoryAnswer>();
-            CreateMap<HistorySenderEntity, HistorySender>();
-            CreateMap<HistoryAnswer, HistoryAnswerEntity>();
-            CreateMap<HistorySender, HistorySenderEntity>();
-
+            CreateMap<ReportFile, ReportFileEntity>();
+            CreateMap<ReportFileEntity, ReportFile>();
             #endregion
+
         }
     }
 }

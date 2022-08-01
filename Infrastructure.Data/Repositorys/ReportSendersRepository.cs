@@ -7,19 +7,19 @@ using System.Linq;
 
 namespace Infrastructure.Data.Repositorys
 {
-    public class ReportMessageRepository : IReportMessageRepository
+    public class ReportSendersRepository : IReportSendersRepository
     {
-        private readonly IMongoCollection<ReportMessageEntity> _collection;
+        private readonly IMongoCollection<ReportSendEntity> _collection;
 
-        public ReportMessageRepository(IDatabaseSettings settings)
+        public ReportSendersRepository(IDatabaseSettings settings)
         {
             var settingsMongo = MongoClientSettings.FromConnectionString(settings.ConnectionString);
             var client = new MongoClient(settingsMongo);
             var database = client.GetDatabase(settings.DatabaseName);
 
-            _collection = database.GetCollection<ReportMessageEntity>(settings.ReportMessageCollectionName);
+            _collection = database.GetCollection<ReportSendEntity>("ReportSenders");
         }
-        public ReportMessageEntity Create(ReportMessageEntity entity)
+        public ReportSendEntity Create(ReportSendEntity entity)
         {
             _collection.InsertOne(entity);
             return entity;
@@ -29,13 +29,13 @@ namespace Infrastructure.Data.Repositorys
             _collection.DeleteOne(chat => chat.Id == id);
 
 
-        public ReportMessageEntity Get(string id) =>
-            _collection.Find<ReportMessageEntity>(entity => entity.Id == id).FirstOrDefault();
+        public ReportSendEntity Get(string id) =>
+            _collection.Find<ReportSendEntity>(entity => entity.Id == id).FirstOrDefault();
 
-        public IEnumerable<ReportMessageEntity> GetByClientId(string clientId) =>
-            _collection.Find<ReportMessageEntity>(entity => entity.ClientID == clientId).ToList();
+        public IEnumerable<ReportSendEntity> GetByClientId(string clientId) =>
+            _collection.Find<ReportSendEntity>(entity => entity.ClientID == clientId).ToList();
 
-        public ReportMessageEntity Update(ReportMessageEntity entityIn)
+        public ReportSendEntity Update(ReportSendEntity entityIn)
         {
             _collection.ReplaceOne(entiy => entiy.Id == entityIn.Id, entityIn);
             return entityIn;

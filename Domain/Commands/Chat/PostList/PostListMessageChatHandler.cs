@@ -153,7 +153,7 @@ namespace Domain.Commands.Chat.PostList
                                         IsAsnwerButton = message.bAnswerButton
                                     };
 
-                                    _topicService.SendMessage(messageToAnswer, "answerMessage");
+                                    await _topicService.SendMessage(messageToAnswer, "answerMessage");
                                 }
                             }
                     }

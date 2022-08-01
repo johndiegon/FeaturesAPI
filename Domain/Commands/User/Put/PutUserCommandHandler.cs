@@ -59,7 +59,7 @@ namespace Domain.Commands.User.Put
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 return null;
             }

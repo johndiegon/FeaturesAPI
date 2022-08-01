@@ -12,18 +12,20 @@ namespace Domain.Queries.Dashboard.Get
     public class GetDashboardQueryHandler : IRequestHandler<GetDashboardQuery, GetDashboardQueryResponse>
     {
         private readonly IClientRepository _clientRepository;
-        private readonly IDataDashboardRepository _dataDashboardRepostory;
+        private readonly IReportSendersRepository _reportSendersRepository;
+        private readonly IReportAnswerRepository _reportAnswerRepository;
         private readonly IMapper _mapper;
 
-        public GetDashboardQueryHandler(IClientRepository clientRepository
-                                     , IMapper mapper
-                                 , IDataDashboardRepository dataDashboardRepostory
-
+        public GetDashboardQueryHandler( IClientRepository clientRepository
+                                       , IMapper mapper
+                                       , IReportSendersRepository reportSendersRepository
+                                       , IReportAnswerRepository reportAnswerRepository
                                      )
         {
             _clientRepository = clientRepository;
             _mapper = mapper;
-            _dataDashboardRepostory = dataDashboardRepostory;
+            _reportAnswerRepository = reportAnswerRepository;
+            _reportSendersRepository = reportSendersRepository;
         }
 
         public async Task<GetDashboardQueryResponse> Handle(GetDashboardQuery request, CancellationToken cancellationToken)
@@ -39,19 +41,92 @@ namespace Domain.Queries.Dashboard.Get
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                    var dashs = _dataDashboardRepostory.GetByClient(client.Id);
+                    var senders = _reportSendersRepository.GetByClientId(client.Id).ToList();
+                    var answers = _reportAnswerRepository.GetByClientId(client.Id).ToList();
 
-                   if (dashs.Any())
+                    var dash = new DataDashboard() 
                     {
-                        DateTime datelastDash = dashs.Select(d => d.DateTime).Max();
-                        var lastDash = dashs.Where(d => d.DateTime == datelastDash).FirstOrDefault();
-                        response.DataDashboard = _mapper.Map<DataDashboard>(lastDash);
+                        HistorySenders = senders,
+                        CountReceiverAnswer = answers.Count,
+                        CountSendMessage = senders.Select( s => s.Count).Sum(),
+                        CountReceiverAnswerThisMonth = answers.Where( a => a.DateTime.Month == DateTime.Now.Month &&
+                                                                           a.DateTime.Year == DateTime.Now.Year
+                                                                           ).Count(),
+                        CountSendMessageThisMonth = senders.Where(a => a.DateTime.Month == DateTime.Now.Month &&
+                                                                          a.DateTime.Year == DateTime.Now.Year)
+                                                           .Select( s => s.Count).Sum(),
+                    };
+
+                    if(senders != null && senders.Count() > 0)
+                    {
+                        var templates = senders.Select(s => s.Template).Distinct().ToList();
+                        
+                        foreach (var template in templates)
+                        {
+                            var reportTemplate = new ReportTemplate()
+                            {
+                                Template = template,
+                                CountReceiverAnswer = answers.Where(a => a.Template == template).Count(),
+                                CountSendMessage = senders.Where(a => a.Template == template).Select(s => s.Count).Sum(),
+                                CountReceiverAnswerThisMonth = answers.Where(a => a.DateTime.Month == DateTime.Now.Month &&
+                                                                                  a.DateTime.Year == DateTime.Now.Year &&
+                                                                                  a.Template == template
+                                                                           ).Count(),
+                                CountSendMessageThisMonth = senders.Where(a => a.DateTime.Month == DateTime.Now.Month &&
+                                                                               a.DateTime.Year == DateTime.Now.Year &&
+                                                                               a.Template == template)
+                                                                   .Select(s => s.Count).Sum(),
+                            };
+
+                            var totalAnswer = (from answer in answers
+                                               where answer.Template == template
+                                               group answer by new
+                                               {
+                                                   Template = answer.Template,
+                                                   Answer = answer.Answer,
+                                                   Month = answer.DateTime.Month,
+                                                   Year = answer.DateTime.Year,
+                                               } into atm
+                                               select new Answers
+                                               {
+                                                   Month = atm.Key.Month.ToString(),
+                                                   Year = atm.Key.Year.ToString(),
+                                                   Template = atm.Key.Template,
+                                                   Answer = atm.Key.Answer,
+                                                   Count = atm.Count()
+                                               }).ToList();
+
+                            reportTemplate.TotalAnswer = totalAnswer;
+
+                            var totalSenders = (from answer in senders
+                                                where answer.Template == template
+                                                group answer by new
+                                                {
+                                                    Template = answer.Template,
+                                                    Month = answer.DateTime.Month,
+                                                    Year = answer.DateTime.Year,
+                                                } into atm
+                                                select new Senders
+                                                {
+                                                    Month = atm.Key.Month.ToString(),
+                                                    Year = atm.Key.Year.ToString(),
+                                                    Template = atm.Key.Template,
+                                                    Count = atm.Sum(a => a.Count),
+                                                    CountOK = atm.Sum(a => a.CountOK),
+                                                }).ToList();
+
+                            reportTemplate.TotalSenders = totalSenders;
+
+                            dash.ReportTemplates.Add(reportTemplate);
+                        }
                     }
                   
                     response.Data = new Data
                     {
                         Status = Status.Sucessed
                     };
+                    
+                    response.DataDashboard = dash;
                 }
 
                 return await Task.FromResult(response);

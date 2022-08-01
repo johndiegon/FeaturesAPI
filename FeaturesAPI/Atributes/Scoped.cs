@@ -6,7 +6,6 @@ using Domain.Commands.Client.Post;
 using Domain.Commands.Client.Put;
 using Domain.Commands.Contact.Post;
 using Domain.Commands.Contact.Put;
-using Domain.Commands.Dashboard;
 using Domain.Commands.Facebook.Post;
 using Domain.Commands.File.Post;
 using Domain.Commands.List.GetResume;
@@ -18,7 +17,6 @@ using Domain.Commands.Post.TwiilioAccess;
 using Domain.Commands.Post.TwilioAccess;
 using Domain.Commands.Put.TwiilioAccess;
 using Domain.Commands.Put.TwilioAccess;
-using Domain.Commands.ReportMessage.Post;
 using Domain.Commands.SessionWhats.Post;
 using Domain.Commands.TwilioRequest.Post;
 using Domain.Commands.User.ChangePassword;
@@ -33,8 +31,8 @@ using Domain.Queries.Chat.GetLast;
 using Domain.Queries.Client;
 using Domain.Queries.ContactByClientId;
 using Domain.Queries.Dashboard.Get;
+using Domain.Queries.FileInput.Get;
 using Domain.Queries.Message.Get;
-using Domain.Queries.ReportMessage.Get;
 using Domain.Queries.TwilioAccess.Get;
 using FeaturesAPI.Services;
 using Infrasctuture.Service.Interfaces;
@@ -75,12 +73,13 @@ namespace FeaturesAPI.Atributes
 
             #region >> Dash
 
-            services.AddTransient<IRequestHandler<PostDashboardCommand, CommandResponse>, PostDashboardCommandHandler>();
             services.AddTransient<IRequestHandler<GetDashboardQuery, GetDashboardQueryResponse>, GetDashboardQueryHandler>();
             #endregion
 
             #region >> File
             services.AddTransient<IRequestHandler<PostFileCommand, PostFileCommandResponse>, PostFileCommandHandler>();
+            services.AddTransient<IRequestHandler<GetHistorysFileQuery, GetHistorysFileQueryResponse>, GetHistorysFileQueryHandler>();
+
             #endregion
 
             #region >> Contact
@@ -159,14 +158,7 @@ namespace FeaturesAPI.Atributes
             services.AddTransient<IRequestHandler<GetMessageQuery, GetMessageResponse>, GetMessageHandler>();
 
             #endregion
-
-            #region >> Post Sender
-
-            services.AddTransient<IRequestHandler<PostReportMessageCommand, CommandResponse>, PostReportMessageHandler>();
-            services.AddTransient<IRequestHandler<GetReportMessageQuery, GetReportMessageResponse>, GetReportMessageHandler>();
-
-            #endregion
-
+            
             services.AddScoped(typeof(IViaCepService), typeof(ViaCepService));
 
             services.AddScoped<IClientRepository, ClientRepository>();
@@ -175,15 +167,16 @@ namespace FeaturesAPI.Atributes
             services.AddScoped<IContactRepository, ContactRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IResumeContactListRepository, ResumeContactListRepository>();
-            services.AddScoped<IDataDashboardRepository, DataDashboardRepository>();
             services.AddScoped<ISessionWhatsAppRepository, SessionWhatsAppRepository>();
             services.AddScoped<IMessagesDefaultRepository, MessagesDefaultRepository>();
             services.AddScoped<ITwillioAccessRepository, TwillioAccessRepository>();
             services.AddScoped<ITwilioRequestRepository, TwilioRequestRepository>();
             services.AddScoped<IFacebookMessageRepository, FacebookMessageRepository>();
             services.AddScoped<IUserHubConectionRepository, UserHubConectionRepository>();
-            services.AddScoped<IReportMessageRepository, ReportMessageRepository>();
-
+            services.AddScoped<IReportSendersRepository, ReportSendersRepository>();
+            services.AddScoped<IReportAnswerRepository, ReportAnswerRepository>();
+            services.AddScoped<IReportFileRepository, ReportFileRepository>();
+            services.AddScoped<IReportSendersRepository, ReportSendersRepository>();
             services.AddSingleton<ClientRepository>();
             services.AddSingleton<ContactRepository>();
             services.AddSingleton<UserRepository>();

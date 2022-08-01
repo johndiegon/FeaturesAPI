@@ -64,7 +64,7 @@ namespace Domain.Commands.User.Post
                     return await Task.FromResult(response); 
                 }
             }
-            catch(Exception ex)
+            catch
             {
                 return null;
             }

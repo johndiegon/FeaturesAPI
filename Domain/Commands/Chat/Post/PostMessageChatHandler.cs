@@ -179,7 +179,7 @@ namespace Domain.Commands.Chat.Post
                         request.IdClient = client.Id;
                         var message = JsonConvert.SerializeObject(request);
 
-                        _topicService.SendMessage(message, "twiliorequest");
+                        await _topicService.SendMessage(message, "twiliorequest");
                     }
                 } else
                 {
@@ -192,7 +192,7 @@ namespace Domain.Commands.Chat.Post
                         IsAsnwerButton = request.Message.bAnswerButton
                     };
 
-                    _topicService.SendMessage(messageToAnswer, "answerMessage");
+                    await _topicService.SendMessage(messageToAnswer, "answerMessage");
                 }
 
                 return new CommandResponse

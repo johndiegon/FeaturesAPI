@@ -26,6 +26,7 @@ namespace FeaturesAPI.Domain.Models
                 value.ForEach(p => _phones.Add(PhoneValid.TakeAValidNumber(p)));
             }
         }
+        public string DefaultAnswer { get; set; }
         public string IdUser { get; set; }
         public UserModel User { get; set; }
         public EntityStatus Status  { get; set; }

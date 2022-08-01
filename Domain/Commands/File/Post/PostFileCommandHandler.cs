@@ -50,7 +50,8 @@ namespace Domain.Commands.File.Post
                     var importedFile = new ImportedFile
                     {
                         IdClient = client.Id,
-                        PathFile = storageFile
+                        PathFile = storageFile,
+                        FileName = request.File.FileName,
                     };
                     
                     var message = JsonConvert.SerializeObject(importedFile);
