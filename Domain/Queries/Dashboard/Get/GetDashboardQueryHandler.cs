@@ -46,7 +46,6 @@ namespace Domain.Queries.Dashboard.Get
 
                     var dash = new DataDashboard() 
                     {
-                        HistorySenders = senders,
                         CountReceiverAnswer = answers.Count,
                         CountSendMessage = senders.Select( s => s.Count).Sum(),
                         CountReceiverAnswerThisMonth = answers.Where( a => a.DateTime.Month == DateTime.Now.Month &&
@@ -66,6 +65,7 @@ namespace Domain.Queries.Dashboard.Get
                             var reportTemplate = new ReportTemplate()
                             {
                                 Template = template,
+                                HistorySenders = senders.Where(a => a.Template == template).OrderBy( h => h.DateTime).ToList(),
                                 CountReceiverAnswer = answers.Where(a => a.Template == template).Count(),
                                 CountSendMessage = senders.Where(a => a.Template == template).Select(s => s.Count).Sum(),
                                 CountReceiverAnswerThisMonth = answers.Where(a => a.DateTime.Month == DateTime.Now.Month &&

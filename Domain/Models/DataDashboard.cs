@@ -14,7 +14,6 @@ namespace Domain.Models
         public int CountSendMessageThisMonth { get; set; }
         public int CountReceiverAnswerThisMonth { get; set; }
         public List<ReportTemplate> ReportTemplates { get; set; }
-        public List<ReportSendEntity> HistorySenders { get; set; }
     }
 
     public class ReportTemplate
@@ -27,6 +26,7 @@ namespace Domain.Models
 
         public List<Answers> TotalAnswer { get; set; }
         public List<Senders> TotalSenders { get; set; }
+        public List<ReportSendEntity> HistorySenders { get; set; }
     }
 
     public class Answers
