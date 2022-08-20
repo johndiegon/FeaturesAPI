@@ -1,7 +1,6 @@
 ﻿using Domain.Models;
 using Domain.Validators;
 using MediatR;
-using System.Collections.Generic;
 
 namespace Domain.Commands.List.SendAMessage
 {
@@ -14,17 +13,5 @@ namespace Domain.Commands.List.SendAMessage
             ValidationResult = new MessageValidator().Validate(this);
             return ValidationResult.IsValid;
         }
-    }
-
-    public class MessageRequest
-    {
-        public string Template { get; set; }
-        public List<Param> Params { get; set;} 
-    }
-    public class Param
-    {
-        public string Name { get; set; }
-        public string Value { get; set; }   
-    }
-    
+    }  
 }

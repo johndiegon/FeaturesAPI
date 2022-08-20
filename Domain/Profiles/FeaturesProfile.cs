@@ -83,11 +83,6 @@ namespace Domain.Profiles
             CreateMap<SessionWhatsAppEntity, SessionWhatsApp>();
             #endregion
 
-            #region >> Twilio
-            CreateMap<TwilioWhatsRequest, TwilioRequestEntity>();
-            CreateMap<TwilioRequestEntity, TwilioWhatsRequest>();
-            #endregion
-
             #region >> Mapping Command
 
             CreateMap<UserModel, UserEntity>();

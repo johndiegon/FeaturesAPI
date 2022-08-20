@@ -77,14 +77,7 @@ namespace Domain.Commands.Chat.Post
                 var phoneContact = phoneClient == request.Message.PhoneTo ? request.Message.PhoneFrom
                                                                         : request.Message.PhoneTo;
 
-                _facebookMessageRepository.Create(
-                    new FacebookMessageEntity { 
-                        FacebookMessageId = request.Message.FacebookMessageId, 
-                        Phone = phoneContact, 
-                        Text = request.Message.Message
-                    });
-
-                var contact = _contactRepository.GetByPhone(phoneContact).Where(c => c.IdClient == client.Id).FirstOrDefault();
+                var contact = _contactRepository.GetByPhone(phoneContact).Result.FirstOrDefault();
 
                 if(contact == null)
                 {
@@ -96,7 +89,7 @@ namespace Domain.Commands.Chat.Post
                         Phone = phoneContact,
                         DateInclude = DateTime.Now
                     };
-                    _contactRepository.Create(contact);
+                    //_contactRepository.Create(contact);
                 }
 
                 var chat =  _chatRepository.GetByClientId(client.Id).Where(c => c.PhoneTo == phoneContact).FirstOrDefault();

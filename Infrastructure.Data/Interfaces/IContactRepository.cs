@@ -1,13 +1,14 @@
 ﻿using Infrastructure.Data.Entities;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Interfaces
 {
-    public interface IContactRepository : IRepository<ContactEntity>
+    public interface IContactRepository 
     {
-        IEnumerable<ContactEntity> GetByClient(string idClient);
-        IEnumerable<ContactEntity> GetByPhone(string phone);
-        void CreateMany(IEnumerable<ContactEntity> contacts);
-        void UpdateMany(IEnumerable<ContactEntity> contacts);
+        Task<IEnumerable<ContactEntity>> GetByClient(string idClient);
+        Task<IEnumerable<ContactEntity>> GetByPhone(string phone);
+        Task UpdateMany(IEnumerable<ContactEntity> contacts);
+        Task<IEnumerable<ContactEntity>> GetByClient(string idClient, List<Param> paramaters);
     }
 }

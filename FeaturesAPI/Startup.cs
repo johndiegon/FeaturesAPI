@@ -3,6 +3,7 @@ using Domain.Profiles;
 using FeaturesAPI.Atributes;
 using FeaturesAPI.Infrastructure.Data.Interface;
 using FeaturesAPI.Infrastructure.Models;
+using FeaturesAPI.Middlewares;
 using FluentValidation.AspNetCore;
 using Infrasctuture.Service.Interfaces;
 using Infrasctuture.Service.Interfaces.settings;
@@ -132,6 +133,7 @@ namespace FeaturesAPI
             }
 
             app.UseRouting();
+            //app.UseMiddleware<ExceptionMiddleware>();
 
             #region [ CORS ]
 

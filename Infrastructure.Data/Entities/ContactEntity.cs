@@ -17,29 +17,23 @@ namespace Infrastructure.Data.Entities
         public DateTime DateInclude { get; set; }
         public int DaysLastSale { get; set; }
         public DateTime DateLastSale { get; set; }
-        public int OrdersInLastMonth { get; set; }
-        public int OrdersInLastYear { get; set; }
-        public int OrdersInLast6Month { get; set; }
-        public int OrdersTotal { get; set; }
-        public string AveragePrice { get; set; }
-        public string DateMonthYear { get; set; }
-        public int OrdersDuringTheNigth { get; set; }
-        public int OrdersDuringTheDay { get; set; }
-        public int OrdersOnSunday { get; set; }
-        public int OrdersOnTuesday { get; set; }
-        public int OrdersOnWednesday { get; set; }
-        public int OrdersOnThursday { get; set; }
-        public int OrdersOnFriday { get; set; }
-        public int OrdersOnSaturday { get; set; }
-        public int OrdersOnMonday { get; set; }
-        public int OrderInLast90days { get; set; }
-        public bool bLastInput { get; set; }
+     
+        public string Unity { get; set; }
         public ContactStatusEntity Status { get; set; }
-        public List<OrderEntity> Orders { get; set; }
         public string Classification { get; set; }
+
+        public int DaysLastSaleCount { get
+            {
+                return (this.DateLastSale - DateTime.Now).Days;
+            } }
 
     }
 
+    public class Param
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
+    }
     public class OrderEntity
     {
         public string OrderId { get; set; }
@@ -52,7 +46,7 @@ namespace Infrastructure.Data.Entities
     }
     public enum ContactStatusEntity
     {
-        Active = 1, 
+        Active = 1,
         Inactive = 0
     }
 }

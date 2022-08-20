@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Domain.Helpers;
 using Domain.Models;
+using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
@@ -13,14 +15,14 @@ namespace Domain.Queries.ContactByClientId
     public class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, GetContactsQueryResponse>
     {
         private readonly IContactRepository _contactRepository;
-        private readonly IMapper _mapper;
+        private readonly IClientRepository _clientRepository;
 
         public GetContactsQueryHandler(IContactRepository contactRepository
-                                     , IMapper mapper
+            , IClientRepository clientRepository
                                      )
         {
             _contactRepository = contactRepository;
-            _mapper = mapper;
+            _clientRepository = clientRepository;
         }
 
         public async Task<GetContactsQueryResponse> Handle(GetContactsQuery request, CancellationToken cancellationToken)
@@ -35,21 +37,14 @@ namespace Domain.Queries.ContactByClientId
                 }
                 else
                 {
-                    IEnumerable<Contact> contacts ;
-                    if (string.IsNullOrEmpty(request.Phone))
-                    {
-                        var contactsEntity = _contactRepository.GetByClient(request.IdClient);
-                        contacts = _mapper.Map<IEnumerable<Contact>>(contactsEntity);
-                    } else
-                    {
-                        var contactsEntity = _contactRepository.GetByPhone(request.Phone)
-                            .Where( c=> c.IdClient == request.IdClient);
-                        contacts = _mapper.Map<IEnumerable<Contact>>(contactsEntity);
-                    }
+                    var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
+                    var contacts = _contactRepository.GetByClient(client.Id).Result.ToList();
+
+                    var contactsFiltered = FilterContacts.GetContacts(contacts, request.MessageRequest.Params);
 
                     response = new GetContactsQueryResponse
                     {
-                        Contacts = contacts,
+                        Total = contactsFiltered.Count(),
                         Data = new Data
                         {
                             Status = Status.Sucessed

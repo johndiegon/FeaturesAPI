@@ -1,18 +1,16 @@
-﻿using Domain.Validators;
+﻿using Domain.Models;
+using Domain.Validators;
 using MediatR;
 
 namespace Domain.Queries.ContactByClientId
 {
     public class GetContactsQuery : Validate, IRequest<GetContactsQueryResponse>
     {
-        public string IdClient { get; set; }
-        public string Phone { get; set; }
+        public MessageRequest MessageRequest { get; set; }
+        public string IdUser { get; set; }
         public override bool IsValid()
         {
-           return IdClient == null ? false : true;
+          return IdUser != null;
         }
-
     }
-
-
 }

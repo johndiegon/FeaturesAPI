@@ -28,46 +28,46 @@ namespace Domain.Commands.Contact.Post
             try
             {
                 var response = new PostContactCommandResponse();
-                if (!request.IsValid())
-                {
-                    response = GetResponseErro("The request is invalid.");
-                    response.Notification = request.Notifications();
-                }
-                else
-                {
-                    ContactEntity result = null;
+                //if (!request.IsValid())
+                //{
+                //    response = GetResponseErro("The request is invalid.");
+                //    response.Notification = request.Notifications();
+                //}
+                //else
+                //{
+                //    ContactEntity result = null;
 
-                    var contactsToInsert = _mapper.Map<IEnumerable<ContactEntity>>(request.Contacts);
+                //    var contactsToInsert = _mapper.Map<IEnumerable<ContactEntity>>(request.Contacts);
 
-                    foreach (var contact in contactsToInsert)
-                    {
-                        contact.AveragePrice = contact.OrdersTotal > 0 
-                            ? Convert.ToString(contact.Orders.Select( o => Convert.ToDecimal(o.Total)).Sum() / contact.OrdersTotal) : "0";
+                //    foreach (var contact in contactsToInsert)
+                //    {
+                //        contact.AveragePrice = contact.OrdersTotal > 0 
+                //            ? Convert.ToString(contact.Orders.Select( o => Convert.ToDecimal(o.Total)).Sum() / contact.OrdersTotal) : "0";
 
-                        var contactsEntity = _contactRepository.GetByPhone(contact.Phone)
-                            .Where(c => c.IdClient == contact.IdClient);
+                //        var contactsEntity = _contactRepository.GetByPhone(contact.Phone)
+                //            .Where(c => c.IdClient == contact.IdClient);
 
-                        if (contactsEntity != null)
-                        {
-                            _contactRepository.Create(contact);
-                        }
-                        else
-                        {
-                            contact.Id = contactsEntity.FirstOrDefault().Id;
-                            _contactRepository.Update(contact);
-                        }
-                    }
+                //        if (contactsEntity != null)
+                //        {
+                //            _contactRepository.Create(contact);
+                //        }
+                //        else
+                //        {
+                //            contact.Id = contactsEntity.FirstOrDefault().Id;
+                //            _contactRepository.Update(contact);
+                //        }
+                //    }
 
-                    response = new PostContactCommandResponse
-                    {
-                        Contact = _mapper.Map<Models.Contact>(result),
-                        Data = new Data
-                        {
-                            Message = "Client successfully registered.",
-                            Status = Status.Sucessed
-                        }
-                    };
-                }
+                //    response = new PostContactCommandResponse
+                //    {
+                //        Contact = _mapper.Map<Models.Contact>(result),
+                //        Data = new Data
+                //        {
+                //            Message = "Client successfully registered.",
+                //            Status = Status.Sucessed
+                //        }
+                //    };
+                //}
                 return await Task.FromResult(response);
             }
             catch (Exception ex)

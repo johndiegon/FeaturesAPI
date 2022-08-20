@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Models;
+using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
@@ -62,10 +63,21 @@ namespace Domain.Queries.Dashboard.Get
                         
                         foreach (var template in templates)
                         {
+                            var templateSends = (from send in senders
+                                                 where send.Template == template
+                                                 group send by new { DateTime = send.DateTime.ToShortDateString(), send.Count, send.CountOK } into newSenders
+                                                 select new ReportSendEntity
+                                                 {
+                                                     Template = template,
+                                                     DateTime = Convert.ToDateTime(newSenders.Key.DateTime),
+                                                     Count = newSenders.Key.Count * newSenders.Count(),
+                                                     CountOK = newSenders.Key.CountOK * newSenders.Count()
+                                                 }).ToList();
+
                             var reportTemplate = new ReportTemplate()
                             {
                                 Template = template,
-                                HistorySenders = senders.Where(a => a.Template == template).OrderBy( h => h.DateTime).ToList(),
+                                HistorySenders = templateSends,
                                 CountReceiverAnswer = answers.Where(a => a.Template == template).Count(),
                                 CountSendMessage = senders.Where(a => a.Template == template).Select(s => s.Count).Sum(),
                                 CountReceiverAnswerThisMonth = answers.Where(a => a.DateTime.Month == DateTime.Now.Month &&

@@ -102,43 +102,5 @@ namespace FeaturesAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        /// <summary>
-        ///     Action to post a session in database.
-        /// </summary>
-        /// <param name="phone">Model to post a session</param>
-        /// <param name="idClient">Model to post a session</param>
-        /// <response code="200">Returned a client.</response>
-        /// <response code="400">Returned if the model couldn't be parsed or saved</response>
-        /// <response code="422">Returned when the validation failed</response>
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [ApiKey]
-        [HttpGet]
-        [Route("{idClient}/Phone/{phone}")]
-        public async Task<ActionResult<GetTwilioCredentialsResponse>> GetSession(string phone, string idClient)
-        {
-
-            try
-            {
-        
-                var getSession = new GetTwilioCredentials() { IdClient = idClient, PhoneFrom = phone };
-                var response = await _mediator.Send(getSession);
-
-                if (response.Data.Status == Status.Sucessed)
-                {
-                    return await Task.FromResult(response);
-                }
-                else
-                {
-                    return UnprocessableEntity(response);
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
     }
 }

@@ -42,13 +42,13 @@ namespace Domain.Commands.Contact.Disable
                 {
 
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                    var contact = _contactRepository.GetByPhone(request.Phone).Where( c=> c.IdClient == client.Id).FirstOrDefault();
+                    var contact = _contactRepository.GetByPhone(request.Phone).Result.Where( c=> c.IdClient == client.Id).FirstOrDefault();
                   
                     if (contact != null)
                     {
                         contact.Status = Infrastructure.Data.Entities.ContactStatusEntity.Inactive;
 
-                        _contactRepository.Update(contact);
+                        //_contactRepository.Update(contact);
                     }
 
                     response = new CommandResponse

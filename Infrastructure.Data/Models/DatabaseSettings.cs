@@ -24,5 +24,6 @@ namespace FeaturesAPI.Infrastructure.Models
         public string FacebookMessageCollectionName { get; set; }
         public string UserHubConnetioCollectionName { get; set; }   
         public string ReportMessageCollectionName { get; set; }
+        public string ConnectionStringsMysql { get; set; }
     }
 }

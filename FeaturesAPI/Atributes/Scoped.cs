@@ -18,7 +18,6 @@ using Domain.Commands.Post.TwilioAccess;
 using Domain.Commands.Put.TwiilioAccess;
 using Domain.Commands.Put.TwilioAccess;
 using Domain.Commands.SessionWhats.Post;
-using Domain.Commands.TwilioRequest.Post;
 using Domain.Commands.User.ChangePassword;
 using Domain.Commands.User.ConfirmEmail;
 using Domain.Commands.User.Post;
@@ -113,9 +112,6 @@ namespace FeaturesAPI.Atributes
             services.AddTransient<IRequestHandler<PutTwilioAccess, CommandResponse>, PutTwilioAccessHandler>();
             services.AddTransient<IRequestHandler<GetTwilioCredentials, GetTwilioCredentialsResponse>, GetTwilioCredentialsHandler>();
 
-            services.AddTransient<IRequestHandler<PostTwilioRequest, CommandResponse>, PostTwilioRequestHandler>();
-
-
             #endregion
 
 
@@ -170,7 +166,6 @@ namespace FeaturesAPI.Atributes
             services.AddScoped<ISessionWhatsAppRepository, SessionWhatsAppRepository>();
             services.AddScoped<IMessagesDefaultRepository, MessagesDefaultRepository>();
             services.AddScoped<ITwillioAccessRepository, TwillioAccessRepository>();
-            services.AddScoped<ITwilioRequestRepository, TwilioRequestRepository>();
             services.AddScoped<IFacebookMessageRepository, FacebookMessageRepository>();
             services.AddScoped<IUserHubConectionRepository, UserHubConectionRepository>();
             services.AddScoped<IReportSendersRepository, ReportSendersRepository>();
@@ -186,7 +181,6 @@ namespace FeaturesAPI.Atributes
             services.AddSingleton<SessionWhatsAppRepository>();
             services.AddSingleton<MessagesDefaultRepository>();
             services.AddSingleton<TwillioAccessRepository>();
-            services.AddSingleton<TwilioRequestRepository>();
             services.AddControllersWithViews();
 
             services.AddScoped<IStorage, OrderStorage>();
