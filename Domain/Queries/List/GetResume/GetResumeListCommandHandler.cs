@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Models;
+using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
@@ -14,6 +15,7 @@ namespace Domain.Commands.List.GetResume
     {
         private readonly IResumeContactListRepository _repository;
         private readonly IClientRepository _clientRepository;
+        private readonly IContactRepository _contactRepository;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
@@ -21,12 +23,14 @@ namespace Domain.Commands.List.GetResume
                                      , IMapper mapper
                                      , IMediator mediator
                                      , IClientRepository clientRepository
+                                     , IContactRepository contactRepository
                                      )
         {
             _repository = repository;
             _mapper = mapper;
             _mediator = mediator;
             _clientRepository = clientRepository;
+            _contactRepository = contactRepository;
         }
 
         public async Task<GetResumeListCommandResponse> Handle(GetResumeListCommand request, CancellationToken cancellationToken)
@@ -42,9 +46,24 @@ namespace Domain.Commands.List.GetResume
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                    var repost = _repository.GetByClientId(client.Id).FirstOrDefault();
+                    var contacts = _contactRepository.GetByClient(client.Id).Result.ToList();
 
-                    
+
+                    var contactList = (from contact in contacts
+                                       group contact by contact.Classification into contactGroup
+                                       select new ContactListEntity
+                                       {
+                                           Count = contactGroup.Count(),
+                                           Name = contactGroup.Key,
+                                           Type = TypeList.Tag
+                                       }).ToList();
+
+                    var repost = new ResumeContactListEntity
+                    {
+                        IdClient = client.Id,
+                        ContactLists = contactList
+                    };
+
                     response = new GetResumeListCommandResponse
                     {
                         Resume = repost,

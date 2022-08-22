@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using FeaturesAPI.Infrastructure.Data.Interface;
 using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MySqlConnector;
@@ -13,9 +14,9 @@ namespace Infrastructure.Data.Repositorys
     {
         private readonly string _connectString;
 
-        public ContactRepository()
+        public ContactRepository(IDatabaseSettings settings)
         {
-            _connectString = Environment.GetEnvironmentVariable("connectString");
+            _connectString = settings.ConnectionStringsMysql;
         }
 
         public async Task<IEnumerable<ContactEntity>> GetByClient(string idClient)
