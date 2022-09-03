@@ -28,21 +28,19 @@ namespace Domain.Commands.UserHub
             try
             {
                 var client = _clientRepository.GetByUser(request.Conection.UserId).FirstOrDefault();
-                var entity = _conectionRepository.GetByClientId(request.Conection.UserId);
+                var entity = _conectionRepository.GetByClientId(client.Id);
 
-                if (entity == null)
+                if (entity != null)
                 {
-                    _conectionRepository.Create(new UserHubConectionEntity
-                    {
-                        ClientId = client.Id,
-                        ConnectionID = request.Conection.ConnectionID,
-                    });
+                    _conectionRepository.Delete(entity.Id);
                 }
-                else
+
+                _conectionRepository.Create(new UserHubConectionEntity
                 {
-                    entity.ConnectionID = request.Conection.ConnectionID;   
-                    _conectionRepository.Update(entity);
-                }
+                    ClientId = client.Id,
+                    ConnectionID = request.Conection.ConnectionID,
+                });
+
 
                 response.Data = new Data
                 {
