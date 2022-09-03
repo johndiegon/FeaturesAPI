@@ -8,7 +8,7 @@ namespace Domain.Commands.Client.Delete
 {
     public class DeleteClientCommand : Validate, IRequest<CommandResponse>
     {
-        public string IdClient { get; set; }
+        public string IdUser { get; set; }
         public override bool IsValid()
         {
             ValidationResult = new DeleteCommandValidator().Validate(this);

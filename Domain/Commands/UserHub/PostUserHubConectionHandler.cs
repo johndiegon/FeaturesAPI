@@ -3,6 +3,7 @@ using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,23 +13,28 @@ namespace Domain.Commands.UserHub
     {
 
         private readonly IUserHubConectionRepository _conectionRepository;
+        private readonly IClientRepository _clientRepository;
 
-        public PostUserHubConectionHandler(IUserHubConectionRepository conectionRepository)
+        public PostUserHubConectionHandler(IUserHubConectionRepository conectionRepository,
+                                          IClientRepository clientRepository
+            )
         {
             _conectionRepository = conectionRepository;
+            _clientRepository = clientRepository;
         }
         public async Task<CommandResponse> Handle(PostUserHubConectionCommand request, CancellationToken cancellationToken)
         {
             var response = new CommandResponse();
             try
             {
-                var entity = _conectionRepository.GetByClientId(request.Conection.ClientId);
+                var client = _clientRepository.GetByUser(request.Conection.UserId).FirstOrDefault();
+                var entity = _conectionRepository.GetByClientId(request.Conection.UserId);
 
-                if(entity == null)
+                if (entity == null)
                 {
                     _conectionRepository.Create(new UserHubConectionEntity
                     {
-                        ClientId = request.Conection.ClientId,
+                        ClientId = client.Id,
                         ConnectionID = request.Conection.ConnectionID,
                     });
                 }

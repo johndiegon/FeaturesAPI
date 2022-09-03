@@ -3,6 +3,7 @@ using FeaturesAPI.Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,7 +30,7 @@ namespace Domain.Commands.Client.Delete
                 }
                 else
                 {
-                    var client =  _clientRepository.Get(request.IdClient);
+                    var client =  _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
                     client.Status = StatusEntity.Inative;
 
                     _clientRepository.Update(client);
