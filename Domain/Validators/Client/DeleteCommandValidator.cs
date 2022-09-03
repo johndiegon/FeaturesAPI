@@ -7,7 +7,7 @@ namespace Domain.Validators.Client
     {
         public DeleteCommandValidator()
         {
-            RuleFor(x => x.IdClient).NotNull().WithMessage("{PropertyName} cannot be null");
+            RuleFor(x => x.IdUser).NotNull().WithMessage("{PropertyName} cannot be null");
         }
     }
 }
