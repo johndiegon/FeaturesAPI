@@ -32,6 +32,8 @@ namespace Infrastructure.Data.Entities
         public int Days { get; set; }   
         public DateTime OrderDate { get; set; }
         public int Count { get; set; }
+        public string Unity { get; set; }
+        public string Name { get; set; }
     }
 
     public class OrderInWeek
@@ -44,6 +46,8 @@ namespace Infrastructure.Data.Entities
     {
         public int OrderCount { get; set; }
         public int Count { get; set; }
+        public string Unity { get; set; }
+        public string Name { get; set; }
     }
     public class MessageEntity
     {

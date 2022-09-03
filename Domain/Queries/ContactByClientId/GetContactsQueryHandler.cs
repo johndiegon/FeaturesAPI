@@ -38,13 +38,11 @@ namespace Domain.Queries.ContactByClientId
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                    var contacts = _contactRepository.GetByClient(client.Id).Result.ToList();
-
-                    var contactsFiltered = FilterContacts.GetContacts(contacts, request.MessageRequest.Params);
+                    var contacts = _contactRepository.GetByClient(client.Id, request.MessageRequest.Params).Result.ToList();
 
                     response = new GetContactsQueryResponse
                     {
-                        Total = contactsFiltered.Count(),
+                        Total = contacts.Count(),
                         Data = new Data
                         {
                             Status = Status.Sucessed

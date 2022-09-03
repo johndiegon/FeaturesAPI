@@ -17,17 +17,20 @@ namespace Domain.Commands.List.SendAMessage
         private readonly IClientRepository _clientRepository;
         private readonly ITopicServiceBuss _topicService;
         private readonly IContactRepository _contactRepository;
+        private readonly IMessagesDefaultRepository _messagesDefaultRepository;
 
 
         public MessageToListCommandHandler(ITopicServiceBuss topicService,
                                            IClientRepository clientRepository,
-                                           IContactRepository contactRepository
-            )
+                                           IContactRepository contactRepository,
+                                           IMessagesDefaultRepository messagesDefaultRepository)
+            
                                            
         {
             _contactRepository = contactRepository;
             _topicService = topicService;
             _clientRepository = clientRepository;
+            _messagesDefaultRepository = messagesDefaultRepository;
         }
 
 
@@ -46,20 +49,22 @@ namespace Domain.Commands.List.SendAMessage
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
                     var contacts = _contactRepository.GetByClient(client.Id, request.MessageRequest.Params).Result.ToList();
+                    var template = _messagesDefaultRepository.GetByClientId(client.Id).Where(m => m.Title == request.MessageRequest.Template).FirstOrDefault();
 
                     #region >> Enviar Mensagem
 
-                    foreach(var contact in contacts)
+                    foreach (var contact in contacts)
                     {
                         var messageObject = new
                         {
                             Template = request.MessageRequest.Template,
                             IdClient = client.Id,
                             Phone = client.Phone.FirstOrDefault(),
-                            Params = request.MessageRequest.Params, 
+                            Params = request.MessageRequest.ParamsToMessage, 
                             Name = contact.Name,
                             PhoneTo = contact.Phone
                         };
+
                         await _topicService.SendMessage(messageObject, "sendMessageToList");
                     }
 

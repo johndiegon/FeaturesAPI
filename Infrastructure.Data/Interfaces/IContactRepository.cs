@@ -10,5 +10,8 @@ namespace Infrastructure.Data.Interfaces
         Task<IEnumerable<ContactEntity>> GetByPhone(string phone);
         Task UpdateMany(IEnumerable<ContactEntity> contacts);
         Task<IEnumerable<ContactEntity>> GetByClient(string idClient, List<Param> paramaters);
+        Task<IEnumerable<ContactListEntity>> GetListByClient(string idClient);
+        Task<IEnumerable<CountOrder>> GetCountOrderByClient(string idClient);
+        Task<IEnumerable<DateOrder>> GetDateOrderByClient(string idClient);
     }
 }

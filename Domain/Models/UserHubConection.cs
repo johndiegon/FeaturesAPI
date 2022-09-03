@@ -2,7 +2,7 @@
 {
     public class UserHubConection
     {
-        public string ClientId { get; set; }
+        public string UserId { get; set; }
         public string ConnectionID { get; set; }
     }
 }

@@ -46,7 +46,7 @@ namespace Domain.Commands.Message.Post
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-
+ 
                     var messageEntity = new MessagesDefaultEntity()
                     {
                         IdClient = client.Id,

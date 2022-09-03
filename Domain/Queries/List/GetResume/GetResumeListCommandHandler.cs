@@ -46,22 +46,20 @@ namespace Domain.Commands.List.GetResume
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                    var contacts = _contactRepository.GetByClient(client.Id).Result.ToList();
+                    var contactsList = _contactRepository.GetListByClient(client.Id).Result.ToList();
+                    var countOrders = _contactRepository.GetCountOrderByClient(client.Id).Result.ToList();
+                    var countInatives = _contactRepository.GetDateOrderByClient(client.Id).Result.ToList();
 
-
-                    var contactList = (from contact in contacts
-                                       group contact by contact.Classification into contactGroup
-                                       select new ContactListEntity
-                                       {
-                                           Count = contactGroup.Count(),
-                                           Name = contactGroup.Key,
-                                           Type = TypeList.Tag
-                                       }).ToList();
+                    foreach(var contactList in contactsList)
+                    {
+                        contactList.CountOrders = countOrders.Where(c => c.Unity == contactList.Unity && c.Name == contactList.Name).ToList();
+                        contactList.DateOrders = countInatives.Where(c => c.Unity == contactList.Unity && c.Name == contactList.Name).ToList();
+                    }
 
                     var repost = new ResumeContactListEntity
                     {
                         IdClient = client.Id,
-                        ContactLists = contactList
+                        ContactLists = contactsList
                     };
 
                     response = new GetResumeListCommandResponse

@@ -38,34 +38,210 @@ namespace Infrastructure.Data.Repositorys
             }
         }
 
+        public async Task<IEnumerable<ContactListEntity>> GetListByClient(string idClient)
+        {
+            var sql = @"SELECT c.IdClient
+                             , c.Classification as Name
+                             , c.Unity
+                             , COUNT(*) as Count
+                         FROM direct_api.Contact  c
+                        where c.IdClient = @idClient
+                         GROUP BY c.IDCLIENT 
+                                , c.CLASSIFICATION
+                                , c.Unity
+                        union
+                        SELECT c.IdClient 
+                             , 'Lista de Clientes' as Name
+                             , c.Unity
+                             , COUNT(*) as Count
+                        FROM direct_api.Contact  c
+                        where c.IdClient = @idClient
+                        GROUP BY c.IDCLIENT 
+                               , c.Unity";
+
+            IEnumerable<ContactListEntity> contactList;
+            try
+            {
+                using (var connection = new MySqlConnection(_connectString))
+                {
+                    contactList = await connection.QueryAsync<ContactListEntity>(sql, new { idClient = idClient });
+                }
+
+                return contactList;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+
+        public async Task<IEnumerable<DateOrder>> GetDateOrderByClient(string idClient)
+        {
+            var sql = @"SELECT 
+                              DATE_FORMAT(o.DateOrder, '%Y-%m-%d') AS OrderDate,
+                              DATEDIFF(CURDATE(), o.DateOrder) AS Days,
+                              c.Classification,
+                              c.Unity,
+                              COUNT(*) AS Count
+                          FROM
+                              direct_api.Contact c
+                                  JOIN
+                              direct_api.Order o ON o.ContactId = c.id
+                          WHERE
+                              c.IdClient = @idClient
+                          GROUP BY DATE_FORMAT(o.DateOrder, '%Y-%m-%d') , c.Classification , c.Unity 
+                          UNION SELECT 
+                              DATE_FORMAT(o.DateOrder, '%Y-%m-%d') AS OrderDate,
+                              DATEDIFF(CURDATE(), o.DateOrder) AS Days,
+                              'Lista de Clientes' AS Classification,
+                              c.Unity,
+                              COUNT(*) AS Count
+                          FROM
+                              direct_api.Contact c
+                                  JOIN
+                              direct_api.Order o ON o.ContactId = c.id
+                          WHERE
+                              c.IdClient = @idClient
+                          GROUP BY DATE_FORMAT(o.DateOrder, '%Y-%m-%d') , c.Unity;";
+
+            IEnumerable<DateOrder> contactList;
+            try
+            {
+                using (var connection = new MySqlConnection(_connectString))
+                {
+                    contactList = await connection.QueryAsync<DateOrder>(sql, new { idClient = idClient });
+                }
+
+                return contactList;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<CountOrder>> GetCountOrderByClient(string idClient)
+        {
+            var sql = @"SELECT 
+                              Orders.CountOrder AS OrderCount,
+                              c.IdClient,
+                              c.Classification AS Name,
+                              c.Unity,
+                              COUNT(*) AS Count
+                          FROM
+                              (SELECT 
+                                  c.id AS ContactId, COUNT(*) AS CountOrder
+                              FROM
+                                  direct_api.Contact c
+                              JOIN direct_api.Order o ON o.ContactId = c.id
+                              WHERE
+                                  c.IdClient = @idClient
+                              GROUP BY o.ContactId) Orders
+                                  JOIN
+                              direct_api.Contact c ON c.id = Orders.ContactId
+                          GROUP BY Orders.CountOrder , c.IdClient , c.Classification , c.Unity
+                          ORDER BY c.Classification , c.Unity , Orders.CountOrder";
+
+            IEnumerable<CountOrder> contactList;
+            try
+            {
+                using (var connection = new MySqlConnection(_connectString))
+                {
+                    contactList = await connection.QueryAsync<CountOrder>(sql, new { idClient = idClient });
+                }
+
+                return contactList;
+            }
+            catch
+            {
+                throw;
+            }
+        }
         public async Task<IEnumerable<ContactEntity>> GetByClient(string idClient, List<Param> paramaters)
         {
 
-            var sql = @"select * from direct_api.Contact where idClient = @idClient";
+            var sql = @"select * from direct_api.Contact c
+                        where c.idClient = @idClient
+                        ";
 
-            var now = DateTime.Now;
-            var listName = GetParam(paramaters, "listName");
-         
-            if(listName != null)
-                sql += string.Concat(" and Classification = '",listName, "';") ;
-            
-            //var typeList = GetParam(paramaters, "typeList");
+           
+            if (paramaters != null && paramaters.Count > 0)
+            {
 
-            //var inputFilterDays = GetParam(paramaters, "inputFilterDays");
+                var now = DateTime.Now;
+                var listName = GetParam(paramaters, "listName");
 
+                if (listName != null)
+                    sql += $" and c.Classification = '{listName}'";
 
-            //var unity = GetParam(paramaters, "unity");
-            //var inputMinCountOrders = GetParam(paramaters, "inputMinCountOrders");
-            //var inputMaxCountOrders = GetParam(paramaters, "inputMaxCountOrders");
-            //var inputMinDay = GetParam(paramaters, "inputMinDays");
-            //var inputMaxDay = GetParam(paramaters, "inputMaxDays");
+                var unit = GetParam(paramaters, "unity");
 
-            //var countMessages = GetParam(paramaters, "countMessages");
-            //var inputParamCupon = GetParam(paramaters, "inputParamCupon");
-            //var inputNameProduct = GetParam(paramaters, "inputNameProduct");
-            //var inputData = GetParam(paramaters, "inputData");
+                if (unit != null)
+                    sql += $" and c.Unity = '{unit}'";
 
+                //var inputFilterDays = GetParam(paramaters, "inputFilterDays");
+                //if (inputFilterDays != null)
+                //{
+                //    var value = 1;
+                //    sql += $@"EXISTS( SELECT 
+                //                           1
+                //                       FROM
+                //                           direct_api.Order
+                //                       WHERE
+                //                           direct_api.Order.ContactId = c.id
+                //                               AND WEEKDAY(DateOrder) IN ({value}))";
+                //}
 
+                var inputMaxCountOrders = GetParam(paramaters, "inputMaxCountOrders");
+                if(inputMaxCountOrders != null)
+                {
+                    sql += $@"AND (SELECT 
+                                        COUNT(*)
+                                    FROM
+                                        direct_api.Order
+                                    WHERE
+                                        direct_api.Order.ContactId = c.id) <= {inputMaxCountOrders}";
+                }
+
+                var inputMinCountOrders = GetParam(paramaters, "inputMinCountOrders");
+                if(inputMinCountOrders != null)
+                {
+                    sql += $@" AND (SELECT 
+                                         DATEDIFF(CURDATE(), MAX(DateOrder)) AS T
+                                     FROM
+                                         direct_api.Order
+                                     WHERE
+                                         direct_api.Order.ContactId = c.id) >= {inputMinCountOrders}";
+                }
+
+                var inputMinDays = GetParam(paramaters, "inputMinDays");
+
+                if (inputMinDays != null)
+                {
+                    sql += $@" AND (SELECT 
+                                          DATEDIFF(CURDATE(), MAX(DateOrder)) AS T
+                                      FROM
+                                          direct_api.Order
+                                      WHERE
+                                          direct_api.Order.ContactId = c.id) >= {inputMinDays}";
+                }
+
+                var inputMaxDays = GetParam(paramaters, "inputMaxDays");
+
+                if (inputMaxDays != null)
+                {
+                    sql += $@" AND (SELECT 
+                                         DATEDIFF(CURDATE(), MAX(DateOrder)) AS T
+                                     FROM
+                                         direct_api.Order
+                                     WHERE
+                                         direct_api.Order.ContactId = c.id) <= {inputMaxDays}";
+                }
+
+                sql += ";";
+
+            }
 
             IEnumerable<ContactEntity> contactList;
             try
@@ -87,7 +263,7 @@ namespace Infrastructure.Data.Repositorys
             var search = paramaters.Where(p => p.Name == nameParam).Select(pm => pm.Value).ToList();
 
             if (search.Count() > 0)
-                return search[0].ToString();
+                return search[0] == null ? null : search[0].ToString();
             return null;
         }
 
