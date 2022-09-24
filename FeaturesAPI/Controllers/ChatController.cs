@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Domain.Commands.Chat.Post;
-using Domain.Commands.Chat.PostList;
 using Domain.Models;
 using Domain.Queries.Chat.Get;
 using Domain.Queries.Chat.GetLast;
@@ -10,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 

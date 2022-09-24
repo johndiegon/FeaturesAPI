@@ -14,13 +14,11 @@ namespace Domain.Profiles
         public FeaturesProfile()
         {
             #region >> Mapping Chat
-            CreateMap<Chat, ChatEntity>();
             CreateMap<MessageOnChat, MessageOnChatEntity>();
 
             CreateMap<ListLastMessages, LastMessageEntity>();
             CreateMap<LastMessage, LastMessageEntity>();
 
-            CreateMap<ChatEntity, Chat>();
             CreateMap<MessageOnChatEntity, MessageOnChat>();
 
             CreateMap<LastMessageEntity, ListLastMessages>();

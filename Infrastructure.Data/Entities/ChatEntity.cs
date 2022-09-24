@@ -1,22 +1,8 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using static Infrastructure.Data.Repositorys.ChatRepository;
 
 namespace Infrastructure.Data.Entities
 {
-    public class ChatEntity
-    {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
-        public string IdClient { get; set; }
-        public string PhoneFrom { get; set; }
-        public string PhoneTo { get; set; }
-        public string NameReceiver { get; set; }
-        public List<MessageOnChatEntity> MessageList { get; set; }
-    }
-
     public class MessageOnChatEntity
     {
         public string PhoneFrom { get; set; }
@@ -27,5 +13,15 @@ namespace Infrastructure.Data.Entities
         public bool WasVisible { get; set; }
         public string Template { get; set; }
         public bool bAnswerButton { get; set; }
+    }
+
+    public class Chat
+    {
+        public int IdContact { get; set; }
+        public Sender Sender { get; set; } 
+        public string Message { get; set; }
+        public DateTime DateInclude { get; set; }
+        public string? Name { get; set; }   
+        public string? Phone { get; set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Domain.Models;
+﻿using Domain.Models;
 using FeaturesAPI.Infrastructure.Data.Entities;
 using Infrasctuture.Service.Interfaces;
 using Infrastructure.Data.Entities;
@@ -7,9 +6,7 @@ using Infrastructure.Data.Interfaces;
 using MediatR;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,29 +17,20 @@ namespace Domain.Commands.Chat.Post
         private readonly IClientRepository _clientRepository;
         private readonly IChatRepository _chatRepository;
         private readonly IContactRepository _contactRepository;
-        private readonly ILastMessageRepository _lastMessageRepository;
         private readonly ITopicServiceBuss _topicService;
         private readonly IFacebookMessageRepository _facebookMessageRepository;
-        private readonly IMapper _mapper;
-        private readonly IMediator _mediator;
         
         public PostMessageChatHandler( IClientRepository clientRepository
                                      , IContactRepository contactRepository
                                      , IChatRepository chatRepository
-                                     , ILastMessageRepository lastMessageRepository
                                      , ITopicServiceBuss topicService
-                                     , IMapper mapper
-                                     , IMediator mediator
                                      , IFacebookMessageRepository facebookMessageRepository
                                      )
         {
             _clientRepository = clientRepository;
             _chatRepository = chatRepository;
             _contactRepository = contactRepository;
-            _lastMessageRepository = lastMessageRepository;
             _facebookMessageRepository = facebookMessageRepository;
-            _mapper = mapper;
-            _mediator = mediator;
             _topicService = topicService;
         }
 
@@ -77,93 +65,16 @@ namespace Domain.Commands.Chat.Post
                 var phoneContact = phoneClient == request.Message.PhoneTo ? request.Message.PhoneFrom
                                                                         : request.Message.PhoneTo;
 
-                var contact = _contactRepository.GetByPhone(phoneContact).Result.FirstOrDefault();
+                var contact = _contactRepository.GetByPhone(phoneContact, client.Id).Result.FirstOrDefault();
 
-                if(contact == null)
+                await _chatRepository.Create(new MessageOnChatEntity()
                 {
-                    contact = new ContactEntity()
-                    {
-                        Name = string.IsNullOrEmpty(request.Message.NameFrom) ? phoneContact : request.Message.NameFrom,
-                        IdClient = client.Id,
-                        Status = ContactStatusEntity.Active,
-                        Phone = phoneContact,
-                        DateInclude = DateTime.Now
-                    };
-                    //_contactRepository.Create(contact);
-                }
-
-                var chat =  _chatRepository.GetByClientId(client.Id).Where(c => c.PhoneTo == phoneContact).FirstOrDefault();
-
-                if (chat == null)
-                {
-                    var messages = new List<MessageOnChatEntity>();
-                    var message = new MessageOnChatEntity()
-                    {
-                        DateTime = DateTime.Now,
-                        Message = request.Message.Message,
-                        PhoneFrom = request.Message.PhoneFrom,
-                        PhoneTo = request.Message.PhoneTo,
-                    };
-                    messages.Add(message);
-
-                    chat = new ChatEntity
-                    {
-                        IdClient = client.Id,
-                        PhoneFrom = phoneClient,
-                        PhoneTo = phoneContact,
-                        NameReceiver = contact != null ? contact.Name : "",
-                        MessageList = messages
-                    };
-                    _chatRepository.Create(chat);
-                }
-                else
-                {
-                    var messages = new List<MessageOnChatEntity>();
-                    var message = new MessageOnChatEntity()
-                    {
-                        DateTime = DateTime.Now,
-                        Message = request.Message.Message,
-                        PhoneFrom = request.Message.PhoneFrom,
-                        PhoneTo = request.Message.PhoneTo,
-
-                    };
-                    chat.NameReceiver = contact.Name ;
-                    chat.MessageList.Add(message);
-
-                    _chatRepository.Update(chat);
-                }
-
-                var lastMessage = _lastMessageRepository.GetByClientId(client.Id)
-                    .Where(l => l.PhoneTo == phoneContact || l.PhoneFrom == phoneContact)
-                    .FirstOrDefault();
-                
-                if(lastMessage != null)
-                {
-                    lastMessage.DateTime = DateTime.Now;
-                    lastMessage.Message = request.Message.Message;
-                    lastMessage.NameFrom = contact.Name;
-                    lastMessage.PhoneFrom = contact.Phone;
-                    lastMessage.NameTo = client.Name;
-                    lastMessage.PhoneTo = phoneClient ;
-                   
-
-                    _lastMessageRepository.Update(lastMessage);
-                } else
-                {
-                    lastMessage = new LastMessageEntity()
-                    {
-                        IdClient = client.Id,
-                        DateTime = DateTime.Now,
-                        Message = request.Message.Message,
-                        NameFrom = client.Name,
-                        PhoneFrom = phoneClient,
-                        NameTo = contact.Name,
-                        PhoneTo   = contact.Name
-                    };
-
-                    _lastMessageRepository.Create(lastMessage);
-                }
-
+                    DateTime = DateTime.Now,
+                    Message = request.Message.Message,
+                    PhoneFrom = request.Message.PhoneFrom,
+                    PhoneTo = request.Message.PhoneTo,
+                }, client, contact);
+           
 
                 if (phoneClient == request.Message.PhoneFrom)
                 {

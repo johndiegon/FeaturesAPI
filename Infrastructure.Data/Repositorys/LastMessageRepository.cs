@@ -1,43 +1,68 @@
-﻿using FeaturesAPI.Infrastructure.Data.Interface;
+﻿using Dapper;
+using FeaturesAPI.Infrastructure.Data.Entities;
+using FeaturesAPI.Infrastructure.Data.Interface;
 using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
-using MongoDB.Driver;
+using MySqlConnector;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using static Infrastructure.Data.Repositorys.ChatRepository;
 
 namespace Infrastructure.Data.Repositorys
 {
     public class LastMessageRepository :  ILastMessageRepository
     {
-        private readonly IMongoCollection<LastMessageEntity> _collection;
+        private readonly string _connectString;
 
         public LastMessageRepository(IDatabaseSettings settings)
         {
-            var settingsMongo = MongoClientSettings.FromConnectionString(settings.ConnectionString);
-            var client = new MongoClient(settingsMongo);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            _collection = database.GetCollection<LastMessageEntity>(settings.LastMessageCollectionName);
+            _connectString = settings.ConnectionStringsMysql;
         }
 
-        public LastMessageEntity Create(LastMessageEntity entity)
+        public async Task<IEnumerable<LastMessageEntity>> GetByClientId(ClientEntity client)
         {
-            _collection.InsertOne(entity);
-            return entity;
-        }
+            var sql = @"SELECT 
+                              chat.*,
+                              contact.Name,
+                              contact.Phone
+                         FROM
+                              direct_api.Chat chat
+                                  JOIN
+                              direct_api.Contact contact on contact.id = chat.idContact
+                        WHERE contact.IdClient = @idClient
+                          and chat.sender != '3'
+                          and chat.DateInclude in (SELECT max(DateInclude) as LastDate 
+                                                     from  direct_api.Chat chatDate 
+                                                    where chatDate.idContact =  chat.idContact
+                                                      and chatDate.sender != '3')";
 
-        public void Delete(string id) =>
-            _collection.DeleteOne(listLastMessage => listLastMessage.Id == id);
+            IEnumerable<Chat> chatMessage;
+            try
+            {
+                var phone = client.Phone.FirstOrDefault();
 
-        public LastMessageEntity Get(string id) =>
-            _collection.Find<LastMessageEntity>(listLastMessage => listLastMessage.Id == id).FirstOrDefault();
+                using (var connection = new MySqlConnection(_connectString))
+                {
+                    chatMessage = await connection.QueryAsync<Chat>(sql, new { idClient = client.Id});
+                }
 
-        public IEnumerable<LastMessageEntity> GetByClientId(string idClient) =>
-            _collection.Find<LastMessageEntity>(listLastMessage => listLastMessage.IdClient == idClient).ToList();
-
-        public LastMessageEntity Update(LastMessageEntity listLastMessageIn)
-        {
-            _collection.ReplaceOne(listLastMessage => listLastMessage.Id == listLastMessageIn.Id, listLastMessageIn);
-            return listLastMessageIn;
+                return from chat in chatMessage.ToList()
+                       select new LastMessageEntity
+                       {
+                           DateTime = chat.DateInclude,
+                           Message = chat.Message,
+                           PhoneFrom = phone,
+                           PhoneTo = chat.Phone,
+                           IdClient = client.Id,
+                           NameFrom = chat.Sender != Sender.Contact ? chat.Name : client.Name,
+                           NameTo = chat.Sender == Sender.Contact ? chat.Name : client.Name,
+                       };
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

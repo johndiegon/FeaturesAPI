@@ -15,5 +15,6 @@ namespace Infrastructure.Data.Entities
         public DateTime DateTime { get; set; }
         public int Count { get; set; }
         public int CountOK { get; set; }
+        public string Content { get; set; }
     }
 }

@@ -1,10 +1,13 @@
-﻿using Infrastructure.Data.Entities;
+﻿using FeaturesAPI.Infrastructure.Data.Entities;
+using Infrastructure.Data.Entities;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Interfaces
 {
-    public interface IChatRepository : IRepository<ChatEntity>
+    public interface IChatRepository 
     {
-        IEnumerable<ChatEntity> GetByClientId(string id);
+        Task<IEnumerable<MessageOnChatEntity>> GetByClientId(ClientEntity client, string phone);
+        Task Create(MessageOnChatEntity chat, ClientEntity client, ContactEntity contact);
     }
 }

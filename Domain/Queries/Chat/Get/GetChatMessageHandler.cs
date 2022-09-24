@@ -41,14 +41,12 @@ namespace Domain.Queries.Chat.Get
                     var client = _clientRepository.GetByUser(request.IdUser)
                                                   .FirstOrDefault();
 
-                    var messageOnChat = _chatRepository.GetByClientId(client.Id)
-                                                      .Where(chat => chat.PhoneTo == request.PhoneTo )
-                                                      .FirstOrDefault();
+                    var messageOnChat = _chatRepository.GetByClientId(client, request.PhoneTo).Result;
 
                     response = new GetChatMessageResponse
                     {
                         MessagesOnChat = messageOnChat == null ? null 
-                                              : _mapper.Map<List<MessageOnChat>>(messageOnChat.MessageList),
+                                              : _mapper.Map<List<MessageOnChat>>(messageOnChat),
                         Data = new Data
                         {
                             Status = Status.Sucessed

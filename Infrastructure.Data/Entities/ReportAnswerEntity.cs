@@ -12,6 +12,7 @@ namespace Infrastructure.Data.Entities
         public string ClientID { get; set; }
         public string Template { get; set; }
         public string Answer { get; set; }
+        public string Content { get; set; }
         public DateTime DateTime { get; set; }
     }
 }

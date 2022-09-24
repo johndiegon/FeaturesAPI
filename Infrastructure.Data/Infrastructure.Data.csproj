@@ -5,11 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.5" />
     <PackageReference Include="Dapper.Transaction" Version="2.0.35.2" />
     <PackageReference Include="mongocsharpdriver" Version="2.12.3" />
     <PackageReference Include="MongoDB.Bson" Version="2.12.3" />
     <PackageReference Include="MongoDB.Driver" Version="2.12.3" />
     <PackageReference Include="MySqlConnector" Version="2.1.12" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Infrasctuture.Service\Infrasctuture.Service.csproj" />
   </ItemGroup>
 
 </Project>

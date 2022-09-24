@@ -21,7 +21,7 @@ namespace Infrastructure.Data.Repositorys
 
         public async Task<IEnumerable<ContactEntity>> GetByClient(string idClient)
         {
-            var sql = @"select * from direct_api.Contact where idClient = @idClient";
+            var sql = @"select * from direct_api.Contact where idClient = @idClient and Status = 1;";
             IEnumerable<ContactEntity> contactList;
             try
             {
@@ -46,6 +46,8 @@ namespace Infrastructure.Data.Repositorys
                              , COUNT(*) as Count
                          FROM direct_api.Contact  c
                         where c.IdClient = @idClient
+                          and c.Classification is not null
+                          and c.Status = 1
                          GROUP BY c.IDCLIENT 
                                 , c.CLASSIFICATION
                                 , c.Unity
@@ -56,6 +58,7 @@ namespace Infrastructure.Data.Repositorys
                              , COUNT(*) as Count
                         FROM direct_api.Contact  c
                         where c.IdClient = @idClient
+                          and c.Status = 1
                         GROUP BY c.IDCLIENT 
                                , c.Unity";
 
@@ -90,6 +93,7 @@ namespace Infrastructure.Data.Repositorys
                               direct_api.Order o ON o.ContactId = c.id
                           WHERE
                               c.IdClient = @idClient
+                          and c.Status = 1
                           GROUP BY DATE_FORMAT(o.DateOrder, '%Y-%m-%d') , c.Classification , c.Unity 
                           UNION SELECT 
                               DATE_FORMAT(o.DateOrder, '%Y-%m-%d') AS OrderDate,
@@ -103,6 +107,7 @@ namespace Infrastructure.Data.Repositorys
                               direct_api.Order o ON o.ContactId = c.id
                           WHERE
                               c.IdClient = @idClient
+                          and c.Status = 1
                           GROUP BY DATE_FORMAT(o.DateOrder, '%Y-%m-%d') , c.Unity;";
 
             IEnumerable<DateOrder> contactList;
@@ -137,6 +142,7 @@ namespace Infrastructure.Data.Repositorys
                               JOIN direct_api.Order o ON o.ContactId = c.id
                               WHERE
                                   c.IdClient = @idClient
+                              and c.Status = 1
                               GROUP BY o.ContactId) Orders
                                   JOIN
                               direct_api.Contact c ON c.id = Orders.ContactId
@@ -163,6 +169,7 @@ namespace Infrastructure.Data.Repositorys
 
             var sql = @"select * from direct_api.Contact c
                         where c.idClient = @idClient
+                          and c.Status = 1
                         ";
 
            
@@ -172,7 +179,7 @@ namespace Infrastructure.Data.Repositorys
                 var now = DateTime.Now;
                 var listName = GetParam(paramaters, "listName");
 
-                if (listName != null)
+                if (listName != null && listName.ToUpper() != "LISTA DE CLIENTES")
                     sql += $" and c.Classification = '{listName}'";
 
                 var unit = GetParam(paramaters, "unity");
@@ -208,11 +215,11 @@ namespace Infrastructure.Data.Repositorys
                 if(inputMinCountOrders != null)
                 {
                     sql += $@" AND (SELECT 
-                                         DATEDIFF(CURDATE(), MAX(DateOrder)) AS T
-                                     FROM
-                                         direct_api.Order
-                                     WHERE
-                                         direct_api.Order.ContactId = c.id) >= {inputMinCountOrders}";
+                                        COUNT(*)
+                                    FROM
+                                        direct_api.Order
+                                    WHERE
+                                        direct_api.Order.ContactId = c.id) >= {inputMinCountOrders}";
                 }
 
                 var inputMinDays = GetParam(paramaters, "inputMinDays");
@@ -267,14 +274,29 @@ namespace Infrastructure.Data.Repositorys
             return null;
         }
 
-        public Task<IEnumerable<ContactEntity>> GetByPhone(string phone)
+        public async Task<IEnumerable<ContactEntity>> GetByPhone(string phone, string idClient)
         {
-            throw new NotImplementedException();
+            var sql = @"select * from direct_api.Contact where IdClient = @idClient and Phone = @phone and c.Status = 1";
+            IEnumerable<ContactEntity> contactList;
+            try
+            {
+                using (var connection = new MySqlConnection(_connectString))
+                {
+                    contactList = await connection.QueryAsync<ContactEntity>(sql, new { IdClient = idClient, Phone = phone });
+                }
+
+                return contactList;
+            }
+            catch
+            {
+                throw;
+            }
         }
+
 
         public async Task<IEnumerable<ContactEntity>> GetContact(string phone, string idClient)
         {
-            var sql = @"select * from direct_api.Contact where IdClient = @idClient and Phone = @phone";
+            var sql = @"select * from direct_api.Contact where IdClient = @idClient and Phone = @phone and c.Status = 1";
             IEnumerable<ContactEntity> contactList;
             try
             {
@@ -298,7 +320,18 @@ namespace Infrastructure.Data.Repositorys
                await Update(c);
             }
         }
+        public async Task UpdateStatus(int contactId, string status = "0")
+        {
+            var sql = @"update direct_api.Contact
+                           set Status = @status
+                       	 where id = @contactId
+                       ";
 
+            using (var connection = new MySqlConnection(_connectString))
+            {
+                await connection.ExecuteScalarAsync(sql, new { contactId = contactId, status = status });
+            }
+        }
         private async Task Update(ContactEntity entity)
         {
             var sql = @"update direct_api.Contact
@@ -307,6 +340,7 @@ namespace Infrastructure.Data.Repositorys
                              , Classification = @classification
                        	 where Phone = @phone 
                            and IdClient = @idClient
+                           and c.Status = 1
                        ";
 
             using (var connection = new MySqlConnection(_connectString))

@@ -17,6 +17,8 @@ namespace FeaturesAPI.Domain.Models
         public string Email { get; set; }
         public AddressData Address { get; set; }
         public bool IsASubscriber   { get; set; }
+        public List<string> AskToQuit { get; set; }
+        public string AnswerToQuit { get; set; }
         public List<string> Phone
         {
             get { return _phones; }

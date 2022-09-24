@@ -1,10 +1,12 @@
-﻿using Infrastructure.Data.Entities;
+﻿using FeaturesAPI.Infrastructure.Data.Entities;
+using Infrastructure.Data.Entities;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Interfaces
 {
-    public interface ILastMessageRepository : IRepository<LastMessageEntity>
+    public interface ILastMessageRepository 
     {
-        IEnumerable<LastMessageEntity> GetByClientId(string id);
+        Task<IEnumerable<LastMessageEntity>> GetByClientId(ClientEntity client);
     }
 }

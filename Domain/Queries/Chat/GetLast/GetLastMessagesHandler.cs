@@ -38,13 +38,13 @@ namespace Domain.Queries.Chat.GetLast
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                    var listLastMessage = _lastMessageRepository.GetByClientId(client.Id).ToList();
+                    var listLastMessage = _lastMessageRepository.GetByClientId(client).Result;
 
                     var lastMessagesResponse = new ListLastMessages(); ;
 
                     lastMessagesResponse.IdClient = client.Id;
                     lastMessagesResponse.PhoneFrom = client.Phone.FirstOrDefault();
-                    if (listLastMessage.Count > 0)
+                    if (listLastMessage.Count() > 0)
                     {
                         lastMessagesResponse.MessageList = listLastMessage.Select(o => new LastMessage
                         {

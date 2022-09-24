@@ -1,10 +1,10 @@
 ﻿using Infrastructure.Data.Entities;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Interfaces
 {
-    public interface IUserHubConectionRepository : IRepository<UserHubConectionEntity>
+    public interface IUserHubConectionRepository 
     {
-        UserHubConectionEntity GetByClientId(string id);
+        Task Create(UserHubConectionEntity entity);
     }
 }

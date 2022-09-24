@@ -28,26 +28,18 @@ namespace Domain.Commands.UserHub
             try
             {
                 var client = _clientRepository.GetByUser(request.Conection.UserId).FirstOrDefault();
-                var entity = _conectionRepository.GetByClientId(client.Id);
-
-                if (entity != null)
-                {
-                    _conectionRepository.Delete(entity.Id);
-                }
-
-                _conectionRepository.Create(new UserHubConectionEntity
+              
+                await _conectionRepository.Create(new UserHubConectionEntity
                 {
                     ClientId = client.Id,
                     ConnectionID = request.Conection.ConnectionID,
                 });
-
 
                 response.Data = new Data
                 {
                     Message = "Message sent successfully.",
                     Status = Status.Sucessed
                 };
-
 
             }
             catch (Exception ex)

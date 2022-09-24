@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using Domain.Helpers;
-using Domain.Models;
+﻿using Domain.Models;
 using Infrasctuture.Service.Interfaces;
 using Infrastructure.Data.Interfaces;
 using MediatR;
-using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -51,6 +49,8 @@ namespace Domain.Commands.List.SendAMessage
                     var contacts = _contactRepository.GetByClient(client.Id, request.MessageRequest.Params).Result.ToList();
                     var template = _messagesDefaultRepository.GetByClientId(client.Id).Where(m => m.Title == request.MessageRequest.Template).FirstOrDefault();
 
+                    var paramsList = new List<string>();
+
                     #region >> Enviar Mensagem
 
                     foreach (var contact in contacts)
@@ -60,7 +60,7 @@ namespace Domain.Commands.List.SendAMessage
                             Template = request.MessageRequest.Template,
                             IdClient = client.Id,
                             Phone = client.Phone.FirstOrDefault(),
-                            Params = request.MessageRequest.ParamsToMessage, 
+                            Params = template.Params, 
                             Name = contact.Name,
                             PhoneTo = contact.Phone
                         };

@@ -1,49 +1,42 @@
-﻿using FeaturesAPI.Infrastructure.Data.Interface;
+﻿using Amazon;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.Model;
+using Amazon.Runtime;
+using Infrasctuture.Service.Interfaces.settings;
 using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
-using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Repositorys
 {
     public class UserHubConectionRepository : IUserHubConectionRepository
     {
-        private readonly IMongoCollection<UserHubConectionEntity> _mongo;
+        private readonly AmazonDynamoDBClient _client;
+       
+        public IBlobSettings _settings;
 
-        public UserHubConectionRepository(IDatabaseSettings settings)
+        public UserHubConectionRepository(IBlobSettings settings)
         {
-            var settingsMongo = MongoClientSettings.FromConnectionString(settings.ConnectionString);
-            var client = new MongoClient(settingsMongo);
-            var database = client.GetDatabase(settings.DatabaseName); ;
-
-            _mongo = database.GetCollection<UserHubConectionEntity>(settings.UserHubConnetioCollectionName);
+            _settings = settings;
+            var credentials = new BasicAWSCredentials(_settings.IDAccessKey, _settings.AccessKey);
+            _client = new AmazonDynamoDBClient(credentials, RegionEndpoint.SAEast1);
         }
-
-        public UserHubConectionEntity Create(UserHubConectionEntity entity)
+     
+        public async Task Create(UserHubConectionEntity entity)
         {
-            _mongo.InsertOne(entity);
-            return entity;
-        }
+            var request = new PutItemRequest
+            {
+                TableName = "ConnectHub",
+                Item = new Dictionary<string, AttributeValue>
+                    {
+                        { "idClient", new AttributeValue(entity.ClientId) },
+                        { "connectionId", new AttributeValue(entity.ConnectionID) },
+                    }
+            };
 
-        public void Delete(string id) =>
-          _mongo.DeleteOne(contact => contact.Id == id);
-
-        public UserHubConectionEntity Get(string id) =>
-          _mongo.Find<UserHubConectionEntity>(entity => entity.Id == id).FirstOrDefault();
-
-
-        public UserHubConectionEntity GetByClientId(string clientId) =>
-          _mongo.Find<UserHubConectionEntity>(entity => entity.ClientId == clientId).FirstOrDefault();
-
-
-        public UserHubConectionEntity Update(UserHubConectionEntity entity)
-        {
-            _mongo.ReplaceOne(entity => entity.Id == entity.Id, entity);
-            return entity;
+            await _client.PutItemAsync(request);
         }
     }
 }
