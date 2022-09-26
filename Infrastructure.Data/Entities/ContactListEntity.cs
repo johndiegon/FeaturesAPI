@@ -11,7 +11,7 @@ namespace Infrastructure.Data.Entities
         {
             this.DateOrders = new List<DateOrder>();
             this.OrderInWeeks = new List<OrderInWeek>();
-            this.CountOrders = new List<CountOrder>();
+            //this.CountOrders = new List<CountOrder>();
         }
 
         [BsonId]
@@ -24,7 +24,7 @@ namespace Infrastructure.Data.Entities
         public TypeList Type { get; set; }
         public DateTime CreationDate { get; set; }
         public List<DateOrder> DateOrders { get; set; }
-        public List<CountOrder> CountOrders { get; set; }
+        public int CountOrders { get; set; }
         public List<OrderInWeek> OrderInWeeks { get; set; }
     }
     public class DateOrder

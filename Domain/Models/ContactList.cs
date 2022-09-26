@@ -14,7 +14,7 @@ namespace Domain.Models
         public TypeList Type { get; set; }
         public DateTime CreationDate { get; set; }
         public List<DateOrder> DateOrders { get; set; }
-        public List<CountOrder> CountOrders { get; set; }
+        public int CountOrders { get; set; }
         public List<OrderInWeek> OrderInWeeks { get; set; }
     }
 }

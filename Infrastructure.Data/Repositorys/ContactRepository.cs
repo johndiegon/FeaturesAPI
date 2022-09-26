@@ -44,7 +44,13 @@ namespace Infrastructure.Data.Repositorys
                              , c.Classification as Name
                              , c.Unity
                              , COUNT(*) as Count
-                         FROM direct_api.Contact  c
+                             , SUM(o.Count) as CountOrders
+                         FROM direct_api.Contact c
+                         LEFT JOIN ( select Count(*) as Count
+                                          , ContactId
+		                		     from direct_api.Order
+                                     group by ContactId
+                                     ) as o on o.ContactId = c.Id
                         where c.IdClient = @idClient
                           and c.Classification is not null
                           and c.Status = 1
@@ -56,9 +62,15 @@ namespace Infrastructure.Data.Repositorys
                              , 'Lista de Clientes' as Name
                              , c.Unity
                              , COUNT(*) as Count
-                        FROM direct_api.Contact  c
-                        where c.IdClient = @idClient
-                          and c.Status = 1
+                             , SUM(o.Count) as CountOrders
+                         FROM direct_api.Contact c
+                         LEFT JOIN ( select Count(*) as Count
+                                          , ContactId
+		                		     from direct_api.Order
+                                     group by ContactId
+                                     ) as o on o.ContactId = c.Id
+                        WHERE c.IdClient = @idClient
+                          AND c.Status = 1
                         GROUP BY c.IDCLIENT 
                                , c.Unity";
 

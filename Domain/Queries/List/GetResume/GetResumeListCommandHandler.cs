@@ -50,11 +50,11 @@ namespace Domain.Commands.List.GetResume
                     var countOrders = _contactRepository.GetCountOrderByClient(client.Id).Result.ToList();
                     var countInatives = _contactRepository.GetDateOrderByClient(client.Id).Result.ToList();
 
-                    foreach(var contactList in contactsList)
-                    {
-                        contactList.CountOrders = countOrders.Where(c => c.Unity == contactList.Unity && c.Name == contactList.Name).ToList();
-                        contactList.DateOrders = countInatives.Where(c => c.Unity == contactList.Unity && c.Name == contactList.Name).ToList();
-                    }
+                    //foreach(var contactList in contactsList)
+                    //{
+                    //    contactList.CountOrders = countOrders.Where(c => c.Unity == contactList.Unity && c.Name == contactList.Name).ToList();
+                    //    contactList.DateOrders = countInatives.Where(c => c.Unity == contactList.Unity && c.Name == contactList.Name).ToList();
+                    //}
 
                     var repost = new ResumeContactListEntity
                     {
