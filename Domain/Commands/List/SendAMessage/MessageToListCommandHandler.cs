@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using Infrasctuture.Service.Interfaces;
+using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
@@ -16,17 +17,20 @@ namespace Domain.Commands.List.SendAMessage
         private readonly ITopicServiceBuss _topicService;
         private readonly IContactRepository _contactRepository;
         private readonly IMessagesDefaultRepository _messagesDefaultRepository;
+        private readonly IStorage _storage;
 
 
         public MessageToListCommandHandler(ITopicServiceBuss topicService,
                                            IClientRepository clientRepository,
                                            IContactRepository contactRepository,
+                                           IStorage storage,
                                            IMessagesDefaultRepository messagesDefaultRepository)
             
                                            
         {
             _contactRepository = contactRepository;
             _topicService = topicService;
+            _storage = storage;
             _clientRepository = clientRepository;
             _messagesDefaultRepository = messagesDefaultRepository;
         }
@@ -51,6 +55,13 @@ namespace Domain.Commands.List.SendAMessage
 
                     var paramsList = new List<string>();
 
+                    template.Params.Add("IMAGE");
+                    request.MessageRequest.Params.Add(new Param() { Name = "image", Value = "62446178d3524231fee4e1d5e77fdf98-6e32-493b-a9e0-91e19ab58311814bfddb-4e3f-4f3b-b231-3937d8a20b27.jpg" });
+
+                    var url = GetParam(request.MessageRequest.Params, "image");
+                    if(string.IsNullOrEmpty(url))
+                        url = GetParam(request.MessageRequest.Params, "video");
+
                     #region >> Enviar Mensagem
 
                     foreach (var contact in contacts)
@@ -62,7 +73,8 @@ namespace Domain.Commands.List.SendAMessage
                             Phone = client.Phone.FirstOrDefault(),
                             Params = template.Params, 
                             Name = contact.Name,
-                            PhoneTo = contact.Phone
+                            PhoneTo = contact.Phone,
+                            UrlMedia = url
                         };
 
                         await _topicService.SendMessage(messageObject, "sendMessageToList");
@@ -79,6 +91,15 @@ namespace Domain.Commands.List.SendAMessage
                 SetResponseErro(response, ex.Message);
                 return response;
             }
+        }
+
+        private string GetParam(List<Param> paramaters, string nameParam)
+        {
+            var search = paramaters.Where(p => p.Name == nameParam).Select(pm => pm.Value).ToList();
+
+            if (search.Count() > 0)
+                return search[0] == null ? null : search[0].ToString();
+            return null;
         }
         private void SetResponseErro( CommandResponse response , string message)
         {

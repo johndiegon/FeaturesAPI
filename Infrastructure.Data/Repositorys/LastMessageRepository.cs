@@ -32,7 +32,7 @@ namespace Infrastructure.Data.Repositorys
                               direct_api.Contact contact on contact.id = chat.idContact
                         WHERE contact.IdClient = @idClient
                           and chat.sender != '3'
-                          and chat.DateInclude in (SELECT max(DateInclude) as LastDate 
+                          and chat.DateTime in ( SELECT max(chatDate.DateTime) as id 
                                                      from  direct_api.Chat chatDate 
                                                     where chatDate.idContact =  chat.idContact
                                                       and chatDate.sender != '3')";
@@ -50,10 +50,10 @@ namespace Infrastructure.Data.Repositorys
                 return from chat in chatMessage.ToList()
                        select new LastMessageEntity
                        {
-                           DateTime = chat.DateInclude,
+                           DateTime = chat.DateTime,
                            Message = chat.Message,
-                           PhoneFrom = phone,
-                           PhoneTo = chat.Phone,
+                           PhoneFrom = chat.Sender != Sender.Contact ? chat.Phone : phone,
+                           PhoneTo = chat.Sender == Sender.Contact ? chat.Phone : phone,
                            IdClient = client.Id,
                            NameFrom = chat.Sender != Sender.Contact ? chat.Name : client.Name,
                            NameTo = chat.Sender == Sender.Contact ? chat.Name : client.Name,

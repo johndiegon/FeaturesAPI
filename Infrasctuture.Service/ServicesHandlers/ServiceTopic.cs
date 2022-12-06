@@ -17,14 +17,21 @@ namespace Infrasctuture.Service.ServicesHandlers
 
         public async Task SendMessage(string message, string queueName)
         {
-            var queueSettings= _topicSettings.Queues.Where( t => t.QueueName == queueName).FirstOrDefault();
-            if(queueSettings != null)
+            try
             {
-                var client = new AmazonSQSClient(_topicSettings.IDAccessKey, _topicSettings.AccessKey, Amazon.RegionEndpoint.SAEast1);
-                await client.SendMessageAsync(queueSettings.ConnectionString, message);
-            }else
+                var queueSettings = _topicSettings.Queues.Where(t => t.QueueName == queueName).FirstOrDefault();
+                if (queueSettings != null)
+                {
+                    var client = new AmazonSQSClient(_topicSettings.IDAccessKey, _topicSettings.AccessKey, Amazon.RegionEndpoint.SAEast1);
+                    await client.SendMessageAsync(queueSettings.ConnectionString, message);
+                }
+                else
+                {
+                    new ArgumentException(string.Format("A fila de mensagens {0} não está configurada para receber mensagems.", queueName));
+                }
+            } catch (Exception ex)
             {
-                new ArgumentException(string.Format("A fila de mensagens {0} não está configurada para receber mensagems.", queueName));
+                throw ex;
             }
 
         }

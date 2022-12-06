@@ -1,4 +1,5 @@
 ﻿using Amazon.S3;
+using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using Infrasctuture.Service.Interfaces;
 using Infrasctuture.Service.Interfaces.settings;
@@ -18,49 +19,71 @@ namespace Infrasctuture.Service.ServicesHandlers
             _blobSettings = blobSettings;
   
         }
-        //public async Task<string> UploadFileToBloc(IFormFile file)
-        //{
-        //    // Create a BlobServiceClient object which will be used to create a container client
-        //    BlobServiceClient blobServiceClient = new BlobServiceClient(_blobSettings.ConnectionString);
-
-        //    //Create a unique name for the container
-        //    string containerName = Guid.NewGuid().ToString() + ".csv";
-        //    containerName = containerName.Replace(" ", "").Replace(".", "").ToLower();
-
-        //    // Create the container and return a container client object
-        //    BlobContainerClient containerClient = await blobServiceClient.CreateBlobContainerAsync(containerName);
-        //    BlobClient blobClient = containerClient.GetBlobClient(containerName);
-
-        //    await blobClient.UploadAsync(file.OpenReadStream());
-
-        //    return await Task.FromResult(containerName);
-        //}
-
+     
         public async Task<string> UploadFile(IFormFile file)
         {
-            string containerName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName); 
-            //containerName = containerName.Replace(" ", "").Replace(".", "").ToLower();
-
-            using (var client = new AmazonS3Client(_blobSettings.IDAccessKey, _blobSettings.AccessKey ,Amazon.RegionEndpoint.SAEast1))
+            try
             {
+                string containerName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                //containerName = containerName.Replace(" ", "").Replace(".", "").ToLower();
 
-                using (var newMemoryStream = new MemoryStream())
+                using (var client = new AmazonS3Client(_blobSettings.IDAccessKey, _blobSettings.AccessKey, Amazon.RegionEndpoint.SAEast1))
                 {
-                    file.CopyTo(newMemoryStream);
 
-                    var uploadRequest = new TransferUtilityUploadRequest
+                    using (var newMemoryStream = new MemoryStream())
                     {
-                        InputStream = newMemoryStream,
-                        Key = containerName,
-                        BucketName = _blobSettings.BucketName,
-                        CannedACL = S3CannedACL.PublicRead
-                    };
+                        file.CopyTo(newMemoryStream);
 
-                    var fileTransferUtility = new TransferUtility(client);
-                    await fileTransferUtility.UploadAsync(uploadRequest);
+                        var uploadRequest = new TransferUtilityUploadRequest
+                        {
+                            InputStream = newMemoryStream,
+                            Key = containerName,
+                            BucketName = _blobSettings.BucketName,
+                            CannedACL = S3CannedACL.PublicRead
+                        };
+
+                        var fileTransferUtility = new TransferUtility(client);
+                        await fileTransferUtility.UploadAsync(uploadRequest);
+                    }
                 }
+                return await Task.FromResult(containerName);
+            } catch( Exception ex)
+            {
+                throw ex;
             }
-            return await Task.FromResult(containerName);
+        }
+
+        public async Task<string> UploadMedia(IFormFile file, string clientId)
+        {
+            try
+            {
+                string containerName = string.Concat(clientId, Guid.NewGuid().ToString() , file.FileName);
+
+                using (var client = new AmazonS3Client(_blobSettings.IDAccessKey, _blobSettings.AccessKey, Amazon.RegionEndpoint.SAEast1))
+                {
+
+                    using (var newMemoryStream = new MemoryStream())
+                    {
+                        file.CopyTo(newMemoryStream);
+
+                        var uploadRequest = new TransferUtilityUploadRequest
+                        {
+                            InputStream = newMemoryStream,
+                            Key = containerName,
+                            BucketName = _blobSettings.BucketImageName,
+                            CannedACL = S3CannedACL.NoACL
+                        };
+
+                        var fileTransferUtility = new TransferUtility(client);
+                        await fileTransferUtility.UploadAsync(uploadRequest);
+                    }
+                }
+                return await Task.FromResult(containerName);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

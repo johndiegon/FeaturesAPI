@@ -288,7 +288,7 @@ namespace Infrastructure.Data.Repositorys
 
         public async Task<IEnumerable<ContactEntity>> GetByPhone(string phone, string idClient)
         {
-            var sql = @"select * from direct_api.Contact where IdClient = @idClient and Phone = @phone and c.Status = 1";
+            var sql = @"select * from direct_api.Contact where IdClient = @idClient and Phone = @phone and Status = 1";
             IEnumerable<ContactEntity> contactList;
             try
             {
@@ -308,7 +308,7 @@ namespace Infrastructure.Data.Repositorys
 
         public async Task<IEnumerable<ContactEntity>> GetContact(string phone, string idClient)
         {
-            var sql = @"select * from direct_api.Contact where IdClient = @idClient and Phone = @phone and c.Status = 1";
+            var sql = @"select * from direct_api.Contact where IdClient = @idClient and Phone = @phone and Status = 1";
             IEnumerable<ContactEntity> contactList;
             try
             {
@@ -319,9 +319,9 @@ namespace Infrastructure.Data.Repositorys
 
                 return contactList;
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
 

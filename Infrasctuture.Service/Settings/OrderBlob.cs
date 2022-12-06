@@ -8,5 +8,6 @@ namespace Infrasctuture.Service.Settings
         public string BucketName { get; set; }
         public string IDAccessKey { get; set; }
         public string AccessKey { get; set; }
+        public string BucketImageName { get; set; }
     }
 }

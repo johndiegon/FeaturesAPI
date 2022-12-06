@@ -83,7 +83,7 @@ namespace Domain.Commands.Chat.Post
                         request.IdClient = client.Id;
                         var message = JsonConvert.SerializeObject(request);
 
-                        await _topicService.SendMessage(message, "twiliorequest");
+                        await _topicService.SendMessage(message, "sendMessage");
                     }
                 } else
                 {

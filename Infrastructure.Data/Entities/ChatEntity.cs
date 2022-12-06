@@ -20,7 +20,7 @@ namespace Infrastructure.Data.Entities
         public int IdContact { get; set; }
         public Sender Sender { get; set; } 
         public string Message { get; set; }
-        public DateTime DateInclude { get; set; }
+        public DateTime DateTime { get; set; }
         public string? Name { get; set; }   
         public string? Phone { get; set; }
     }

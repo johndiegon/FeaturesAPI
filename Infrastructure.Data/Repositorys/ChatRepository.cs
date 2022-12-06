@@ -35,7 +35,7 @@ namespace Infrastructure.Data.Repositorys
                           WHERE
                               contact.Phone = @phone
                           AND contact.IdClient = @idClient
-                        ORDER BY chat.DateInclude
+                        ORDER BY chat.DateTime
                         LIMIT 60;";
 
             IEnumerable<Chat> chatMessage;
@@ -49,7 +49,7 @@ namespace Infrastructure.Data.Repositorys
                 var response = from chat in chatMessage.ToList()
                        select new MessageOnChatEntity
                        {
-                           DateTime = chat.DateInclude,
+                           DateTime = chat.DateTime,
                            Message = chat.Message,
                            PhoneFrom = chat.Sender == Sender.Contact ? phone : client.Phone.FirstOrDefault(),
                            PhoneTo = chat.Sender != Sender.Contact ? phone : client.Phone.FirstOrDefault(),

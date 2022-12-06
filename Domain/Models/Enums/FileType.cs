@@ -3,6 +3,7 @@
     public enum FileType
     {
        Contato,
-       Pedido
+       Pedido,
+       Media
     }
 }

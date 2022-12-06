@@ -1,6 +1,7 @@
 ﻿using Domain.Models;
 using Domain.Validators;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace Domain.Commands.List.SendAMessage
 {

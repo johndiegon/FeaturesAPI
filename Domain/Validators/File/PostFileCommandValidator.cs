@@ -1,11 +1,6 @@
 ﻿using Domain.Commands.File.Post;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Validators.File
 {
@@ -17,9 +12,9 @@ namespace Domain.Validators.File
                 .NotNull()
                 .WithMessage("{PropertyName} cannot be null.");
 
-            RuleFor(x => x.File.FileName)
-               .Must(BeAValidExtension)
-               .WithMessage("Extension is not valid.");
+            //RuleFor(x => x.File.FileName)
+            //   .Must(BeAValidExtension)
+            //   .WithMessage("Extension is not valid.");
 
             RuleFor(x => x.IdUser)
                 .NotNull()

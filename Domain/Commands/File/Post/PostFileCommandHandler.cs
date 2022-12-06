@@ -45,24 +45,37 @@ namespace Domain.Commands.File.Post
                         return GetResponseErro("This customer doesn't exist.");
                     }
 
-                    var storageFile = await _blobStorage.UploadFile(request.File);
+                    var storageFile = string.Empty;
 
-                    var importedFile = new ImportedFile
+                    if (request.FileType == Models.Enums.FileType.Pedido)
                     {
-                        IdClient = client.Id,
-                        PathFile = storageFile,
-                        FileName = request.File.FileName,
-                    };
-                    
-                    var message = JsonConvert.SerializeObject(importedFile);
 
-                    await _topicService.SendMessage(message, "inputContact");
+                        storageFile = await _blobStorage.UploadFile(request.File);
+
+                        var importedFile = new ImportedFile
+                        {
+                            IdClient = client.Id,
+                            PathFile = storageFile,
+                            FileName = request.File.FileName,
+                        };
+
+                        var message = JsonConvert.SerializeObject(importedFile);
+
+                        await _topicService.SendMessage(message, "inputContact");
+                    }
+                    else
+                    {
+                        storageFile = await _blobStorage.UploadMedia(request.File, client.Id);
+                    }
+
 
                     response.Data = new Data 
                     {
                         Message = "Message sent successfully.", 
                         Status = Status.Sucessed 
                     };
+
+                    response.Url = storageFile;
                 }
 
             }
