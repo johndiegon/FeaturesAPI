@@ -49,7 +49,7 @@ namespace FeaturesAPI.Controllers
 
                 if (response.Data.Status == Status.Sucessed)
                 {
-                    return await Task.FromResult(response);
+                    return await System.Threading.Tasks.Task.FromResult<CommandResponse>(response);
                 }
                 else
                 {
@@ -78,7 +78,7 @@ namespace FeaturesAPI.Controllers
         {
             try
             {
-                return await Task.FromResult(hub_challenge);
+                return await System.Threading.Tasks.Task.FromResult<string>(hub_challenge);
             }
             catch (Exception ex)
             {

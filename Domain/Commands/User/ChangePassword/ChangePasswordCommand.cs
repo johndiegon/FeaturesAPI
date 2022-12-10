@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using Domain.Validators;
+using Infrastructure.Application.Helpers;
 using MediatR;
 
 namespace Domain.Commands.User.ChangePassword
@@ -12,6 +13,8 @@ namespace Domain.Commands.User.ChangePassword
         public override bool IsValid()
         {
             if(Email == null || Password == null || OldPassword == null)
+                return false;
+            if(!Password.BeAPassword())
                 return false;
             else
                 return true;

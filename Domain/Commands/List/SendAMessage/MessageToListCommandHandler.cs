@@ -54,10 +54,7 @@ namespace Domain.Commands.List.SendAMessage
                     var template = _messagesDefaultRepository.GetByClientId(client.Id).Where(m => m.Title == request.MessageRequest.Template).FirstOrDefault();
 
                     var paramsList = new List<string>();
-
-                    template.Params.Add("IMAGE");
-                    request.MessageRequest.Params.Add(new Param() { Name = "image", Value = "62446178d3524231fee4e1d5e77fdf98-6e32-493b-a9e0-91e19ab58311814bfddb-4e3f-4f3b-b231-3937d8a20b27.jpg" });
-
+                   
                     var url = GetParam(request.MessageRequest.Params, "image");
                     if(string.IsNullOrEmpty(url))
                         url = GetParam(request.MessageRequest.Params, "video");

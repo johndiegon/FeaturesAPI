@@ -44,11 +44,11 @@ namespace Domain.Commands.Client.Delete
                         }
                     };
                 }
-                return await Task.FromResult(response);
+                return await System.Threading.Tasks.Task.FromResult(response);
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(GetResponseErro(ex.Message));
+                return await System.Threading.Tasks.Task.FromResult(GetResponseErro(ex.Message));
             }
         }
 

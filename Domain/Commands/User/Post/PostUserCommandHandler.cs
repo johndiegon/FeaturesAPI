@@ -8,6 +8,7 @@ using System;
 using Domain.Models;
 using Newtonsoft.Json;
 using Infrasctuture.Service.Interfaces;
+using Infrastructure.Application.Helpers;
 
 namespace Domain.Commands.User.Post
 {
@@ -38,12 +39,15 @@ namespace Domain.Commands.User.Post
 
                 if (userSearch != null)
                 {
-
-                    return await Task.FromResult(GetResponseErro("Usuário já existe."));
+                    return await System.Threading.Tasks.Task.FromResult(GetResponseErro("Usuário já existe."));
+                }else if (!user.Password.BeAPassword()) 
+                {
+                    return await System.Threading.Tasks.Task.FromResult(GetResponseErro("Senha  inválida."));
                 }
                 else
                 {
-                    
+
+                    user.Password = user.Password.EncryptSha256Hash();
                     var userModel= _mapper.Map<UserModel>(_userRepository.Create(user));
                     var response = new PostUserCommandResponse 
                     {
@@ -61,7 +65,7 @@ namespace Domain.Commands.User.Post
 
                     await _topicService.SendMessage(message, "ConfirmEmail");
 
-                    return await Task.FromResult(response); 
+                    return await System.Threading.Tasks.Task.FromResult(response); 
                 }
             }
             catch

@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Infrastructure.Application.Helpers;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
@@ -38,22 +39,22 @@ namespace Domain.Commands.User.ChangePassword
                     return GetResponseErro("Usuário inválido.");
 
                 //Verifica se o usuário existe
-                if (user.Password != request.OldPassword)
+                if (user.Password != request.OldPassword.EncryptSha256Hash())
                     return GetResponseErro("Senha inválida.");
 
 
-                user.Password = request.Password;
+                user.Password = request.Password.EncryptSha256Hash();
 
                 _userRepository.Update(user);
 
                 // Retorna os dados
-                return await Task.FromResult(new CommandResponse { Data = new Data { Message = "Passwordd changed", Status = Status.Sucessed } });
+                return await System.Threading.Tasks.Task.FromResult(new CommandResponse { Data = new Data { Message = "Passwordd changed", Status = Status.Sucessed } });
 
             }
             catch (Exception ex)
             {
                 var message = string.Concat("Ocorreru um erro interno: ", ex.Message);
-                return await Task.FromResult(GetResponseErro(message));
+                return await System.Threading.Tasks.Task.FromResult(GetResponseErro(message));
             }
         }
 

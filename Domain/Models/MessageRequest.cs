@@ -7,6 +7,5 @@ namespace Domain.Models
     {
         public string Template { get; set; }
         public List<Param> Params { get; set; }
-        public List<string> ParamsToMessage { get; set; }
     }
 }

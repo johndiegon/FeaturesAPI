@@ -141,11 +141,11 @@ namespace Domain.Queries.Dashboard.Get
                     response.DataDashboard = dash;
                 }
 
-                return await Task.FromResult(response);
+                return await System.Threading.Tasks.Task.FromResult(response);
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(GetResponseErro(ex.Message));
+                return await System.Threading.Tasks.Task.FromResult(GetResponseErro(ex.Message));
             }
         }
 

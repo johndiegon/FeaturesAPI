@@ -2,6 +2,7 @@
 using Domain.Commands.User;
 using Domain.Models;
 using FeaturesAPI.Domain.Models;
+using Infrastructure.Application.Helpers;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
@@ -32,8 +33,8 @@ namespace Domain.Commands.Authenticate
                 if (user == null)
                     return GetResponseErro("Usuário inválido.");
 
-                //Verifica se o usuário existe
-                if (user.Password != request.User.Password)
+                //Verifica se a senha está correta
+                if (user.Password != request.User.Password.EncryptSha256Hash())
                     return GetResponseErro("Senha inválida.");
 
                 //Verifica se o usuário existe
@@ -51,12 +52,12 @@ namespace Domain.Commands.Authenticate
                 user.Token = token;
 
                 // Retorna os dados
-                return await Task.FromResult(new AuthenticateCommandResponse { User = user, Data = new Data { Status = Status.Sucessed } });
+                return await System.Threading.Tasks.Task.FromResult(new AuthenticateCommandResponse { User = user, Data = new Data { Status = Status.Sucessed } });
 
             } catch (Exception ex)
             {
                 var message = string.Concat("Ocorreru um erro interno: ", ex.Message);
-                return await Task.FromResult(GetResponseErro(message));
+                return await System.Threading.Tasks.Task.FromResult(GetResponseErro(message));
             }
         }
 

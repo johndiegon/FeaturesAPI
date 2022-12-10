@@ -41,11 +41,11 @@ namespace Domain.Queries.Address
                     }
                 };
 
-                return await Task.FromResult(address);
+                return await System.Threading.Tasks.Task.FromResult(address);
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(GetResponseErro(ex.Message));
+                return await System.Threading.Tasks.Task.FromResult(GetResponseErro(ex.Message));
             }
         }
 

@@ -33,13 +33,13 @@ namespace Domain.Commands.User.ConfirmEmail
                 _userRepository.Update(user);
 
                 // Retorna os dados
-                return await Task.FromResult(new CommandResponse { Data = new Data { Message = "Email confirmed",  Status = Status.Sucessed } });
+                return await System.Threading.Tasks.Task.FromResult(new CommandResponse { Data = new Data { Message = "Email confirmed",  Status = Status.Sucessed } });
 
             }
             catch (Exception ex)
             {
                 var message = string.Concat("Ocorreru um erro interno: ", ex.Message);
-                return await Task.FromResult(GetResponseErro(message));
+                return await System.Threading.Tasks.Task.FromResult(GetResponseErro(message));
             }
         }
 

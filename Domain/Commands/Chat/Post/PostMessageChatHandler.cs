@@ -40,7 +40,7 @@ namespace Domain.Commands.Chat.Post
             {
 
                 if (!request.IsValid())
-                    return await Task.FromResult(GetResponseErro("Request invalid."));
+                    return await System.Threading.Tasks.Task.FromResult(GetResponseErro("Request invalid."));
 
                 if (request.Message.FacebookMessageId != null)
                 {
@@ -110,7 +110,7 @@ namespace Domain.Commands.Chat.Post
             }
             catch (Exception ex)
             {
-                return await Task.FromResult(GetResponseErro(ex.Message));
+                return await System.Threading.Tasks.Task.FromResult(GetResponseErro(ex.Message));
             }
         }
 

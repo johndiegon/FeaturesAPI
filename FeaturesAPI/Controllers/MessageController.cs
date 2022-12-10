@@ -56,7 +56,7 @@ namespace FeaturesAPI.Controllers
 
                 if (response.Data.Status == Status.Sucessed)
                 {
-                    return await Task.FromResult(response);
+                    return await System.Threading.Tasks.Task.FromResult<CommandResponse>(response);
                 }
                 else
                 {
@@ -95,7 +95,7 @@ namespace FeaturesAPI.Controllers
 
                 if (response.Data.Status == Status.Sucessed)
                 {
-                    return await Task.FromResult(response);
+                    return await System.Threading.Tasks.Task.FromResult<GetContactsQueryResponse>(response);
                 }
                 else
                 {
@@ -134,7 +134,7 @@ namespace FeaturesAPI.Controllers
 
                 if (response.Data.Status == Status.Sucessed)
                 {
-                    return await Task.FromResult(response);
+                    return await System.Threading.Tasks.Task.FromResult<CommandResponse>(response);
                 }
                 else
                 {
@@ -172,7 +172,7 @@ namespace FeaturesAPI.Controllers
 
                 if (response.Data.Status == Status.Sucessed)
                 {
-                    return await Task.FromResult(response);
+                    return await System.Threading.Tasks.Task.FromResult<CommandResponse>(response);
                 }
                 else
                 {
@@ -214,7 +214,7 @@ namespace FeaturesAPI.Controllers
 
                 if (response.Data.Status == Status.Sucessed)
                 {
-                    return await Task.FromResult(response);
+                    return await System.Threading.Tasks.Task.FromResult<CommandResponse>(response);
                 }
                 else
                 {
@@ -255,7 +255,7 @@ namespace FeaturesAPI.Controllers
 
                 if (response.Data.Status == Status.Sucessed)
                 {
-                    return await Task.FromResult(response);
+                    return await System.Threading.Tasks.Task.FromResult<GetMessageResponse>(response);
                 }
                 else
                 {
@@ -294,7 +294,7 @@ namespace FeaturesAPI.Controllers
 
                 if (response.Data.Status == Status.Sucessed)
                 {
-                    return await Task.FromResult(response);
+                    return await System.Threading.Tasks.Task.FromResult<GetMessageResponse>(response);
                 }
                 else
                 {

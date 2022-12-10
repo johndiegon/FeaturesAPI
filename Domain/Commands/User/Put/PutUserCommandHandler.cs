@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Domain.Models;
 using FeaturesAPI.Domain.Models;
+using Infrastructure.Application.Helpers;
 using Infrastructure.Data.Interfaces;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,7 +31,11 @@ namespace Domain.Commands.User.Put
             {
                 if(!request.IsValid())
                 {
-                    return await Task.FromResult(GetResponseErro("The request is invalid."));
+                    return await System.Threading.Tasks.Task.FromResult(GetResponseErro("The request is invalid."));
+                }
+                else if (!request.User.Password.BeAPassword())
+                {
+                    return await System.Threading.Tasks.Task.FromResult(GetResponseErro("Senha  inválida."));
                 }
                 else
                 {
@@ -42,10 +46,11 @@ namespace Domain.Commands.User.Put
                     if (userSearch == null)
                     {
 
-                        return await Task.FromResult(GetResponseErro("Usuário não existe."));
+                        return await System.Threading.Tasks.Task.FromResult(GetResponseErro("Usuário não existe."));
                     }
                     else
                     {
+                        user.Password = user.Password.EncryptSha256Hash();
                         var userModel = _mapper.Map<UserModel>(_userRepository.Update(user));
                         var response = new CommandResponse
                         {
@@ -55,7 +60,7 @@ namespace Domain.Commands.User.Put
                                 Status = Status.Sucessed
                             }
                         };
-                        return await Task.FromResult(response);
+                        return await System.Threading.Tasks.Task.FromResult(response);
                     }
                 }
             }

@@ -57,7 +57,7 @@ namespace API.Controllers
 
                 if (response.Data.Status == Status.Sucessed)
                 {
-                    return await Task.FromResult(response);
+                    return await System.Threading.Tasks.Task.FromResult<PostFileCommandResponse>(response);
                 }
                 else
                 {
@@ -102,7 +102,7 @@ namespace API.Controllers
 
                 if (response.Data.Status == Status.Sucessed)
                 {
-                    return await Task.FromResult(response);
+                    return await System.Threading.Tasks.Task.FromResult<PostFileCommandResponse>(response);
                 }
                 else
                 {
@@ -146,7 +146,7 @@ namespace API.Controllers
 
                 if (response.Data.Status == Status.Sucessed)
                 {
-                    return await Task.FromResult(response);
+                    return await System.Threading.Tasks.Task.FromResult<GetHistorysFileQueryResponse>(response);
                 }
                 else
                 {

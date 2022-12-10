@@ -47,7 +47,7 @@ namespace Domain.Commands.UserHub
                 response = GetResponseErro(String.Concat("Internal error:", ex.Message));
             }
 
-            return await Task.FromResult(response);
+            return await System.Threading.Tasks.Task.FromResult(response);
         }
 
         private CommandResponse GetResponseErro(string Message)

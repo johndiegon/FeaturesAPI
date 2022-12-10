@@ -18,7 +18,7 @@ namespace FeaturesAPI.Middlewares
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext httpContext, ILoggerCrossCutting logger)
+        public async System.Threading.Tasks.Task InvokeAsync(HttpContext httpContext, ILoggerCrossCutting logger)
         {
             _logger = logger;
             var transaction = _logger.GetTransactionAsync(httpContext);
@@ -39,7 +39,7 @@ namespace FeaturesAPI.Middlewares
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private static System.Threading.Tasks.Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

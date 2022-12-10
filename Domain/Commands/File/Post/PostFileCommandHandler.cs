@@ -84,7 +84,7 @@ namespace Domain.Commands.File.Post
                 response = GetResponseErro(String.Concat("Internal error:", ex.Message));
             }
 
-            return await Task.FromResult(response);
+            return await System.Threading.Tasks.Task.FromResult(response);
         }
         private PostFileCommandResponse GetResponseErro(string Message)
         {
