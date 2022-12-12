@@ -35,8 +35,9 @@ namespace Domain.Commands.Calendar.Delete
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-    
-                    if(_calendarRepository.Get(request.Id).Where( t => t.ClientId == client.Id).Any())
+
+                    var task = _calendarRepository.Get(request.Id);
+                    if (task.ClientId == client.Id)
                     {
                         _calendarRepository.Delete(request.Id);
 
@@ -44,7 +45,7 @@ namespace Domain.Commands.Calendar.Delete
                         {
                             Data = new Data
                             {
-                                Message = "client inactive with success",
+                                Message = "task removed with succes",
                                 Status = Status.Sucessed
                             }
                         };

@@ -1,4 +1,7 @@
 ﻿using Domain.Commands.Authenticate;
+using Domain.Commands.Calendar.Delete;
+using Domain.Commands.Calendar.Post;
+using Domain.Commands.Calendar.Put;
 using Domain.Commands.Chat.Post;
 using Domain.Commands.Client.Delete;
 using Domain.Commands.Client.Post;
@@ -24,6 +27,7 @@ using Domain.Commands.User.Put;
 using Domain.Commands.UserHub;
 using Domain.Models;
 using Domain.Queries.Address;
+using Domain.Queries.Calendar.Get;
 using Domain.Queries.Chat.Get;
 using Domain.Queries.Chat.GetLast;
 using Domain.Queries.Client;
@@ -147,9 +151,13 @@ namespace FeaturesAPI.Atributes
             services.AddTransient<IRequestHandler<PutMessageCommand, CommandResponse>, PutMessageHandler>();
             services.AddTransient<IRequestHandler<PostMessageCommand, CommandResponse>, PostMessageHandler>();
             services.AddTransient<IRequestHandler<GetMessageQuery, GetMessageResponse>, GetMessageHandler>();
+            services.AddTransient<IRequestHandler<PostCalendar, PostCalendarResponse>, PostCalendarHandler>();
+            services.AddTransient<IRequestHandler<PutCalendar, CommandResponse>, PutCalendarHandler>();
+            services.AddTransient<IRequestHandler<DeleteCalendar, CommandResponse>, DeleteCalendarHandler>();
+            services.AddTransient<IRequestHandler<GetCalendar, GetCalendarResponse>, GetCalendarHandler>();
 
             #endregion
-            
+
             services.AddScoped(typeof(IViaCepService), typeof(ViaCepService));
 
             services.AddScoped<IClientRepository, ClientRepository>();
@@ -176,10 +184,13 @@ namespace FeaturesAPI.Atributes
             services.AddSingleton<SessionWhatsAppRepository>();
             services.AddSingleton<MessagesDefaultRepository>();
             services.AddSingleton<TwillioAccessRepository>();
+            services.AddScoped<ICalendarRepository, CalendarRepository>();
             services.AddControllersWithViews();
 
             services.AddScoped<IStorage, OrderStorage>();
             services.AddScoped<ITopicServiceBuss, ServiceTopic>();
+
+
 
         }
     }

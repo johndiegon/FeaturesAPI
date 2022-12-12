@@ -40,8 +40,14 @@ namespace Domain.Queries.Calendar.Get
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                  
-                    var result = _calendarRepository.Get(client.Id, request.year, request.month);
+
+                    if (request.month == default)
+                        request.month = DateTime.Now.Month;
+
+                    if (request.year == default)
+                        request.year = DateTime.Now.Year;
+
+                    var result = _calendarRepository.Get(client.Id, request.month, request.year);
 
                     var tasks = _mapper.Map<List<TaskCalendar>>(result); 
 

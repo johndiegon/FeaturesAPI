@@ -2,6 +2,7 @@
 using Domain.Models;
 using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
+using MediatR;
 using System;
 using System.Linq;
 using System.Threading;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Commands.Calendar.Put
 {
-    public class PutCalendarHandler
+    public class PutCalendarHandler : IRequestHandler<PutCalendar, CommandResponse>
     {
         private readonly IClientRepository _clientRepository;
         private readonly ICalendarRepository _calendarRepository;

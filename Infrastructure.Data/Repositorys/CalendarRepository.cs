@@ -85,7 +85,7 @@ namespace Infrastructure.Data.Repositorys
                                `Calendar`.`template`,
                                `Calendar`.`params`,
                                `Calendar`.`update`
-                           FROM `direct_api`.`Calendar`;
+                           FROM `direct_api`.`Calendar`
                         WHERE id = @id ;"
                       ;
 
@@ -133,13 +133,8 @@ namespace Infrastructure.Data.Repositorys
             }
         }
 
-        public List<CalendarEntity> Get(string idClient, int month = default, int year = default)
+        public List<CalendarEntity> Get(string idClient, int month , int year )
         {
-            if (month == default)  
-                month = DateTime.Now.Month;
-
-            if (year == default)
-                year = DateTime.Now.Year;
 
             var sql = @"SELECT `Calendar`.`id`,
                         `Calendar`.`clientId`,
@@ -162,7 +157,7 @@ namespace Infrastructure.Data.Repositorys
                 {
                     calendar =  connection.Query<CalendarEntity>(sql, new 
                     {
-                        idClient = idClient,
+                        clientId = idClient,
                         month = month,
                         year = year
                     }).AsList();

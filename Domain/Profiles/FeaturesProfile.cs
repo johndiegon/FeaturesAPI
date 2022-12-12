@@ -67,7 +67,8 @@ namespace Domain.Profiles
             CreateMap<ReportFile, ReportFileEntity>();
             CreateMap<ReportFileEntity, ReportFile>();
 
-            CreateMap<TaskCalendar, CalendarEntity>();  
+            CreateMap<TaskCalendar, CalendarEntity>();
+            CreateMap<CalendarEntity, TaskCalendar>();
         }
     }
 }

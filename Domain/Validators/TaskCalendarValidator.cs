@@ -8,8 +8,8 @@ namespace Domain.Validators
         public TaskCalendarValidator()
         {
             RuleFor(x => x.ClientId)
-            .NotNull()
-            .WithMessage("ClientId cannot be null");
+            .Null()
+            .WithMessage("ClientId cannot be filled");
 
             RuleFor(x => x.Template)
              .NotNull()
