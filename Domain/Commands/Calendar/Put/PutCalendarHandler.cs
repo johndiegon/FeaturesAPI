@@ -39,10 +39,13 @@ namespace Domain.Commands.Calendar.Put
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                    request.Task.ClientId = client.Id;
+                    request.Tasks.ForEach(task => task.ClientId = client.Id);
 
-                    var task = _calendarRepository.Update(_mapper.Map<CalendarEntity>(request.Task));
-
+                    foreach (var task in request.Tasks)
+                    {
+                        _calendarRepository.Update(_mapper.Map<CalendarEntity>(task));
+                    }
+                  
                     response = new CommandResponse
                     {
                         Data = new Data

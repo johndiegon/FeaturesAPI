@@ -1,9 +1,10 @@
 ﻿using Domain.Models;
+using System.Collections.Generic;
 
 namespace Domain.Commands.Calendar.Post
 {
     public class PostCalendarResponse : CommandResponse
     {
-        public int Id { get; set; }
+        public List<TaskCalendar> Tasks { get; set; }
     }
 }

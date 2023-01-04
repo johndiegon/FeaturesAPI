@@ -1,5 +1,7 @@
 ﻿using Domain.Validators;
+using Infrastructure.Data.Entities;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Models
@@ -13,7 +15,8 @@ namespace Domain.Models
         public bool Sent { get; set; }
         public int Count { get; set; }
         public string Template { get; set; }
-        public string Params { get; set; }
+        public List<Param> Params { get; set; }
+        public List<Param> Filters { get; set; }
 
         public override bool IsValid()
         {

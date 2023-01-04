@@ -36,26 +36,24 @@ namespace Domain.Commands.Calendar.Delete
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
 
-                    var task = _calendarRepository.Get(request.Id);
-                    if (task.ClientId == client.Id)
+                    foreach(var id in request.Ids)
                     {
-                        _calendarRepository.Delete(request.Id);
-
-                        response = new CommandResponse
+                        var task = _calendarRepository.Get(id);
+                        if (task.ClientId == client.Id)
                         {
-                            Data = new Data
-                            {
-                                Message = "task removed with succes",
-                                Status = Status.Sucessed
-                            }
-                        };
-                    }
-                    else
-                    {
-                        response = GetResponseErro("This Task Doenst exists.");
+                            _calendarRepository.Delete(id);
+                        }
                     }
 
-                   
+                    response = new CommandResponse
+                    {
+                        Data = new Data
+                        {
+                            Message = "task removed with succes",
+                            Status = Status.Sucessed
+                        }
+                    };
+
                 }
                 return await Task.FromResult(response);
             }

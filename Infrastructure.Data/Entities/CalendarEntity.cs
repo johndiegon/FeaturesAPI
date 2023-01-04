@@ -12,5 +12,6 @@ namespace Infrastructure.Data.Entities
         public int Count { get; set; }
         public string Template { get; set; }
         public string Params { get; set; }
+        public string Filters { get; set; }
     }
 }

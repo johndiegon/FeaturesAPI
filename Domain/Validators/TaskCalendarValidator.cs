@@ -20,6 +20,11 @@ namespace Domain.Validators
              .NotNull()
              .WithMessage("Params cannot be null.");
 
+
+            RuleFor(x => x.Filters)
+             .NotNull()
+             .WithMessage("Params cannot be null.");
+
             RuleFor(x => x.DateTime)
              .NotNull()
              .WithMessage("DateTime cannot be null.");

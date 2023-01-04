@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using FeaturesAPI.Infrastructure.Data.Interface;
 using Infrastructure.Data.Entities;
+using Infrastructure.Data.Enum;
 using Infrastructure.Data.Interfaces;
 using MySqlConnector;
 using System;
@@ -27,7 +28,8 @@ namespace Infrastructure.Data.Repositorys
                         `sent`,
                         `count`,
                         `template`,
-                        `params`)
+                        `params`,
+                        `filters')
                         VALUES
                         (@clientId,
                          @dateTime,
@@ -35,7 +37,8 @@ namespace Infrastructure.Data.Repositorys
                          @sent,
                          @count,
                          @template,
-                         @params);
+                         @params,
+                         @filters);
                        SELECT LAST_INSERT_ID();                    
                        "
                        ;
@@ -84,6 +87,7 @@ namespace Infrastructure.Data.Repositorys
                                `Calendar`.`count`,
                                `Calendar`.`template`,
                                `Calendar`.`params`,
+                               `Calendar`.`filters`,
                                `Calendar`.`update`
                            FROM `direct_api`.`Calendar`
                         WHERE id = @id ;"
@@ -115,6 +119,7 @@ namespace Infrastructure.Data.Repositorys
                            `count` = @count,
                            `template` = @template,
                            `params` = @params
+                           `filters` = @filters
                          WHERE `id` = @id;";
 
             try
@@ -135,7 +140,6 @@ namespace Infrastructure.Data.Repositorys
 
         public List<CalendarEntity> Get(string idClient, int month , int year )
         {
-
             var sql = @"SELECT `Calendar`.`id`,
                         `Calendar`.`clientId`,
                         `Calendar`.`dateTime`,
@@ -144,6 +148,7 @@ namespace Infrastructure.Data.Repositorys
                         `Calendar`.`count`,
                         `Calendar`.`template`,
                         `Calendar`.`params`,
+                        `Calendar`.`filters`,
                         `Calendar`.`update`
                     FROM `direct_api`.`Calendar`
                     where  Month(`Calendar`.`dateTime`) = @month
@@ -163,6 +168,80 @@ namespace Infrastructure.Data.Repositorys
                     }).AsList();
                 }
 
+                return calendar;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public List<string> GetClientsProcessAutomaticMessage(int beginMinute, int endMintue, StatusTask status)
+        {
+            var sql = @"SELECT  `Calendar`.`clientId`
+			              FROM `direct_api`.`Calendar`
+                         where  Month(`Calendar`.`dateTime`) = @month
+                           and Year(`Calendar`.`dateTime`) = @year
+                           and `Calendar`.`status` = @status
+                           and minute(`Calendar`.`dateTime`) between @beginMinute and @endMintue
+                           ;";
+            try
+            {
+                var clients = new List<string>();
+                using (var connection = new MySqlConnection(_connectString))
+                {
+                    clients = connection.Query<string>(sql, new
+                    {
+                        beginMinute = beginMinute,
+                        endMintue = endMintue,
+                        month = DateTime.Now.Month,
+                        year = DateTime.Now.Year,
+                        status = status
+                    }).AsList();
+                }
+
+                return clients;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public List<CalendarEntity> GetAutomaticMessage(string idClient, int beginMinute, int endMintue, StatusTask status)
+        {
+            var sql = @"SELECT `Calendar`.`id`,
+                        `Calendar`.`clientId`,
+                        `Calendar`.`dateTime`,
+                        `Calendar`.`status`,
+                        `Calendar`.`sent`,
+                        `Calendar`.`count`,
+                        `Calendar`.`template`,
+                        `Calendar`.`params`,
+                        `Calendar`.`filters`,
+                        `Calendar`.`update`
+                    FROM `direct_api`.`Calendar`
+                    where  Month(`Calendar`.`dateTime`) = @month
+                    and Year(`Calendar`.`dateTime`) = @year
+                    and minute(`Calendar`.`dateTime`) between @beginMinute and @endMintue
+                    and `Calendar`.`clientId` = @clientId
+                    and `Calendar`.`status` = @status";
+
+            try
+            {
+                var calendar = new List<CalendarEntity>();
+                using (var connection = new MySqlConnection(_connectString))
+                {
+                    calendar = connection.Query<CalendarEntity>(sql, new
+                    {
+                        beginMinute = beginMinute,
+                        endMintue = endMintue,
+                        month = DateTime.Now.Month,
+                        year = DateTime.Now.Year,
+                        clientId = idClient,
+                        status = status
+                    }).AsList();
+                }
                 return calendar;
             }
             catch

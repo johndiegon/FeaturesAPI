@@ -5,7 +5,7 @@ using FeaturesAPI.Domain.Models;
 using FeaturesAPI.Infrastructure.Data.Entities;
 using FeaturesAPI.Infrastructure.Models;
 using Infrastructure.Data.Entities;
-
+using Newtonsoft.Json;
 
 namespace Domain.Profiles
 {
@@ -67,8 +67,15 @@ namespace Domain.Profiles
             CreateMap<ReportFile, ReportFileEntity>();
             CreateMap<ReportFileEntity, ReportFile>();
 
-            CreateMap<TaskCalendar, CalendarEntity>();
-            CreateMap<CalendarEntity, TaskCalendar>();
+            CreateMap<TaskCalendar, CalendarEntity>()
+                .ForMember(m => m.Params, opt => opt.MapFrom( src => JsonConvert.SerializeObject(src.Params)))
+                .ForMember(m => m.Filters, opt => opt.MapFrom(src => JsonConvert.SerializeObject(src.Filters)));
+
+
+            CreateMap<CalendarEntity, TaskCalendar>()
+                .ForMember(m => m.Params, opt => opt.MapFrom(src => JsonConvert.DeserializeObject(src.Params)))
+                .ForMember(m => m.Filters, opt => opt.MapFrom(src => JsonConvert.DeserializeObject(src.Filters)));
+
         }
     }
 }

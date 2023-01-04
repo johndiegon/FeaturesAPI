@@ -39,9 +39,13 @@ namespace Domain.Commands.Calendar.Post
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                    request.Task.ClientId = client.Id;
+                    request.Tasks.ForEach(task => task.ClientId = client.Id);
 
-                    var task = _calendarRepository.Create(_mapper.Map<CalendarEntity>(request.Task));
+                    foreach( var task in request.Tasks)
+                    {
+                        task.Id = _calendarRepository.Create(_mapper.Map<CalendarEntity>(task)).Id;
+                    }
+                  
 
                     response = new PostCalendarResponse
                     {
@@ -50,7 +54,7 @@ namespace Domain.Commands.Calendar.Post
                             Message = "task was created.",
                             Status = Status.Sucessed
                         },
-                        Id = task.Id,
+                        Tasks = request.Tasks,
                     };
 
 

@@ -4,11 +4,11 @@ using Domain.Commands.Calendar.Post;
 using Domain.Commands.Calendar.Put;
 using Domain.Models;
 using Domain.Queries.Calendar.Get;
-using FeaturesAPI.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -40,7 +40,7 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
-        public async Task<ActionResult<PostCalendarResponse>> Create(TaskCalendar task)
+        public async Task<ActionResult<PostCalendarResponse>> Create(List<TaskCalendar> tasks)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace FeaturesAPI.Controllers
 
                 var post = new PostCalendar() 
                 { 
-                    Task = task,
+                    Tasks = tasks,
                     IdUser = "62446177d3524231fee4e1d4" //claimsIdentity.FindFirst(ClaimTypes.Sid).Value
                 };
 
@@ -81,7 +81,7 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPut]
-        public async Task<ActionResult<CommandResponse>> Update(TaskCalendar task)
+        public async Task<ActionResult<CommandResponse>> Update(List<TaskCalendar> tasks)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace FeaturesAPI.Controllers
                 
                 var post = new PutCalendar() 
                 { 
-                    Task = task ,
+                    Tasks = tasks ,
                     IdUser = "62446177d3524231fee4e1d4" //claimsIdentity.FindFirst(ClaimTypes.Sid).Value,
 
                 };
@@ -164,7 +164,7 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpDelete("{id}")]
-        public async Task<ActionResult<CommandResponse>> Delete([FromRoute] string id)
+        public async Task<ActionResult<CommandResponse>> Delete([FromRoute] List<string> ids)
         {
             try
             {
@@ -172,7 +172,7 @@ namespace FeaturesAPI.Controllers
                 var delete = new DeleteCalendar()
                 {
                     IdUser = "62446177d3524231fee4e1d4", //claimsIdentity.FindFirst(ClaimTypes.Sid).Value,
-                    Id = id
+                    Ids = ids
                 };
 
                 var response = await _mediator.Send(delete);

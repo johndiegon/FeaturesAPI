@@ -22,6 +22,7 @@ namespace FeaturesAPI.Infrastructure.Data.Entities
         public string IdUser { get; set; }
         public StatusEntity Status { get; set; }
         public List<string> Phone { get; set; }
+        public string AdministratorPhone { get; set; }
         public int MinDayToSendMessage { get; set; }
         public string AnswerDefault { get; set; }
         public List<string> AskToQuit { get; set; }

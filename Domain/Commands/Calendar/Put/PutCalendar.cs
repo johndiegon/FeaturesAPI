@@ -1,12 +1,13 @@
 ﻿using Domain.Models;
 using Domain.Validators;
 using MediatR;
+using System.Collections.Generic;
 
 namespace Domain.Commands.Calendar.Put
 {
     public class PutCalendar : Validate, IRequest<CommandResponse>
     {
-        public TaskCalendar Task { get; set; }
+        public List<TaskCalendar> Tasks { get; set; }
 
         public string IdUser { get; set; }
 
@@ -15,7 +16,13 @@ namespace Domain.Commands.Calendar.Put
             if (string.IsNullOrEmpty(IdUser))
                 return false;
 
-            ValidationResult = new TaskCalendarValidator().Validate(Task);
+            foreach (var task in Tasks)
+            {
+                ValidationResult = new TaskCalendarValidator().Validate(task);
+                if (!ValidationResult.IsValid)
+                    return false;
+            }
+
             return ValidationResult.IsValid;
         }
     }
