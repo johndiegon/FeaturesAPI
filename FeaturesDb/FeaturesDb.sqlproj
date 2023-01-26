@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Contact.sql" />
+    <None Include="Routine.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Chat.sql" />

@@ -7,10 +7,6 @@ namespace Domain.Validators
     {
         public TaskCalendarValidator()
         {
-            RuleFor(x => x.ClientId)
-            .Null()
-            .WithMessage("ClientId cannot be filled");
-
             RuleFor(x => x.Template)
              .NotNull()
              .WithMessage("Template cannot be null.");
@@ -28,6 +24,10 @@ namespace Domain.Validators
             RuleFor(x => x.DateTime)
              .NotNull()
              .WithMessage("DateTime cannot be null.");
+
+            RuleFor(x => x.Status)
+             .NotNull()
+             .WithMessage("Status cannot be null.");
         }
     }
 }

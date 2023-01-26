@@ -1,36 +1,39 @@
 ﻿using AutoMapper;
 using Domain.Models;
+using Domain.Validators;
 using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Domain.Commands.Calendar.Post
+namespace Domain.Commands.Routine.Put
 {
-    public class PostCalendarHandler : IRequestHandler<PostCalendar, PostCalendarResponse>
+    public class PutRoutineHandler : IRequestHandler<PutRoutine, CommandResponse>
     {
         private readonly IClientRepository _clientRepository;
-        private readonly ICalendarRepository _calendarRepository;
+        private readonly IRoutineRepository _routineRepository;
         private readonly IMapper _mapper;
 
-        public PostCalendarHandler(  IClientRepository clientRepository
-                                     , ICalendarRepository calendarRepository
+        public PutRoutineHandler(IClientRepository clientRepository
+                                     , IRoutineRepository routineRepository
                                      , IMapper mapper
                                      )
         {
             _clientRepository = clientRepository;
-            _calendarRepository = calendarRepository;
+            _routineRepository = routineRepository;
             _mapper = mapper;
         }
 
-        public async Task<PostCalendarResponse> Handle(PostCalendar request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(PutRoutine request, CancellationToken cancellationToken)
         {
             try
             {
-                var response = new PostCalendarResponse();
+                var response = new CommandResponse();
                 if (!request.IsValid())
                 {
                     response = GetResponseErro("The request is invalid.");
@@ -39,22 +42,21 @@ namespace Domain.Commands.Calendar.Post
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-             
-                    foreach( var task in request.Tasks)
+                   
+                    foreach (var routine in request.Routines)
                     {
-                        var entity = _mapper.Map<CalendarEntity>(task);
+                        var entity = _mapper.Map<RoutineEntity>(routine);
                         entity.ClientId = client.Id;
-                        task.Id = _calendarRepository.Create(entity).Id;
+                        _routineRepository.Update(entity);
                     }
-                  
-                    response = new PostCalendarResponse
+
+                    response = new CommandResponse
                     {
                         Data = new Data
                         {
-                            Message = "task was created.",
+                            Message = "task was updated.",
                             Status = Status.Sucessed
                         },
-                        Tasks = request.Tasks,
                     };
 
 
@@ -67,9 +69,9 @@ namespace Domain.Commands.Calendar.Post
             }
         }
 
-        private PostCalendarResponse GetResponseErro(string Message)
+        private CommandResponse GetResponseErro(string Message)
         {
-            return new PostCalendarResponse
+            return new CommandResponse
             {
                 Data = new Data
                 {

@@ -54,9 +54,13 @@ namespace Domain.Commands.List.SendAMessage
                     var template = _messagesDefaultRepository.GetByClientId(client.Id).Where(m => m.Title == request.MessageRequest.Template).FirstOrDefault();
 
                     var paramsList = new List<string>();
-                   
-                    var url = GetParam(request.MessageRequest.Params, "image");
-                    if(string.IsNullOrEmpty(url))
+
+                    var url = string.Empty;
+
+                    if(template.Params.Where( p => p == "image").Any())
+                        url = GetParam(request.MessageRequest.Params, "image");
+
+                    if (template.Params.Where(p => p == "video").Any())
                         url = GetParam(request.MessageRequest.Params, "video");
 
                     #region >> Enviar Mensagem

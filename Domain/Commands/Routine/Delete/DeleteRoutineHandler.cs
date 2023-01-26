@@ -1,36 +1,34 @@
-﻿using AutoMapper;
+﻿using Domain.Commands.Calendar.Delete;
 using Domain.Models;
-using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Domain.Commands.Calendar.Post
+namespace Domain.Commands.Routine.Delete
 {
-    public class PostCalendarHandler : IRequestHandler<PostCalendar, PostCalendarResponse>
+    public class DeleteRoutineHandler : IRequestHandler<DeleteRoutine, CommandResponse>
     {
         private readonly IClientRepository _clientRepository;
-        private readonly ICalendarRepository _calendarRepository;
-        private readonly IMapper _mapper;
+        private readonly IRoutineRepository _routineRepository;
 
-        public PostCalendarHandler(  IClientRepository clientRepository
-                                     , ICalendarRepository calendarRepository
-                                     , IMapper mapper
+        public DeleteRoutineHandler(IClientRepository clientRepository
+                                     , IRoutineRepository routineRepository
                                      )
         {
             _clientRepository = clientRepository;
-            _calendarRepository = calendarRepository;
-            _mapper = mapper;
+            _routineRepository = routineRepository;
         }
 
-        public async Task<PostCalendarResponse> Handle(PostCalendar request, CancellationToken cancellationToken)
+        public async Task<CommandResponse> Handle(DeleteRoutine request, CancellationToken cancellationToken)
         {
             try
             {
-                var response = new PostCalendarResponse();
+                var response = new CommandResponse();
                 if (!request.IsValid())
                 {
                     response = GetResponseErro("The request is invalid.");
@@ -39,24 +37,24 @@ namespace Domain.Commands.Calendar.Post
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-             
-                    foreach( var task in request.Tasks)
+
+                    foreach (var id in request.Ids)
                     {
-                        var entity = _mapper.Map<CalendarEntity>(task);
-                        entity.ClientId = client.Id;
-                        task.Id = _calendarRepository.Create(entity).Id;
+                        var task = _routineRepository.Get(id);
+                        if (task.ClientId == client.Id)
+                        {
+                            _routineRepository.Delete(id);
+                        }
                     }
-                  
-                    response = new PostCalendarResponse
+
+                    response = new CommandResponse
                     {
                         Data = new Data
                         {
-                            Message = "task was created.",
+                            Message = "task removed with succes",
                             Status = Status.Sucessed
-                        },
-                        Tasks = request.Tasks,
+                        }
                     };
-
 
                 }
                 return await Task.FromResult(response);
@@ -67,9 +65,9 @@ namespace Domain.Commands.Calendar.Post
             }
         }
 
-        private PostCalendarResponse GetResponseErro(string Message)
+        private CommandResponse GetResponseErro(string Message)
         {
-            return new PostCalendarResponse
+            return new CommandResponse
             {
                 Data = new Data
                 {

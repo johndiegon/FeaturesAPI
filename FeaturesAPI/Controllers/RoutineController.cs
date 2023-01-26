@@ -18,12 +18,12 @@ namespace FeaturesAPI.Controllers
 
     [ApiController]
     [Route("[controller]")]
-    public class CalendarController : ControllerBase
+    public class RoutineController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public CalendarController(IMapper mapper, IMediator mediator)
+        public RoutineController(IMapper mapper, IMediator mediator)
         {
             _mapper = mapper;
             _mediator = mediator;
@@ -48,8 +48,8 @@ namespace FeaturesAPI.Controllers
             {
                 var claimsIdentity = User.Identity as ClaimsIdentity;
 
-                var post = new PostCalendar() 
-                { 
+                var post = new PostCalendar()
+                {
                     Tasks = tasks,
                     IdUser = "62446177d3524231fee4e1d4" //claimsIdentity.FindFirst(ClaimTypes.Sid).Value
                 };
@@ -89,10 +89,10 @@ namespace FeaturesAPI.Controllers
             try
             {
                 var claimsIdentity = User.Identity as ClaimsIdentity;
-                
-                var post = new PutCalendar() 
-                { 
-                    Tasks = tasks ,
+
+                var post = new PutCalendar()
+                {
+                    Tasks = tasks,
                     IdUser = "62446177d3524231fee4e1d4" //claimsIdentity.FindFirst(ClaimTypes.Sid).Value,
 
                 };
@@ -132,10 +132,10 @@ namespace FeaturesAPI.Controllers
             try
             {
                 var claimsIdentity = User.Identity as ClaimsIdentity;
-                var get = new GetCalendar() 
+                var get = new GetCalendar()
                 {
-                    IdUser = "62446177d3524231fee4e1d4" ,//claimsIdentity.FindFirst(ClaimTypes.Sid).Value,
-                    month  = month,
+                    IdUser = "62446177d3524231fee4e1d4",//claimsIdentity.FindFirst(ClaimTypes.Sid).Value,
+                    month = month,
                     year = year
                 };
 
