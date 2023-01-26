@@ -51,7 +51,7 @@ namespace FeaturesAPI.Controllers
                 var post = new PostCalendar() 
                 { 
                     Tasks = tasks,
-                    IdUser = "62446177d3524231fee4e1d4" //claimsIdentity.FindFirst(ClaimTypes.Sid).Value
+                    IdUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value
                 };
 
                 var response = await _mediator.Send(post);
@@ -93,7 +93,7 @@ namespace FeaturesAPI.Controllers
                 var post = new PutCalendar() 
                 { 
                     Tasks = tasks ,
-                    IdUser = "62446177d3524231fee4e1d4" //claimsIdentity.FindFirst(ClaimTypes.Sid).Value,
+                    IdUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value,
 
                 };
 
@@ -134,7 +134,7 @@ namespace FeaturesAPI.Controllers
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var get = new GetCalendar() 
                 {
-                    IdUser = "62446177d3524231fee4e1d4" ,//claimsIdentity.FindFirst(ClaimTypes.Sid).Value,
+                    IdUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value,
                     month  = month,
                     year = year
                 };
@@ -176,7 +176,7 @@ namespace FeaturesAPI.Controllers
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var delete = new DeleteCalendar()
                 {
-                    IdUser = "62446177d3524231fee4e1d4", //claimsIdentity.FindFirst(ClaimTypes.Sid).Value,
+                    IdUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value,
                     Ids = ids
                 };
 
