@@ -16,12 +16,15 @@ namespace Domain.Validators
              .NotNull()
              .WithMessage("Params cannot be null.");
 
-
-            RuleFor(x => x.Filters)
+            RuleFor(x => x.DateEnd)
              .NotNull()
-             .WithMessage("Params cannot be null.");
+             .WithMessage("DateTime cannot be null.");
 
-            RuleFor(x => x.DateTime)
+            RuleFor(x => x.DateStart)
+             .NotNull()
+             .WithMessage("DateTime cannot be null.");
+
+            RuleFor(x => x.Time)
              .NotNull()
              .WithMessage("DateTime cannot be null.");
 

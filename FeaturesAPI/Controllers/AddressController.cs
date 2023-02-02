@@ -33,7 +33,7 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [HttpGet]
+        [HttpOptions]
         public async Task<ActionResult<GetAddressResponse>> GetAddressByzipCode(string zipCode)
         {
             try

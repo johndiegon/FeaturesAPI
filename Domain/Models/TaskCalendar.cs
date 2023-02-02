@@ -10,14 +10,13 @@ namespace Domain.Models
     public class TaskCalendar : Validate
     {
         public int Id { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime DateStart { get; set; }
+        public DateTime DateEnd { get; set; }
+        public string Time { get; set; }
         public TaskStatus Status { get; set; }
-        public bool Sent { get; set; }
-        public int Count { get; set; }
         public string Template { get; set; }
         public List<Param> Params { get; set; }
-        public List<Param> Filters { get; set; }
-
+  
         public override bool IsValid()
         {
             ValidationResult = new TaskCalendarValidator().Validate(this);

@@ -68,14 +68,12 @@ namespace Domain.Profiles
             CreateMap<ReportFileEntity, ReportFile>();
 
             CreateMap<TaskCalendar, CalendarEntity>()
-                .ForMember(m => m.Params, opt => opt.MapFrom( src => JsonConvert.SerializeObject(src.Params)))
-                .ForMember(m => m.Filters, opt => opt.MapFrom(src => JsonConvert.SerializeObject(src.Filters)));
-
+                .ForMember(m => m.Params, opt => opt.MapFrom(src => JsonConvert.SerializeObject(src.Params)))
+                ;
 
             CreateMap<CalendarEntity, TaskCalendar>()
                 .ForMember(m => m.Params, opt => opt.MapFrom(src => JsonConvert.DeserializeObject(src.Params)))
-                .ForMember(m => m.Filters, opt => opt.MapFrom(src => JsonConvert.DeserializeObject(src.Filters)));
-
+                ;
         }
     }
 }

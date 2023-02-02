@@ -40,39 +40,45 @@ namespace Infrastructure.Data.Repositorys
 
         public async Task<IEnumerable<ContactListEntity>> GetListByClient(string idClient)
         {
-            var sql = @"SELECT c.IdClient
-                             , c.Classification as Name
-                             , c.Unity
-                             , COUNT(*) as Count
-                             , SUM(o.Count) as CountOrders
-                         FROM direct_api.Contact c
-                         LEFT JOIN ( select Count(*) as Count
-                                          , ContactId
-		                		     from direct_api.Order
-                                     group by ContactId
-                                     ) as o on o.ContactId = c.Id
-                        where c.IdClient = @idClient
-                          and c.Classification is not null
-                          and c.Status = 1
-                         GROUP BY c.IDCLIENT 
-                                , c.CLASSIFICATION
+            var sql = @"SELECT * 
+                              , ROW_NUMBER() OVER (order by listContact.CreationDate) AS Id
+                          FROM (
+                         SELECT c.IdClient
+                                , c.Classification as Name
                                 , c.Unity
-                        union
-                        SELECT c.IdClient 
-                             , 'Lista de Clientes' as Name
-                             , c.Unity
-                             , COUNT(*) as Count
-                             , SUM(o.Count) as CountOrders
-                         FROM direct_api.Contact c
-                         LEFT JOIN ( select Count(*) as Count
-                                          , ContactId
-		                		     from direct_api.Order
-                                     group by ContactId
-                                     ) as o on o.ContactId = c.Id
-                        WHERE c.IdClient = @idClient
-                          AND c.Status = 1
-                        GROUP BY c.IDCLIENT 
-                               , c.Unity";
+                                , COUNT(*) as Count
+                                , SUM(o.Count) as CountOrders
+                                , MAX(c.DateInclude) as CreationDate
+                            FROM direct_api.Contact c
+                            LEFT JOIN ( select Count(*) as Count
+                                             , ContactId
+                           		     from direct_api.Order
+                                        group by ContactId
+                                        ) as o on o.ContactId = c.Id
+                           where c.IdClient = @idClient
+                             and c.Classification is not null
+                             and c.Status = 1
+                            GROUP BY c.IDCLIENT 
+                                   , c.CLASSIFICATION
+                                   , c.Unity
+                           union
+                           SELECT c.IdClient 
+                                , 'Lista de Clientes' as Name
+                                , c.Unity
+                                , COUNT(*) as Count
+                                , SUM(o.Count) as CountOrders
+                                , MAX(c.DateInclude) as CreationDate
+                            FROM direct_api.Contact c
+                            LEFT JOIN ( select Count(*) as Count
+                                             , ContactId
+                           		     from direct_api.Order
+                                        group by ContactId
+                                        ) as o on o.ContactId = c.Id
+                           WHERE c.IdClient = @idClient
+                             AND c.Status = 1
+                           GROUP BY c.IDCLIENT 
+                                  , c.Unity
+                                   ) AS listContact";
 
             IEnumerable<ContactListEntity> contactList;
             try
