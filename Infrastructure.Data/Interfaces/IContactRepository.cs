@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Interfaces
 {
-    public interface IContactRepository 
+    public interface IContactRepository
     {
         Task<IEnumerable<ContactEntity>> GetByClient(string idClient);
         Task<IEnumerable<ContactEntity>> GetByPhone(string phone, string idClient);

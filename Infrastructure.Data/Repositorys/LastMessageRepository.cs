@@ -11,7 +11,7 @@ using static Infrastructure.Data.Repositorys.ChatRepository;
 
 namespace Infrastructure.Data.Repositorys
 {
-    public class LastMessageRepository :  ILastMessageRepository
+    public class LastMessageRepository : ILastMessageRepository
     {
         private readonly string _connectString;
 
@@ -44,7 +44,7 @@ namespace Infrastructure.Data.Repositorys
 
                 using (var connection = new MySqlConnection(_connectString))
                 {
-                    chatMessage = await connection.QueryAsync<Chat>(sql, new { idClient = client.Id});
+                    chatMessage = await connection.QueryAsync<Chat>(sql, new { idClient = client.Id });
                 }
 
                 return from chat in chatMessage.ToList()

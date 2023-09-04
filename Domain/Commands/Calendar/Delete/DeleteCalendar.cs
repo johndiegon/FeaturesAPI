@@ -15,7 +15,7 @@ namespace Domain.Commands.Calendar.Delete
         {
             if (Ids.Any())
                 return false;
-            else if(string.IsNullOrEmpty(IdUser)) 
+            else if (string.IsNullOrEmpty(IdUser))
                 return false;
             else
                 return true;

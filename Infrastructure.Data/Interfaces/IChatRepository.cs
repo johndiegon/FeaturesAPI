@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Interfaces
 {
-    public interface IChatRepository 
+    public interface IChatRepository
     {
         Task<IEnumerable<MessageOnChatEntity>> GetByClientId(ClientEntity client, string phone);
         Task Create(MessageOnChatEntity chat, ClientEntity client, ContactEntity contact);

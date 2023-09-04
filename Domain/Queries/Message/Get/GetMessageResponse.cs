@@ -6,6 +6,6 @@ namespace Domain.Queries.Message.Get
     public class GetMessageResponse : CommandResponse
     {
         public List<MessageDefault> Messages { get; set; }
-        public string AnswerDefault { get; set; }   
+        public string AnswerDefault { get; set; }
     }
 }

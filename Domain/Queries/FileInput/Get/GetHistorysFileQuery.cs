@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Domain.Queries.FileInput.Get
 {
-    public  class GetHistorysFileQuery : Validate, IRequest<GetHistorysFileQueryResponse>
+    public class GetHistorysFileQuery : Validate, IRequest<GetHistorysFileQueryResponse>
     {
         public string IdUser { get; set; }
 

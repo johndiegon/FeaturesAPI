@@ -2,7 +2,7 @@
 {
     public enum ContactStatus
     {
-        Active = 0,  
+        Active = 0,
         Inactive = 1
     }
 }

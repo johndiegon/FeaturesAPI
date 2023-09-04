@@ -11,9 +11,9 @@ namespace Domain.Helpers
 
             var listOfWords = message.Split();
 
-            foreach (var word in listOfWords.Where( w => w.Length > 4))
+            foreach (var word in listOfWords.Where(w => w.Length > 4))
             {
-                if(word.Contains("{{") &&
+                if (word.Contains("{{") &&
                    word.Contains("}}")
                    )
                 {

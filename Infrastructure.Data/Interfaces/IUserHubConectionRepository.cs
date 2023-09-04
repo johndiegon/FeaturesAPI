@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Interfaces
 {
-    public interface IUserHubConectionRepository 
+    public interface IUserHubConectionRepository
     {
         Task Create(UserHubConectionEntity entity);
     }

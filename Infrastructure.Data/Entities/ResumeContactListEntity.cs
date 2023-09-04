@@ -16,6 +16,6 @@ namespace Infrastructure.Data.Entities
         public bool FileIsProcessing { get; set; }
 
         public DateTime InputFile { get; set; }
-        public List<ContactListEntity> ContactLists{ get; set; }
+        public List<ContactListEntity> ContactLists { get; set; }
     }
 }

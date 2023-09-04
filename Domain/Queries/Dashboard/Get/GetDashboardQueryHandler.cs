@@ -17,7 +17,7 @@ namespace Domain.Queries.Dashboard.Get
         private readonly IReportAnswerRepository _reportAnswerRepository;
         private readonly IMapper _mapper;
 
-        public GetDashboardQueryHandler( IClientRepository clientRepository
+        public GetDashboardQueryHandler(IClientRepository clientRepository
                                        , IMapper mapper
                                        , IReportSendersRepository reportSendersRepository
                                        , IReportAnswerRepository reportAnswerRepository
@@ -45,22 +45,22 @@ namespace Domain.Queries.Dashboard.Get
                     var senders = _reportSendersRepository.GetByClientId(client.Id).ToList();
                     var answers = _reportAnswerRepository.GetByClientId(client.Id).ToList();
 
-                    var dash = new DataDashboard() 
+                    var dash = new DataDashboard()
                     {
                         CountReceiverAnswer = answers.Count,
-                        CountSendMessage = senders.Select( s => s.Count).Sum(),
-                        CountReceiverAnswerThisMonth = answers.Where( a => a.DateTime.Month == DateTime.Now.Month &&
+                        CountSendMessage = senders.Select(s => s.Count).Sum(),
+                        CountReceiverAnswerThisMonth = answers.Where(a => a.DateTime.Month == DateTime.Now.Month &&
                                                                            a.DateTime.Year == DateTime.Now.Year
                                                                            ).Count(),
                         CountSendMessageThisMonth = senders.Where(a => a.DateTime.Month == DateTime.Now.Month &&
                                                                           a.DateTime.Year == DateTime.Now.Year)
-                                                           .Select( s => s.Count).Sum(),
+                                                           .Select(s => s.Count).Sum(),
                     };
 
-                    if(senders != null && senders.Count() > 0)
+                    if (senders != null && senders.Count() > 0)
                     {
                         var templates = senders.Select(s => s.Template).Distinct().ToList();
-                        
+
                         foreach (var template in templates)
                         {
                             var templateSends = (from send in senders
@@ -132,12 +132,12 @@ namespace Domain.Queries.Dashboard.Get
                             dash.ReportTemplates.Add(reportTemplate);
                         }
                     }
-                  
+
                     response.Data = new Data
                     {
                         Status = Status.Sucessed
                     };
-                    
+
                     response.DataDashboard = dash;
                 }
 

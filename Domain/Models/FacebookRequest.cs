@@ -11,7 +11,7 @@ namespace Domain.Models
     public class Entry
     {
         public string Id { get; set; }
-        public List<Changes> Changes{ get; set; }
+        public List<Changes> Changes { get; set; }
     }
     public class Changes
     {
@@ -37,7 +37,7 @@ namespace Domain.Models
         public string Display_phone_number { get; set; }
         public string Phone_number_id { get; set; }
     }
-    
+
     public class Text
     {
         public string Body { get; set; }
@@ -53,8 +53,8 @@ namespace Domain.Models
     public class Conversation
     {
         public string Id { get; set; }
-        public string Expiration_timestamp { get; set; }    
-        public Origin Origin { get; set; }  
+        public string Expiration_timestamp { get; set; }
+        public Origin Origin { get; set; }
     }
     public class Origin
     {
@@ -112,7 +112,7 @@ namespace Domain.Models
     public class Location
     {
         public string Latitude { get; set; }
-        public string Longitude { get; set; }   
+        public string Longitude { get; set; }
         public string Name { get; set; }
         public string Adrress { get; set; }
     }

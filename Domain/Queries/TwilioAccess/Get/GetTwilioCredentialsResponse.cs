@@ -4,7 +4,7 @@ namespace Domain.Queries.TwilioAccess.Get
 {
     public class GetTwilioCredentialsResponse : CommandResponse
     {
-        public Credentials Credentials{ get; set; }  
+        public Credentials Credentials { get; set; }
 
     }
 }

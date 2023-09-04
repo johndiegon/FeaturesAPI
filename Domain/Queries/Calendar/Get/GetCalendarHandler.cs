@@ -49,7 +49,7 @@ namespace Domain.Queries.Calendar.Get
 
                     var result = _calendarRepository.Get(client.Id, request.month, request.year);
 
-                    var tasks = _mapper.Map<List<TaskCalendar>>(result); 
+                    var tasks = _mapper.Map<List<TaskCalendar>>(result);
 
                     response = new GetCalendarResponse
                     {
@@ -58,7 +58,7 @@ namespace Domain.Queries.Calendar.Get
                             Message = "task was created.",
                             Status = Status.Sucessed
                         },
-                        Tasks =  tasks
+                        Tasks = tasks
                     };
 
 

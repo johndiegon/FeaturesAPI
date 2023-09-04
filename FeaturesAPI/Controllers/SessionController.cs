@@ -2,7 +2,6 @@
 using Domain.Commands.SessionWhats.Post;
 using Domain.Models;
 using Domain.Queries.TwilioAccess.Get;
-using FeaturesAPI.Atributes;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -47,7 +46,7 @@ namespace FeaturesAPI.Controllers
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
 
-                session.IdUser = idUser ;
+                session.IdUser = idUser;
                 var response = await _mediator.Send(session);
 
                 if (response.Data.Status == Status.Sucessed)
@@ -85,7 +84,7 @@ namespace FeaturesAPI.Controllers
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
 
-                var getSession = new GetTwilioCredentials() {  IdUser = idUser , PhoneFrom = phone};
+                var getSession = new GetTwilioCredentials() { IdUser = idUser, PhoneFrom = phone };
                 var response = await _mediator.Send(getSession);
 
                 if (response.Data.Status == Status.Sucessed)

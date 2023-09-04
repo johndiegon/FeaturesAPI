@@ -43,7 +43,7 @@ namespace FeaturesAPI.Controllers
         {
             try
             {
-                var client = new PostClientCommand() {  Client = people };
+                var client = new PostClientCommand() { Client = people };
                 client.Client.User.Login = client.Client.Email;
 
                 var response = await _mediator.Send(client);

@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using Domain.Models;
-using Domain.Models.Enums;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -43,10 +40,10 @@ namespace Domain.Commands.Contact.Disable
 
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
                     var contact = _contactRepository.GetByPhone(request.Phone, client.Id).Result.FirstOrDefault();
-                  
+
                     if (contact != null)
                     {
-                       await _contactRepository.UpdateStatus(contact.Id);
+                        await _contactRepository.UpdateStatus(contact.Id);
                     }
 
                     response = new CommandResponse

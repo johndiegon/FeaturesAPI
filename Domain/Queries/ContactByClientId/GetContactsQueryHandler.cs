@@ -1,11 +1,7 @@
-﻿using AutoMapper;
-using Domain.Helpers;
-using Domain.Models;
-using Infrastructure.Data.Entities;
+﻿using Domain.Models;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;

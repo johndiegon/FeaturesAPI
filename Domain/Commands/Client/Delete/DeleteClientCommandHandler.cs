@@ -12,7 +12,7 @@ namespace Domain.Commands.Client.Delete
     public class DeleteClientCommandHandler : IRequestHandler<DeleteClientCommand, CommandResponse>
     {
         private readonly IClientRepository _clientRepository;
-   
+
         public DeleteClientCommandHandler(IClientRepository clientRepository)
         {
             _clientRepository = clientRepository;
@@ -30,12 +30,12 @@ namespace Domain.Commands.Client.Delete
                 }
                 else
                 {
-                    var client =  _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
+                    var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
                     client.Status = StatusEntity.Inative;
 
                     _clientRepository.Update(client);
 
-                     response = new CommandResponse
+                    response = new CommandResponse
                     {
                         Data = new Data
                         {

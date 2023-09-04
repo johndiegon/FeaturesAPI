@@ -15,10 +15,10 @@ namespace Domain.Commands.Calendar.Post
             if (string.IsNullOrEmpty(IdUser))
                 return false;
 
-            foreach(var task in Tasks)
+            foreach (var task in Tasks)
             {
                 ValidationResult = new TaskCalendarValidator().Validate(task);
-                if(!ValidationResult.IsValid)
+                if (!ValidationResult.IsValid)
                     return false;
             }
 

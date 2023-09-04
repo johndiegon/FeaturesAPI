@@ -16,13 +16,13 @@ namespace FeaturesAPI.Infrastructure.Models
         public string ResumeListCollectionName { get; set; }
         public string DataDashboardCollectionName { get; set; }
         public string ChatCollectionName { get; set; }
-        public string SessionWhatsAppCollectionName { get; set; }   
+        public string SessionWhatsAppCollectionName { get; set; }
         public string LastMessageCollectionName { get; set; }
         public string MessagesDefaultColletionName { get; set; }
         public string TwilioAccessColletionName { get; set; }
         public string TwilioRequestCollectionName { get; set; }
         public string FacebookMessageCollectionName { get; set; }
-        public string UserHubConnetioCollectionName { get; set; }   
+        public string UserHubConnetioCollectionName { get; set; }
         public string ReportMessageCollectionName { get; set; }
         public string ConnectionStringsMysql { get; set; }
     }

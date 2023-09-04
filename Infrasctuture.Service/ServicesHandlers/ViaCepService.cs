@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Infrasctuture.Service.ServicesHandlers
 {
-    public class ViaCepService :  IViaCepService
+    public class ViaCepService : IViaCepService
     {
         private readonly IHttpClientFactory _clientFactory;
         private readonly IEndPoints _settings;
         private readonly ILogger<ViaCepService> _logger;
 
-        public ViaCepService(IHttpClientFactory clientFactory, IEndPoints settings , ILogger<ViaCepService> logger)
+        public ViaCepService(IHttpClientFactory clientFactory, IEndPoints settings, ILogger<ViaCepService> logger)
         {
             _clientFactory = clientFactory;
             _settings = settings;
@@ -33,7 +33,7 @@ namespace Infrasctuture.Service.ServicesHandlers
                 var response = await client.SendAsync(request);
                 return JsonConvert.DeserializeObject<AdressResponse>(response.Content.ReadAsStringAsync().Result);
             }
-            catch( Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception($"Não foi possível consultar o cep no servico ViaCep: {ex.Message}");
             }

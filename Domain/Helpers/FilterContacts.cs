@@ -1,5 +1,4 @@
-﻿using Domain.Models;
-using Infrastructure.Data.Entities;
+﻿using Infrastructure.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +26,7 @@ namespace Domain.Helpers
             var inputParamCupon = GetParam(paramaters, "inputParamCupon");
             var inputNameProduct = GetParam(paramaters, "inputNameProduct");
             var inputData = GetParam(paramaters, "inputData");
-            
+
             return contacts;
         }
 

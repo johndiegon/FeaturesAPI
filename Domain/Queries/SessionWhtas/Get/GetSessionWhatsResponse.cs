@@ -5,7 +5,7 @@ namespace Domain.Queries.SessionWhtas.Get
 {
     public class GetSessionWhatsResponse : CommandResponse
     {
-        public SessionWhatsApp SessionWhtas { get; set; }  
+        public SessionWhatsApp SessionWhtas { get; set; }
 
     }
 }

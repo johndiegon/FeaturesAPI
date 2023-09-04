@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Commands.Facebook.Post;
 using Domain.Models;
-using FeaturesAPI.Atributes;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

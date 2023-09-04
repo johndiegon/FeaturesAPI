@@ -28,7 +28,7 @@ namespace Domain.Commands.User.ChangePassword
                 if (!request.IsEqual())
                 {
                     GetResponseErro("As senhas não podem as mesmas");
-                }            
+                }
 
                 // Recupera o usuário
                 var user = _userRepository.GetByLogin(request.Email);

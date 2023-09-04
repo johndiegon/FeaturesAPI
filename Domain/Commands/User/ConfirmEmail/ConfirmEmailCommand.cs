@@ -1,5 +1,4 @@
 ﻿using Domain.Models;
-using FeaturesAPI.Domain.Models;
 using MediatR;
 
 namespace Domain.Commands.User.ConfirmEmail

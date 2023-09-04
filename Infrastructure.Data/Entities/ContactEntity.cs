@@ -12,15 +12,18 @@ namespace Infrastructure.Data.Entities
         public DateTime DateInclude { get; set; }
         public int DaysLastSale { get; set; }
         public DateTime DateLastSale { get; set; }
-     
+
         public string Unity { get; set; }
         public ContactStatusEntity Status { get; set; }
         public string Classification { get; set; }
 
-        public int DaysLastSaleCount { get
+        public int DaysLastSaleCount
+        {
+            get
             {
                 return (this.DateLastSale - DateTime.Now).Days;
-            } }
+            }
+        }
 
     }
 

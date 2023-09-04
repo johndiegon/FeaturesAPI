@@ -46,9 +46,9 @@ namespace FeaturesAPI.Controllers
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
 
-                var command = new PostTwilioAccess 
+                var command = new PostTwilioAccess
                 {
-                    Credentials = credentials ,
+                    Credentials = credentials,
                     IdUser = idUser
                 };
 
@@ -168,7 +168,7 @@ namespace FeaturesAPI.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ApiKey]
         [HttpGet("{phone}/{idClient}")]
-        public async Task<ActionResult<CommandResponse>> GetCredentials([FromRoute]string phone, [FromRoute] string idClient)
+        public async Task<ActionResult<CommandResponse>> GetCredentials([FromRoute] string phone, [FromRoute] string idClient)
         {
             try
             {

@@ -29,7 +29,7 @@ namespace Infrastructure.Data.Entities
     }
     public class DateOrder
     {
-        public int Days { get; set; }   
+        public int Days { get; set; }
         public DateTime OrderDate { get; set; }
         public int Count { get; set; }
         public string Unity { get; set; }

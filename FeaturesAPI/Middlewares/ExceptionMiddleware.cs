@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace FeaturesAPI.Middlewares
 {
@@ -53,7 +52,7 @@ namespace FeaturesAPI.Middlewares
                     Status = Status.Error,
                 }
             };
-            response.Notification.Add(new Notification { Exception = exception.Message, Message = "Internal error"});
+            response.Notification.Add(new Notification { Exception = exception.Message, Message = "Internal error" });
             return context.Response.WriteAsync(response.ToString());
         }
     }

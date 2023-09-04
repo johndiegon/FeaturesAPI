@@ -19,7 +19,7 @@ namespace FeaturesAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MessageController: ControllerBase
+    public class MessageController : ControllerBase
     {
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
@@ -50,7 +50,7 @@ namespace FeaturesAPI.Controllers
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
 
-                var messageToList = new MessageToListCommand { MessageRequest = message, IdUser = idUser};
+                var messageToList = new MessageToListCommand { MessageRequest = message, IdUser = idUser };
 
                 var response = await _mediator.Send(messageToList);
 
@@ -89,7 +89,7 @@ namespace FeaturesAPI.Controllers
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
 
-                var messageToList = new GetContactsQuery{ MessageRequest = message, IdUser = idUser };
+                var messageToList = new GetContactsQuery { MessageRequest = message, IdUser = idUser };
 
                 var response = await _mediator.Send(messageToList);
 
@@ -107,7 +107,7 @@ namespace FeaturesAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
+
 
         /// <summary>
         ///     Action to create a default message.
@@ -146,7 +146,7 @@ namespace FeaturesAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-     
+
         /// <summary>
         ///     Action to update a default message.
         /// </summary>
@@ -166,7 +166,7 @@ namespace FeaturesAPI.Controllers
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
 
-                message.IdUser = idUser; 
+                message.IdUser = idUser;
 
                 var response = await _mediator.Send(message);
 
@@ -284,7 +284,7 @@ namespace FeaturesAPI.Controllers
         {
             try
             {
-               
+
                 var deleteMessage = new GetMessageQuery
                 {
                     IdClient = idClient

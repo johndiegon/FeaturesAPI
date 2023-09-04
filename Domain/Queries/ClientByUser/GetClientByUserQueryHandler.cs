@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Queries.ClientByUser
 {
-    public class GetClientByUserQueryHandler :  IRequestHandler<GetClientByUserQuery, GetClientByUserQueryResponse>
+    public class GetClientByUserQueryHandler : IRequestHandler<GetClientByUserQuery, GetClientByUserQueryResponse>
     {
         private readonly IClientRepository _clientRepository;
         private readonly IMapper _mapper;

@@ -11,11 +11,12 @@ namespace Domain.Commands.Message.Delete
 
         public override bool IsValid()
         {
-            if (string.IsNullOrEmpty(IdUser) || 
+            if (string.IsNullOrEmpty(IdUser) ||
                 string.IsNullOrEmpty(IdMessage))
             {
                 return false;
-            }else
+            }
+            else
             {
                 return true;
             }

@@ -21,6 +21,6 @@ namespace Domain.Validators.Contact
             return contact.IsValid();
         }
 
-      
+
     }
 }

@@ -22,7 +22,7 @@ namespace FeaturesWPP.API.Controllers
             _mapper = mapper;
             _mediator = mediator;
         }
-    
+
         /// <summary>
         ///     Action to update a contact.
         /// </summary>
@@ -41,10 +41,10 @@ namespace FeaturesWPP.API.Controllers
             {
                 var claimsIdentity = User.Identity as ClaimsIdentity;
                 var idUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value;
-                
+
                 var command = new GetResumeListCommand();
-                command.IdUser= idUser;
-                
+                command.IdUser = idUser;
+
                 var response = await _mediator.Send(command);
 
                 if (response.Data.Status == Status.Sucessed)

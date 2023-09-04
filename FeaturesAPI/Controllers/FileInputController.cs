@@ -25,7 +25,7 @@ namespace API.Controllers
             _mapper = mapper;
             _mediator = mediator;
         }
-     
+
         /// <summary>
         ///     Action to input a new "file" in the process.
         /// </summary>
@@ -39,7 +39,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [HttpPost]
-        public async Task<ActionResult<PostFileCommandResponse>> Input(IFormFile file )
+        public async Task<ActionResult<PostFileCommandResponse>> Input(IFormFile file)
         {
             try
             {

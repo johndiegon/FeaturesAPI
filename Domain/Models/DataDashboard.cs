@@ -18,7 +18,7 @@ namespace Domain.Models
 
     public class ReportTemplate
     {
-        public string Template { get; set; }    
+        public string Template { get; set; }
         public int CountSendMessage { get; set; }
         public int CountReceiverAnswer { get; set; }
         public int CountSendMessageThisMonth { get; set; }
@@ -36,7 +36,7 @@ namespace Domain.Models
         public int Count { get; set; }
         public string Month { get; set; }
         public string Year { get; set; }
-    } 
+    }
     public class Senders
     {
         public string Template { get; set; }

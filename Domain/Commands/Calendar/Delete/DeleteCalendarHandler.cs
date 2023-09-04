@@ -13,8 +13,8 @@ namespace Domain.Commands.Calendar.Delete
     {
         private readonly IClientRepository _clientRepository;
         private readonly ICalendarRepository _calendarRepository;
-      
-        public DeleteCalendarHandler( IClientRepository clientRepository
+
+        public DeleteCalendarHandler(IClientRepository clientRepository
                                      , ICalendarRepository calendarRepository
                                      )
         {
@@ -36,7 +36,7 @@ namespace Domain.Commands.Calendar.Delete
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
 
-                    foreach(var id in request.Ids)
+                    foreach (var id in request.Ids)
                     {
                         var task = _calendarRepository.Get(id);
                         if (task.ClientId == client.Id)

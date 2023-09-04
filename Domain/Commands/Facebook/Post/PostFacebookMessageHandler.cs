@@ -1,7 +1,6 @@
 ﻿using Domain.Models;
 using Infrasctuture.Service.Interfaces;
 using MediatR;
-using MongoDB.Bson.IO;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,14 +13,14 @@ namespace Domain.Commands.Facebook.Post
 
         public PostFacebookMessageHandler(ITopicServiceBuss topicService)
         {
-            _topicService = topicService;   
+            _topicService = topicService;
         }
 
         public async Task<CommandResponse> Handle(PostFacebookMessageCommand request, CancellationToken cancellationToken)
         {
             var response = new CommandResponse();
-            try 
-            {             
+            try
+            {
                 await _topicService.SendMessage(request, "messagesFromFacebook");
 
                 response.Data = new Data

@@ -14,7 +14,7 @@ namespace Domain.Queries.Chat.Get
     {
         private readonly IClientRepository _clientRepository;
         private readonly IChatRepository _chatRepository;
-         private readonly IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public GetChatMessageHandler(IClientRepository clientRepository
                                      , IChatRepository chatRepository
@@ -31,7 +31,7 @@ namespace Domain.Queries.Chat.Get
             try
             {
                 var response = new GetChatMessageResponse();
-               
+
                 if (!request.IsValid())
                 {
                     response = GetResponseErro("The request is invalid.");
@@ -45,7 +45,7 @@ namespace Domain.Queries.Chat.Get
 
                     response = new GetChatMessageResponse
                     {
-                        MessagesOnChat = messageOnChat == null ? null 
+                        MessagesOnChat = messageOnChat == null ? null
                                               : _mapper.Map<List<MessageOnChat>>(messageOnChat),
                         Data = new Data
                         {

@@ -68,7 +68,7 @@ namespace Infrastructure.Data.Repositorys
             {
                 using (var connection = new MySqlConnection(_connectString))
                 {
-                    connection.ExecuteScalar(sql, new { id = id});
+                    connection.ExecuteScalar(sql, new { id = id });
                 }
             }
             catch
@@ -138,7 +138,7 @@ namespace Infrastructure.Data.Repositorys
             }
         }
 
-        public List<CalendarEntity> Get(string idClient, int month , int year )
+        public List<CalendarEntity> Get(string idClient, int month, int year)
         {
             var sql = @"SELECT `Calendar`.`id`,
                         `Calendar`.`clientId`,
@@ -160,7 +160,7 @@ namespace Infrastructure.Data.Repositorys
                 var calendar = new List<CalendarEntity>();
                 using (var connection = new MySqlConnection(_connectString))
                 {
-                    calendar =  connection.Query<CalendarEntity>(sql, new 
+                    calendar = connection.Query<CalendarEntity>(sql, new
                     {
                         clientId = idClient,
                         month = month,

@@ -47,14 +47,14 @@ namespace Infrastructure.Data.Repositorys
                 }
 
                 var response = from chat in chatMessage.ToList()
-                       select new MessageOnChatEntity
-                       {
-                           DateTime = chat.DateTime,
-                           Message = chat.Message,
-                           PhoneFrom = chat.Sender == Sender.Contact ? phone : client.Phone.FirstOrDefault(),
-                           PhoneTo = chat.Sender != Sender.Contact ? phone : client.Phone.FirstOrDefault(),
-                           WasVisible = true,
-                       };
+                               select new MessageOnChatEntity
+                               {
+                                   DateTime = chat.DateTime,
+                                   Message = chat.Message,
+                                   PhoneFrom = chat.Sender == Sender.Contact ? phone : client.Phone.FirstOrDefault(),
+                                   PhoneTo = chat.Sender != Sender.Contact ? phone : client.Phone.FirstOrDefault(),
+                                   WasVisible = true,
+                               };
 
                 return response;
             }

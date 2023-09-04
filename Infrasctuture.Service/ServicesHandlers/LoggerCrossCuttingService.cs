@@ -9,15 +9,16 @@ namespace Infrasctuture.Service.ServicesHandlers
     public class LoggerCrossCuttingService : ILoggerCrossCutting
     {
 
-     
+
         public LoggerCrossCuttingService()
-        { 
+        {
         }
 
 
         public void SendErrorAsync(Exception exception, string scope)
         {
-            SentrySdk.CaptureException(exception, _scope => {
+            SentrySdk.CaptureException(exception, _scope =>
+            {
                 _scope.SetTag("scope", scope);
                 _scope.Environment = "Prod";
             });

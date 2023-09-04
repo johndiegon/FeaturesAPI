@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Infrasctuture.Service.ServicesHandlers
+﻿namespace Infrasctuture.Service.ServicesHandlers
 {
     public class ConfirmSendAutomaticMessage
     {

@@ -15,7 +15,7 @@ namespace Domain.Models
         public string IdClient { get; set; }
         public DateTime DateInclude { get; set; }
         public ContactStatus Status { get; set; }
-        public IEnumerable<Order> Orders {get;set;}
+        public IEnumerable<Order> Orders { get; set; }
         public int DaysLastSale { get; set; }
         public int MinDayToSendMessage { get; set; }
         public DateTime DateLastSale { get; set; }

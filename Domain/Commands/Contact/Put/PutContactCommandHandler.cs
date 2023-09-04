@@ -35,7 +35,7 @@ namespace Domain.Commands.Contact.Put
                 }
                 else
                 {
-                   
+
                     var contactsToInsert = _mapper.Map<IEnumerable<ContactEntity>>(request.Contacts);
 
                     _contactRepository.UpdateMany(contactsToInsert);

@@ -17,5 +17,5 @@ namespace FeaturesAPI.Domain.Models
             return ValidationResult.IsValid;
         }
     }
-  
+
 }

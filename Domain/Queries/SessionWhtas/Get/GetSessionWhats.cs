@@ -10,10 +10,10 @@ namespace Domain.Queries.SessionWhtas.Get
         public string IdClient { get; set; }
         public override bool IsValid()
         {
-            if(string.IsNullOrEmpty(IdClient) || string.IsNullOrEmpty(IdUser))
+            if (string.IsNullOrEmpty(IdClient) || string.IsNullOrEmpty(IdUser))
                 return false;
 
-            if(string.IsNullOrEmpty(Phone))
+            if (string.IsNullOrEmpty(Phone))
                 return false;
             else
                 return true;

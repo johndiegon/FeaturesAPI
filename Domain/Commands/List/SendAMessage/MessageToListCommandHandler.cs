@@ -25,8 +25,8 @@ namespace Domain.Commands.List.SendAMessage
                                            IContactRepository contactRepository,
                                            IStorage storage,
                                            IMessagesDefaultRepository messagesDefaultRepository)
-            
-                                           
+
+
         {
             _contactRepository = contactRepository;
             _topicService = topicService;
@@ -41,7 +41,7 @@ namespace Domain.Commands.List.SendAMessage
             var response = new CommandResponse();
             try
             {
-              
+
                 if (!request.IsValid())
                 {
                     SetResponseErro(response, "The request is invalid.");
@@ -57,7 +57,7 @@ namespace Domain.Commands.List.SendAMessage
 
                     var url = string.Empty;
 
-                    if(template.Params.Where( p => p == "image").Any())
+                    if (template.Params.Where(p => p == "image").Any())
                         url = GetParam(request.MessageRequest.Params, "image");
 
                     if (template.Params.Where(p => p == "video").Any())
@@ -72,7 +72,7 @@ namespace Domain.Commands.List.SendAMessage
                             Template = request.MessageRequest.Template,
                             IdClient = client.Id,
                             Phone = client.Phone.FirstOrDefault(),
-                            Params = template.Params, 
+                            Params = template.Params,
                             Name = contact.Name,
                             PhoneTo = contact.Phone,
                             UrlMedia = url
@@ -83,7 +83,7 @@ namespace Domain.Commands.List.SendAMessage
 
                     #endregion
 
-                    response.Data = new Data {  Status = Status.Sucessed };
+                    response.Data = new Data { Status = Status.Sucessed };
                 }
                 return response;
             }
@@ -102,7 +102,7 @@ namespace Domain.Commands.List.SendAMessage
                 return search[0] == null ? null : search[0].ToString();
             return null;
         }
-        private void SetResponseErro( CommandResponse response , string message)
+        private void SetResponseErro(CommandResponse response, string message)
         {
             response.Data.Status = Status.Error;
             response.Data.Message = message;

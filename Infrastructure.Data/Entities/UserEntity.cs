@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace FeaturesAPI.Domain.Models
 {
-    public class UserEntity 
+    public class UserEntity
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -13,5 +13,5 @@ namespace FeaturesAPI.Domain.Models
         public bool IsConfirmedEmail { get; set; }
         public string Role { get; set; }
     }
-  
+
 }

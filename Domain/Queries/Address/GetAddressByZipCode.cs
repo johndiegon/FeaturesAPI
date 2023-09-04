@@ -8,7 +8,7 @@ namespace Domain.Queries.Address
     {
         public string ZipCode { get; set; }
         public override bool IsValid()
-        { 
+        {
             return BeAValidZipCode(ZipCode);
         }
 

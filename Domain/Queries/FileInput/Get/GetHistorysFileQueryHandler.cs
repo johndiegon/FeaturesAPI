@@ -20,11 +20,11 @@ namespace Domain.Queries.FileInput.Get
                                            IClientRepository clientRepository,
                                            IMapper mapper
                                             )
-                                          
+
         {
             _repository = repository;
-            _clientRepository = clientRepository;  
-            _mapper = mapper;   
+            _clientRepository = clientRepository;
+            _mapper = mapper;
 
         }
         public async Task<GetHistorysFileQueryResponse> Handle(GetHistorysFileQuery request, CancellationToken cancellationToken)

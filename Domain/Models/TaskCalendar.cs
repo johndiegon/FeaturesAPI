@@ -16,7 +16,7 @@ namespace Domain.Models
         public TaskStatus Status { get; set; }
         public string Template { get; set; }
         public List<Param> Params { get; set; }
-  
+
         public override bool IsValid()
         {
             ValidationResult = new TaskCalendarValidator().Validate(this);

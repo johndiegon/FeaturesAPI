@@ -14,7 +14,7 @@ namespace FeaturesAPI.Infrastructure.Data.Entities
         public IEnumerable<Item> Item { get; set; }
 
     }
-    public class Item 
+    public class Item
     {
         public decimal Price { get; set; }
         public decimal Count { get; set; }

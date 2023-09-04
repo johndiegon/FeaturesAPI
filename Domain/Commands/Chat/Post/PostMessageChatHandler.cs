@@ -19,8 +19,8 @@ namespace Domain.Commands.Chat.Post
         private readonly IContactRepository _contactRepository;
         private readonly ITopicServiceBuss _topicService;
         private readonly IFacebookMessageRepository _facebookMessageRepository;
-        
-        public PostMessageChatHandler( IClientRepository clientRepository
+
+        public PostMessageChatHandler(IClientRepository clientRepository
                                      , IContactRepository contactRepository
                                      , IChatRepository chatRepository
                                      , ITopicServiceBuss topicService
@@ -52,7 +52,7 @@ namespace Domain.Commands.Chat.Post
 
                 ClientEntity client = null;
 
-                if(string.IsNullOrEmpty(request.IdClient))
+                if (string.IsNullOrEmpty(request.IdClient))
                     client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
                 else
                     client = _clientRepository.Get(request.IdClient);
@@ -74,7 +74,7 @@ namespace Domain.Commands.Chat.Post
                     PhoneFrom = request.Message.PhoneFrom,
                     PhoneTo = request.Message.PhoneTo,
                 }, client, contact);
-           
+
 
                 if (phoneClient == request.Message.PhoneFrom)
                 {
@@ -85,10 +85,11 @@ namespace Domain.Commands.Chat.Post
 
                         await _topicService.SendMessage(message, "sendMessage");
                     }
-                } else
+                }
+                else
                 {
                     var messageToAnswer = new
-                    {   
+                    {
                         IdClient = client.Id,
                         PhoneTo = phoneClient,
                         PhoneFrom = phoneContact,

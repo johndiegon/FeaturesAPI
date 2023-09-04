@@ -48,8 +48,8 @@ namespace FeaturesAPI.Controllers
             {
                 var claimsIdentity = User.Identity as ClaimsIdentity;
 
-                var post = new PostCalendar() 
-                { 
+                var post = new PostCalendar()
+                {
                     Tasks = tasks,
                     IdUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value
                 };
@@ -89,10 +89,10 @@ namespace FeaturesAPI.Controllers
             try
             {
                 var claimsIdentity = User.Identity as ClaimsIdentity;
-                
-                var post = new PutCalendar() 
-                { 
-                    Tasks = tasks ,
+
+                var post = new PutCalendar()
+                {
+                    Tasks = tasks,
                     IdUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value,
 
                 };
@@ -132,10 +132,10 @@ namespace FeaturesAPI.Controllers
             try
             {
                 var claimsIdentity = User.Identity as ClaimsIdentity;
-                var get = new GetCalendar() 
+                var get = new GetCalendar()
                 {
                     IdUser = claimsIdentity.FindFirst(ClaimTypes.Sid).Value,
-                    month  = month,
+                    month = month,
                     year = year
                 };
 

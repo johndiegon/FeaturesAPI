@@ -1,5 +1,4 @@
 ﻿using Amazon.S3;
-using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using Infrasctuture.Service.Interfaces;
 using Infrasctuture.Service.Interfaces.settings;
@@ -17,9 +16,9 @@ namespace Infrasctuture.Service.ServicesHandlers
         public OrderStorage(IBlobSettings blobSettings)
         {
             _blobSettings = blobSettings;
-  
+
         }
-     
+
         public async Task<string> UploadFile(IFormFile file)
         {
             try
@@ -47,7 +46,8 @@ namespace Infrasctuture.Service.ServicesHandlers
                     }
                 }
                 return await Task.FromResult(containerName);
-            } catch( Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -57,7 +57,7 @@ namespace Infrasctuture.Service.ServicesHandlers
         {
             try
             {
-                string containerName = string.Concat(clientId, Guid.NewGuid().ToString() , file.FileName);
+                string containerName = string.Concat(clientId, Guid.NewGuid().ToString(), file.FileName);
 
                 using (var client = new AmazonS3Client(_blobSettings.IDAccessKey, _blobSettings.AccessKey, Amazon.RegionEndpoint.SAEast1))
                 {

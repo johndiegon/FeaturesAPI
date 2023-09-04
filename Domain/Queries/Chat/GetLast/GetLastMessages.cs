@@ -1,5 +1,4 @@
 ﻿using Domain.Validators;
-using Domain.Queries.Chat.GetLast;
 using MediatR;
 
 namespace Domain.Queries.Chat.GetLast
@@ -9,7 +8,7 @@ namespace Domain.Queries.Chat.GetLast
         public string IdUser { get; set; }
         public override bool IsValid()
         {
-            if(string.IsNullOrEmpty(IdUser))
+            if (string.IsNullOrEmpty(IdUser))
                 return false;
             else
                 return true;

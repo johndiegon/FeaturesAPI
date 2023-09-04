@@ -4,6 +4,6 @@ namespace Domain.Commands.File.Post
 {
     public class PostFileCommandResponse : CommandResponse
     {
-        public string Url { get; set; } 
+        public string Url { get; set; }
     }
 }

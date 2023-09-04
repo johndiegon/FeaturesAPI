@@ -1,8 +1,5 @@
-﻿using AutoMapper;
-using Domain.Commands.Post.TwiilioAccess;
-using Domain.Commands.Put.TwiilioAccess;
+﻿using Domain.Commands.Put.TwiilioAccess;
 using Domain.Models;
-using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
@@ -17,7 +14,7 @@ namespace Domain.Commands.Put.TwilioAccess
         private readonly ITwillioAccessRepository _twillioAccessRepository;
         private readonly IClientRepository _clientRepository;
 
-        public PutTwilioAccessHandler( ITwillioAccessRepository twillioAccess
+        public PutTwilioAccessHandler(ITwillioAccessRepository twillioAccess
                                       , IClientRepository clientRepository
                                       )
         {
@@ -39,10 +36,10 @@ namespace Domain.Commands.Put.TwilioAccess
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
                     var twillioAccess = _twillioAccessRepository.GetByClientId(client.Id)
-                                                                .Where( c => c.PhoneFrom == request.Credentials.PhoneFrom)
+                                                                .Where(c => c.PhoneFrom == request.Credentials.PhoneFrom)
                                                                 .FirstOrDefault();
 
-                    if(twillioAccess != null)
+                    if (twillioAccess != null)
                     {
                         twillioAccess.AuthToken = request.Credentials.AuthToken;
                         twillioAccess.AccountSid = request.Credentials.AccountSid;

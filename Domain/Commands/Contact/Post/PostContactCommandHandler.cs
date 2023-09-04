@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Models;
-using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,7 +12,7 @@ namespace Domain.Commands.Contact.Post
     {
         private readonly IContactRepository _contactRepository;
         private readonly IMapper _mapper;
-        
+
         public PostContactCommandHandler(IContactRepository contactRepository
                                      , IMapper mapper
                                      )

@@ -1,5 +1,5 @@
 ﻿namespace FeaturesAPI.Infrastructure.Models
-{ 
+{
     public class AddressEntity
     {
         public string Address { get; set; }

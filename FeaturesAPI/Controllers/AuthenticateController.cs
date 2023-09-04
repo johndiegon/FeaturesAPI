@@ -40,7 +40,7 @@ namespace API.Controllers
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
         [Route("login")]
-        public async Task<ActionResult<AuthenticateCommandResponse>> Authenticate([FromBody] UserModel user )
+        public async Task<ActionResult<AuthenticateCommandResponse>> Authenticate([FromBody] UserModel user)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace API.Controllers
                 var email = claimsIdentity.FindFirst(ClaimTypes.Email).Value;
 
                 changePassword.Email = email;
-                
+
                 var response = await _mediator.Send(changePassword);
 
                 if (response.Data.Status == Status.Sucessed)

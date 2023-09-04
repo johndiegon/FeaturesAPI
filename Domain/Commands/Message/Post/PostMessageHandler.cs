@@ -5,9 +5,7 @@ using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -46,7 +44,7 @@ namespace Domain.Commands.Message.Post
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
- 
+
                     var messageEntity = new MessagesDefaultEntity()
                     {
                         IdClient = client.Id,
@@ -57,7 +55,7 @@ namespace Domain.Commands.Message.Post
                         Params = Params.Get(request.Message)
                     };
 
-                    var message =  _messageRepository.Create(messageEntity);
+                    var message = _messageRepository.Create(messageEntity);
 
                     response.Data = new Data
                     {

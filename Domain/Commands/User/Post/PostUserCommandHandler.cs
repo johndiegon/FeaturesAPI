@@ -1,14 +1,13 @@
-﻿using MediatR;
-using FeaturesAPI.Domain.Models;
-using System.Threading.Tasks;
-using System.Threading;
-using Infrastructure.Data.Interfaces;
-using AutoMapper;
-using System;
+﻿using AutoMapper;
 using Domain.Models;
-using Newtonsoft.Json;
+using FeaturesAPI.Domain.Models;
 using Infrasctuture.Service.Interfaces;
 using Infrastructure.Application.Helpers;
+using Infrastructure.Data.Interfaces;
+using MediatR;
+using Newtonsoft.Json;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Domain.Commands.User.Post
 {
@@ -23,7 +22,7 @@ namespace Domain.Commands.User.Post
                                        IMapper mapper,
                                        IMediator mediator,
                                        ITopicServiceBuss topicService
-                                     ) 
+                                     )
         {
             _userRepository = userRepository;
             _mapper = mapper;
@@ -40,7 +39,8 @@ namespace Domain.Commands.User.Post
                 if (userSearch != null)
                 {
                     return await System.Threading.Tasks.Task.FromResult(GetResponseErro("Usuário já existe."));
-                }else if (!user.Password.BeAPassword()) 
+                }
+                else if (!user.Password.BeAPassword())
                 {
                     return await System.Threading.Tasks.Task.FromResult(GetResponseErro("Senha  inválida."));
                 }
@@ -48,15 +48,15 @@ namespace Domain.Commands.User.Post
                 {
 
                     user.Password = user.Password.EncryptSha256Hash();
-                    var userModel= _mapper.Map<UserModel>(_userRepository.Create(user));
-                    var response = new PostUserCommandResponse 
+                    var userModel = _mapper.Map<UserModel>(_userRepository.Create(user));
+                    var response = new PostUserCommandResponse
                     {
                         Data = new Data
                         {
                             Message = "Usuário Cadastrado com Sucesso",
                             Status = Status.Sucessed
                         },
-                        UserModel = userModel 
+                        UserModel = userModel
 
                     };
 
@@ -65,7 +65,7 @@ namespace Domain.Commands.User.Post
 
                     await _topicService.SendMessage(message, "ConfirmEmail");
 
-                    return await System.Threading.Tasks.Task.FromResult(response); 
+                    return await System.Threading.Tasks.Task.FromResult(response);
                 }
             }
             catch

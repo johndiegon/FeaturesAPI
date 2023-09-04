@@ -10,7 +10,7 @@ namespace Infrasctuture.Service.ServicesHandlers
     public class ServiceTopic : ITopicServiceBuss
     {
         ITopicSettings _topicSettings;
-        public ServiceTopic(ITopicSettings topicSettings) 
+        public ServiceTopic(ITopicSettings topicSettings)
         {
             _topicSettings = topicSettings;
         }
@@ -29,7 +29,8 @@ namespace Infrasctuture.Service.ServicesHandlers
                 {
                     new ArgumentException(string.Format("A fila de mensagens {0} não está configurada para receber mensagems.", queueName));
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }

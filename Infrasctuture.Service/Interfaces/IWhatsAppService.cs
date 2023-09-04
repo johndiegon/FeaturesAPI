@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Infrasctuture.Service.Interfaces
+﻿namespace Infrasctuture.Service.Interfaces
 {
     internal class IWhatsAppService
     {

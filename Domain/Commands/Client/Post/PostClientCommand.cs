@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Domain.Commands.Client.Post
 {
-    public class PostClientCommand : Validate , IRequest<PostClientCommandResponse>
+    public class PostClientCommand : Validate, IRequest<PostClientCommandResponse>
     {
         public People Client { get; set; }
         public override bool IsValid()

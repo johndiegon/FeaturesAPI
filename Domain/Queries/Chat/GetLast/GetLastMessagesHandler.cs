@@ -30,7 +30,7 @@ namespace Domain.Queries.Chat.GetLast
             try
             {
                 var response = new GetLastMessagesResponse();
-               
+
                 if (!request.IsValid())
                 {
                     response = GetResponseErro("The request is invalid.");

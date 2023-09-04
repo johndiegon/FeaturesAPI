@@ -12,5 +12,5 @@ namespace Domain.Queries.Calendar.Get
         public List<TaskCalendar> Tasks { get; set; }
     }
 
- 
+
 }

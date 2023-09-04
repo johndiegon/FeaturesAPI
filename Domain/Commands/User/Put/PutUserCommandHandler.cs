@@ -29,7 +29,7 @@ namespace Domain.Commands.User.Put
         {
             try
             {
-                if(!request.IsValid())
+                if (!request.IsValid())
                 {
                     return await System.Threading.Tasks.Task.FromResult(GetResponseErro("The request is invalid."));
                 }

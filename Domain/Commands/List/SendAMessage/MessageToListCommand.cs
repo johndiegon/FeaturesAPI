@@ -1,7 +1,6 @@
 ﻿using Domain.Models;
 using Domain.Validators;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 
 namespace Domain.Commands.List.SendAMessage
 {
@@ -14,5 +13,5 @@ namespace Domain.Commands.List.SendAMessage
             ValidationResult = new MessageValidator().Validate(this);
             return ValidationResult.IsValid;
         }
-    }  
+    }
 }

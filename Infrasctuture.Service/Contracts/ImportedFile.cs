@@ -6,7 +6,7 @@ namespace Infrasctuture.Service.Contracts
     {
         public string IdClient { get; set; }
         public string PathFile { get; set; }
-        public string FileName { get; set; }    
+        public string FileName { get; set; }
         public DateTime DateMessage { get; set; }
 
     }

@@ -28,7 +28,7 @@ namespace Domain.Commands.UserHub
             try
             {
                 var client = _clientRepository.GetByUser(request.Conection.UserId).FirstOrDefault();
-              
+
                 await _conectionRepository.Create(new UserHubConectionEntity
                 {
                     ClientId = client.Id,

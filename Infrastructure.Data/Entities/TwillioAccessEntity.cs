@@ -9,7 +9,7 @@ namespace Infrastructure.Data.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string IdClient { get; set; }
-        public string PhoneFrom { get; set; }   
+        public string PhoneFrom { get; set; }
         public string AccountSid { get; set; }
         public string AuthToken { get; set; }
     }

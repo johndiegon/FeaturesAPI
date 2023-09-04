@@ -16,13 +16,13 @@ namespace FeaturesAPI.Domain.Models
         public DocType DocType { get; set; }
         public string Email { get; set; }
         public AddressData Address { get; set; }
-        public bool IsASubscriber   { get; set; }
+        public bool IsASubscriber { get; set; }
         public List<string> AskToQuit { get; set; }
         public string AnswerToQuit { get; set; }
         public List<string> Phone
         {
             get { return _phones; }
-            set 
+            set
             {
                 _phones = new List<string>();
                 value.ForEach(p => _phones.Add(PhoneValid.TakeAValidNumber(p)));
@@ -31,7 +31,7 @@ namespace FeaturesAPI.Domain.Models
         public string DefaultAnswer { get; set; }
         public string IdUser { get; set; }
         public UserModel User { get; set; }
-        public EntityStatus Status  { get; set; }
+        public EntityStatus Status { get; set; }
         public override bool IsValid()
         {
             ValidationResult = new PeopleValidator().Validate(this);
@@ -41,5 +41,5 @@ namespace FeaturesAPI.Domain.Models
             //ValidationResult.Errors.AddRange(User.ValidationResult.Errors);
             return ValidationResult.IsValid;
         }
-    }  
+    }
 }

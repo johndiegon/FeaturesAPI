@@ -3,7 +3,6 @@ using Domain.Profiles;
 using FeaturesAPI.Atributes;
 using FeaturesAPI.Infrastructure.Data.Interface;
 using FeaturesAPI.Infrastructure.Models;
-using FeaturesAPI.Middlewares;
 using FluentValidation.AspNetCore;
 using Infrasctuture.Service.Interfaces;
 using Infrasctuture.Service.Interfaces.settings;
@@ -32,7 +31,7 @@ namespace FeaturesAPI
         }
 
         public IConfiguration Configuration { get; }
-   
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -79,18 +78,18 @@ namespace FeaturesAPI
 
             services.AddSingleton<IBlobSettings>(sp =>
                 sp.GetRequiredService<IOptions<OrderBlob>>().Value);
-                    
+
 
             // AddMediatR
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
-            
+
             // HttpClient
             services.AddHttpClient<IViaCepService, ViaCepService>();
             services.AddHttpClient();
 
 
             Scoped.Add(services);
-          
+
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(FeaturesProfile)));
 

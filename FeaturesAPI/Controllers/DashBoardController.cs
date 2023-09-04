@@ -25,7 +25,7 @@ namespace FeaturesAPI.Controllers
             _mediator = mediator;
         }
 
-     
+
         /// <summary>
         ///     Action to get a Address in the database.
         /// </summary>

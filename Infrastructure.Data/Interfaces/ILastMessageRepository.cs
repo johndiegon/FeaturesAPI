@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data.Interfaces
 {
-    public interface ILastMessageRepository 
+    public interface ILastMessageRepository
     {
         Task<IEnumerable<LastMessageEntity>> GetByClientId(ClientEntity client);
     }

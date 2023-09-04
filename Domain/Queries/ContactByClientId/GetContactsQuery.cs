@@ -10,7 +10,7 @@ namespace Domain.Queries.ContactByClientId
         public string IdUser { get; set; }
         public override bool IsValid()
         {
-          return IdUser != null;
+            return IdUser != null;
         }
     }
 }

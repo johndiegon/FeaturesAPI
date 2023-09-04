@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
 using Domain.Models;
-using Domain.Validators;
 using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,7 +39,7 @@ namespace Domain.Commands.Routine.Put
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                   
+
                     foreach (var routine in request.Routines)
                     {
                         var entity = _mapper.Map<RoutineEntity>(routine);

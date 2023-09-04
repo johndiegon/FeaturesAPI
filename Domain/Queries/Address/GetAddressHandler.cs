@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Domain.Models;
+﻿using Domain.Models;
 using FeaturesAPI.Domain.Models;
 using Infrasctuture.Service.Contracts;
 using Infrasctuture.Service.Interfaces;
@@ -13,7 +12,7 @@ namespace Domain.Queries.Address
     public class GetAddressHandler : IRequestHandler<GetAddressByZipCode, GetAddressResponse>
     {
         private readonly IViaCepService _viaCepService;
-      
+
         public GetAddressHandler(IViaCepService viaCepService)
         {
             _viaCepService = viaCepService;
@@ -21,7 +20,7 @@ namespace Domain.Queries.Address
 
         public async Task<GetAddressResponse> Handle(GetAddressByZipCode request, CancellationToken cancellationToken)
         {
-           try
+            try
             {
                 AdressResponse response = _viaCepService.GetEndereco(request.ZipCode.Replace("-", "")).Result;
 

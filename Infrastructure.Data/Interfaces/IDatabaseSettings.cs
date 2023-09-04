@@ -21,8 +21,8 @@
         string DatabaseName { get; set; }
         string FacebookMessageCollectionName { get; set; }
         string UserHubConnetioCollectionName { get; set; }
-        string ReportMessageCollectionName {get;set;}
+        string ReportMessageCollectionName { get; set; }
         string ConnectionStringsMysql { get; set; }
     }
-  
+
 }

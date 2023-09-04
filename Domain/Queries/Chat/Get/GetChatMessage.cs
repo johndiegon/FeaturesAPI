@@ -16,7 +16,7 @@ namespace Domain.Queries.Chat.Get
                 )
                 return false;
 
-            if( string.IsNullOrEmpty(PhoneTo)
+            if (string.IsNullOrEmpty(PhoneTo)
                )
                 return false;
             else

@@ -15,8 +15,8 @@ namespace Domain.Commands.Authenticate
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-     
-        public AuthenticateCommandHandler(IUserRepository  userRepository, IMapper mapper)
+
+        public AuthenticateCommandHandler(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _mapper = mapper;
@@ -43,7 +43,7 @@ namespace Domain.Commands.Authenticate
 
 
                 user.Role = request.User.Role;
-                
+
                 //// Gera o Token
                 var token = TokenUser.GenerateToken(user, 2);
 
@@ -54,7 +54,8 @@ namespace Domain.Commands.Authenticate
                 // Retorna os dados
                 return await System.Threading.Tasks.Task.FromResult(new AuthenticateCommandResponse { User = user, Data = new Data { Status = Status.Sucessed } });
 
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 var message = string.Concat("Ocorreru um erro interno: ", ex.Message);
                 return await System.Threading.Tasks.Task.FromResult(GetResponseErro(message));

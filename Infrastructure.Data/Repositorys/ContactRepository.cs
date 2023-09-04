@@ -190,7 +190,7 @@ namespace Infrastructure.Data.Repositorys
                           and c.Status = 1
                         ";
 
-           
+
             if (paramaters != null && paramaters.Count > 0)
             {
 
@@ -219,7 +219,7 @@ namespace Infrastructure.Data.Repositorys
                 //}
 
                 var inputMaxCountOrders = GetParam(paramaters, "inputMaxCountOrders");
-                if(inputMaxCountOrders != null)
+                if (inputMaxCountOrders != null)
                 {
                     sql += $@"AND (SELECT 
                                         COUNT(*)
@@ -230,7 +230,7 @@ namespace Infrastructure.Data.Repositorys
                 }
 
                 var inputMinCountOrders = GetParam(paramaters, "inputMinCountOrders");
-                if(inputMinCountOrders != null)
+                if (inputMinCountOrders != null)
                 {
                     sql += $@" AND (SELECT 
                                         COUNT(*)
@@ -335,7 +335,7 @@ namespace Infrastructure.Data.Repositorys
         {
             foreach (var c in contacts)
             {
-               await Update(c);
+                await Update(c);
             }
         }
         public async Task UpdateStatus(int contactId, string status = "0")

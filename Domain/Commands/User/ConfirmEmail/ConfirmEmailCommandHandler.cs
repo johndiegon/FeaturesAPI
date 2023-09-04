@@ -11,7 +11,7 @@ namespace Domain.Commands.User.ConfirmEmail
     public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, CommandResponse>
     {
         private readonly IUserRepository _userRepository;
-     
+
         public ConfirmEmailCommandHandler(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
@@ -33,7 +33,7 @@ namespace Domain.Commands.User.ConfirmEmail
                 _userRepository.Update(user);
 
                 // Retorna os dados
-                return await System.Threading.Tasks.Task.FromResult(new CommandResponse { Data = new Data { Message = "Email confirmed",  Status = Status.Sucessed } });
+                return await System.Threading.Tasks.Task.FromResult(new CommandResponse { Data = new Data { Message = "Email confirmed", Status = Status.Sucessed } });
 
             }
             catch (Exception ex)

@@ -39,14 +39,14 @@ namespace Domain.Commands.Calendar.Put
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-                   
+
                     foreach (var task in request.Tasks)
                     {
                         var entity = _mapper.Map<CalendarEntity>(task);
                         entity.ClientId = client.Id;
                         _calendarRepository.Update(entity);
                     }
-                  
+
                     response = new CommandResponse
                     {
                         Data = new Data

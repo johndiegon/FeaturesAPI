@@ -16,7 +16,7 @@ namespace Domain.Commands.Calendar.Post
         private readonly ICalendarRepository _calendarRepository;
         private readonly IMapper _mapper;
 
-        public PostCalendarHandler(  IClientRepository clientRepository
+        public PostCalendarHandler(IClientRepository clientRepository
                                      , ICalendarRepository calendarRepository
                                      , IMapper mapper
                                      )
@@ -39,14 +39,14 @@ namespace Domain.Commands.Calendar.Post
                 else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
-             
-                    foreach( var task in request.Tasks)
+
+                    foreach (var task in request.Tasks)
                     {
                         var entity = _mapper.Map<CalendarEntity>(task);
                         entity.ClientId = client.Id;
                         task.Id = _calendarRepository.Create(entity).Id;
                     }
-                  
+
                     response = new PostCalendarResponse
                     {
                         Data = new Data

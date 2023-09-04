@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Domain.Models;
+﻿using Domain.Models;
 using Infrasctuture.Service.Contracts;
 using Infrasctuture.Service.Interfaces;
 using Infrastructure.Data.Interfaces;
@@ -36,11 +35,12 @@ namespace Domain.Commands.File.Post
                 {
                     response = GetResponseErro("The request is invalid.");
                     response.Notification = request.Notifications();
-                } else
+                }
+                else
                 {
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
 
-                    if( client == null)
+                    if (client == null)
                     {
                         return GetResponseErro("This customer doesn't exist.");
                     }
@@ -69,17 +69,17 @@ namespace Domain.Commands.File.Post
                     }
 
 
-                    response.Data = new Data 
+                    response.Data = new Data
                     {
-                        Message = "Message sent successfully.", 
-                        Status = Status.Sucessed 
+                        Message = "Message sent successfully.",
+                        Status = Status.Sucessed
                     };
 
                     response.Url = storageFile;
                 }
 
             }
-            catch( Exception ex)
+            catch (Exception ex)
             {
                 response = GetResponseErro(String.Concat("Internal error:", ex.Message));
             }

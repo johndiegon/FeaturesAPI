@@ -9,9 +9,9 @@ namespace Domain.Queries.Dashboard.Get
 
         public override bool IsValid()
         {
-           if(string.IsNullOrEmpty(IdUser))
+            if (string.IsNullOrEmpty(IdUser))
                 return false;
-           return true;
+            return true;
         }
     }
 }

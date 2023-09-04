@@ -51,7 +51,7 @@ namespace Domain.Queries.Message.Get
                         idClient = client.Id;
                         answerDefault = string.IsNullOrEmpty(client.AnswerDefault) ? string.Empty : client.AnswerDefault;
                     }
-                       
+
                     var messages = _messageRepository.GetByClientId(idClient).ToList();
 
                     response.Messages = _mapper.Map<List<MessageDefault>>(messages);

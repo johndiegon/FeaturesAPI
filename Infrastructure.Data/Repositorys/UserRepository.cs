@@ -27,7 +27,7 @@ namespace Infrastructure.Data.Repositorys
         public UserEntity Get(string id) =>
             _Users.Find<UserEntity>(User => User.Id == id).FirstOrDefault();
 
-       
+
         public UserEntity Create(UserEntity User)
         {
             _Users.InsertOne(User);

@@ -2,7 +2,6 @@
 using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MongoDB.Driver;
-using System;
 using System.Collections.Generic;
 
 namespace Infrastructure.Data.Repositorys
@@ -41,6 +40,6 @@ namespace Infrastructure.Data.Repositorys
             _collection.ReplaceOne(message => message.Id == messageIn.Id, messageIn);
             return messageIn;
         }
-   
+
     }
 }

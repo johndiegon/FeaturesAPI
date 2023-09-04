@@ -5,9 +5,7 @@ using Infrastructure.Data.Entities;
 using Infrastructure.Data.Interfaces;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -48,14 +46,14 @@ namespace Domain.Commands.Message.Put
 
                     var messageEntity = new MessagesDefaultEntity()
                     {
-                        Id= request.IdMessage,
+                        Id = request.IdMessage,
                         IdClient = client.Id,
                         Message = request.Message,
                         PositiveAnswer = request.PositiveAnswer,
                         NegativeAnswer = request.NegativeAnswer,
                         Title = request.Title,
                         Params = Params.Get(request.Message),
-                        
+
                     };
 
                     var message = _messageRepository.Update(messageEntity);

@@ -57,7 +57,7 @@ namespace Domain.Queries.SessionWhtas.Get
                 //else
                 //{
 
-                  
+
                 //}
 
                 return await System.Threading.Tasks.Task.FromResult(response);

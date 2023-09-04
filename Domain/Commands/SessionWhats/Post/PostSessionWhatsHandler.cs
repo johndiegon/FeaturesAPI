@@ -43,7 +43,7 @@ namespace Domain.Commands.SessionWhats.Post
                     var client = _clientRepository.GetByUser(request.IdUser).FirstOrDefault();
                     var session = _sessionRepository.GetByClientId(client.Id).Where(s => s.Phone == request.Phone).FirstOrDefault();
 
-                    if(session == null)
+                    if (session == null)
                     {
                         var newSession = new SessionWhatsAppEntity()
                         {
@@ -53,7 +53,8 @@ namespace Domain.Commands.SessionWhats.Post
                             Created = DateTime.Now
                         };
                         _sessionRepository.Create(newSession);
-                    } else
+                    }
+                    else
                     {
                         session.Session = request.Session;
                         session.Created = DateTime.Now;

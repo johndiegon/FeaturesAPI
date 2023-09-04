@@ -16,10 +16,10 @@ namespace Domain.Queries.TwilioAccess.Get
         public string IdClient { get; set; }
         public override bool IsValid()
         {
-            if(string.IsNullOrEmpty(IdClient) || string.IsNullOrEmpty(IdUser))
+            if (string.IsNullOrEmpty(IdClient) || string.IsNullOrEmpty(IdUser))
                 return false;
 
-            if(string.IsNullOrEmpty(PhoneFrom))
+            if (string.IsNullOrEmpty(PhoneFrom))
                 return false;
             else
                 return true;

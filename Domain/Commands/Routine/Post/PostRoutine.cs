@@ -1,15 +1,11 @@
 ﻿using Domain.Models;
 using Domain.Validators;
 using MediatR;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Commands.Routine.Post
 {
-   
+
     public class PostRoutine : Validate, IRequest<PostRoutineResponse>
     {
         public List<RoutineCalendar> Routines { get; set; }

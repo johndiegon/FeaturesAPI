@@ -6,7 +6,7 @@ namespace Domain.Validators
 {
     public abstract class Validate
     {
-        public Validate(){}
+        public Validate() { }
 
         internal ValidationResult ValidationResult { get; set; }
 
@@ -32,13 +32,13 @@ namespace Domain.Validators
             {
                 return null;
             }
-            
+
         }
 
         public virtual bool IsValid()
         {
             throw new System.NotImplementedException();
         }
- 
+
     }
 }

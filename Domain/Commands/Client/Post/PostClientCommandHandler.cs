@@ -50,7 +50,7 @@ namespace Domain.Commands.Client.Post
                     userCommand.User.Role = "User";
                     var resultUser = await _mediator.Send(userCommand);
 
-                    if ( clientSearch != null ||
+                    if (clientSearch != null ||
                          resultUser.Data.Status == Status.Error
                        )
                     {
@@ -85,10 +85,10 @@ namespace Domain.Commands.Client.Post
                         client.IdUser = user.Id;
                         client.IsASubscriber = false;
                         var result = _clientRepository.Create(client);
-                      
+
                         response = new PostClientCommandResponse
                         {
-                            Client = _mapper.Map<People>(result), 
+                            Client = _mapper.Map<People>(result),
 
                             Data = new Data
                             {
@@ -104,7 +104,7 @@ namespace Domain.Commands.Client.Post
             }
             catch (Exception ex)
             {
-               return await Task.FromResult(GetResponseErro(ex.Message));
+                return await Task.FromResult(GetResponseErro(ex.Message));
             }
         }
 
