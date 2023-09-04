@@ -3,7 +3,8 @@
 Message Delivery Management
 
 ## Description
-A project made to manage mass whats messages sent to a list of clients.
+A back end project made to manage mass whats messages sent to a list of clients.
+Developed in c# .net and mysql
 
 <h4 align="left"> 
 🚧 Api MessageDeliveryManagement 🚀 Under construction... 🚧
