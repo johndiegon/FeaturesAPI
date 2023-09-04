@@ -2,21 +2,24 @@
 
 Message Delivery Management
 
-Description
+## Description
 A project made to manage mass whats messages sent to a list of clients.
 
+<h4 align="left"> 
 🚧 Api MessageDeliveryManagement 🚀 Under construction... 🚧
-Features
- Address
- Authenticate
- Calendar
- Chat
- Clients
- ContactListResume
- Credentials
- DashBoard
- FacebookWH
- FileInput
- Message
- Routine
- Session
+</h4>
+
+### Features
+ - [x] Address
+ - [x] Authenticate
+ - [x] Calendar
+ - [x] Chat
+ - [x] Clients
+ - [x] ContactListResume
+ - [x] Credentials
+ - [ ] DashBoard
+ - [x] FacebookWH
+ - [x] FileInput
+ - [x] Message
+ - [ ] Routine
+ - [ ] Session
