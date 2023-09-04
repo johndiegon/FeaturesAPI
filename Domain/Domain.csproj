@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Commands\TypeList\**" />
+    <EmbeddedResource Remove="Commands\TypeList\**" />
+    <None Remove="Commands\TypeList\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="FluentValidation" Version="10.1.0" />
     <PackageReference Include="MediatR" Version="9.0.0" />
@@ -15,10 +21,6 @@
     <ProjectReference Include="..\Infrasctuture.Service\Infrasctuture.Service.csproj" />
     <ProjectReference Include="..\Infrastructure.Application\Infrastructure.Application.csproj" />
     <ProjectReference Include="..\Infrastructure.Data\Infrastructure.Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Commands\TypeList\" />
   </ItemGroup>
 
 </Project>
